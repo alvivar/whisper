@@ -1,44 +1,35 @@
-<md-toolbar layout="row">
-  <button ng-click="toggleSidenav('left')" hide-gt-sm class="menuBtn">
-    <span class="visuallyhidden">Menu</span>
-  </button>
-  <h1>AngularJS Material App</h1>
-</md-toolbar>
+<div class="whisper md-padding" flex>
 
-<!--
-     Use `flex` [below] to have the side bar and content area
-     fill the available vertical display area
- -->
+    <div class="whisperCreator" ng-controller="WhisperCreatorController">
+        <md-whiteframe class="md-whiteframe-z1" layout="row" layout-align="center center">
+            <div class="whisperTitle">
+                <label>Whisper</label>
+            </div>
+            <div flex>
+                <form name="whisperForm">
+                    <md-input-container>
+                        <label>Got something to say?</label>
+                        <input ng-model="whisper.content">
+                    </md-input-container>
+                </form>
+            </div>
+        </md-whiteframe>
+    </div>
 
-<div layout="row" flex>
-
-  <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
-    <md-list>
-      <md-item ng-repeat="it in avatars">
-        <md-item-content>
-          <md-button ng-click="selectAvatar(it)" ng-class="{'selected' : it === selected }">
-            <span class="{{it.classname}} avatar"></span>
-            {{it.name}}
-          </md-button>
-        </md-item-content>
-      </md-item>
-    </md-list>
-  </md-sidenav>
-
-  <!--
-      Use `flex` [below] to have the content area
-      fill the available horizontal display area on the right side
-  -->
-
-  <div layout="column" flex class="content-wrapper" id="content">
-    <md-content layout="column" flex class="md-padding">
-        <span class="{{selected.classname}} avatar" role="img" aria-label="{{selected.name}}"></span>
-        <h2>{{selected.name}}</h2>
-        <p>{{selected.content}}</p>
-        <md-button class="action actionBtn" ng-click="showActions($event)">
-          <span class="visuallyhidden">Actions</span>
-        </md-button>
-    </md-content>
-  </div>
+    <div class="whispersList" ng-controller="WhisperListController">
+        <md-list>
+            <md-item ng-repeat="item in messages">
+                <md-item-content>
+                    <div class="md-tile-content">
+                        <h3>{{item.what}}</h3>
+                        <h4>{{item.who}}</h4>
+                        <p>
+                            {{item.notes}}
+                        </p>
+                    </div>
+                </md-item-content>
+            </md-item>
+        </md-list>
+    </div>
 
 </div>
