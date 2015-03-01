@@ -1,0 +1,11 @@
+body {
+    /*min-height: 2000px;*/
+    padding-top: 70px;
+}
+.navbar-center {
+    margin: 0;
+    float: none;
+}
+.navbar-inner {
+    text-align: center;
+}
