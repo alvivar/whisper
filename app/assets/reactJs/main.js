@@ -8,6 +8,15 @@
 //      WhisperPost
 
 
+var autolinker = new Autolinker({truncate: 29, twitter: false});
+
+var constant = {
+  whisper_duration: 180,
+  list_refresh_rate: 1000,
+  seconds_to_substract: 1,
+};
+
+
 var Whisper = React.createClass({  
   getDefaultProps: function() {
     return {
@@ -27,8 +36,14 @@ var Whisper = React.createClass({
     // One second left
     var newData = this.props.data;
     for(i = 0; i < newData.length; i++) {
-      newData[i].timeLeft -= 1;
+      newData[i].timeLeft -= constant.seconds_to_substract
     }
+    // Clean up!
+    newData = newData.filter(function(whisper) {
+      if (whisper.timeLeft > 0)
+        return true;
+      return false;
+    });
     this.setProps({
       data: newData
     });
@@ -77,7 +92,7 @@ var WhisperInput = React.createClass({
       key: Math.random(), 
       author: this.props.author,
       text: this.refs.whisperBox.getDOMNode().value,
-      timeLeft: 180
+      timeLeft: constant.whisper_duration,
     });
 
     // Reset
@@ -104,11 +119,11 @@ var WhisperInput = React.createClass({
 
 var WhisperList = React.createClass({
   componentDidMount: function() {
-    this.interval = setInterval(this.props.onTimeLeftSync, 1000);
+      this.interval = setInterval(this.props.onTimeLeftSync, constant.list_refresh_rate);
   },
   componentWillUnmount: function() {
     clearInterval(this.interval);
-  },
+  },  
   render: function() {
     var listNodes = this.props.data.map(function(whisper) {
       return (
@@ -128,7 +143,6 @@ var WhisperList = React.createClass({
 });
 
 
-var autolinker = new Autolinker({truncate: 29, twitter: false});
 var WhisperPost = React.createClass({
   render: function() {
 
