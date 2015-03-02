@@ -5,10 +5,13 @@ body {
     padding-top: 20px;
 }
 .whisperPost {
-    padding-top: 10px;
+    padding-top: 15px;
 }
-.whisperPost author {
-	font-size: 10px;
-    padding-top: 10px;
+.whisperPost .author {
+    font-size: 12px;
 }
-
+.whisperPost .time {
+	margin-left: 4px;
+    font-size: 11px;
+    color: #8899a6;
+}
