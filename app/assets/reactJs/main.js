@@ -8,12 +8,29 @@
 //      WhisperPost
 
 
-var Whisper = React.createClass({
+var Whisper = React.createClass({  
   getDefaultProps: function() {
     return {
       author: (new Date).getTime().toString(),
       data: [],
     };
+  },
+  syncTimeLeft: function() {
+    var newData = this.props.data;
+
+    for(i = 0; i < newData.length; i++) {
+      newData[i].timeLeft -= 1;
+    }
+
+    this.setProps({
+      data: newData
+    });
+  },
+  componentDidMount: function() {
+    this.interval = setInterval(this.syncTimeLeft, 1000);
+  },
+  componentWillUnmount: function() {
+    clearInterval(this.interval);
   },
   handleWhisperPost: function(whisper) {
     // Append the new whisper
@@ -27,7 +44,7 @@ var Whisper = React.createClass({
     return (
       <div className="whisper">    
         <WhisperInput author={this.props.author} onWhisperPost={this.handleWhisperPost} />
-        <WhisperList data={this.props.data}/>    
+        <WhisperList data={this.props.data}/>
       </div>
     );
   }
@@ -46,6 +63,7 @@ var WhisperInput = React.createClass({
       key: Math.random(), 
       author: this.props.author,
       text: this.refs.whisperBox.getDOMNode().value,
+      timeLeft: 180
     });
 
     // Reset
@@ -57,12 +75,15 @@ var WhisperInput = React.createClass({
     // Random placeholders
     var placeholders = [
       "...",
-      "Something good happen?",
+      "Something good happened?",
       "Why are good things so hard?",
       "Time does not exists...",
       "Tame your sadness!",
-      "I won't judge...",
+      "I won't judge you...",
       "It's ok...",
+      "Tell me whatever you want...",
+      "I don't know...",
+      "Forgive yourself!",
     ];
     var chosenPlaceholder = _.sample(placeholders);
 
@@ -72,11 +93,20 @@ var WhisperInput = React.createClass({
           <div className="input-group">
               <input className="form-control" ref="whisperBox" type="text" placeholder={chosenPlaceholder} />
               <span className="input-group-btn">
-                <button className="btn btn-default" type="submit" value="Post">Whisper</button>
+                <button className="btn btn-default" type="submit" value="Post">whisper</button>
               </span>
           </div>
         </form>
       </div>
+    );
+  }
+});
+
+
+var WhisperListUpdater = React.createClass({
+  render: function() {
+    return (
+      <div></div>
     );
   }
 });
@@ -89,7 +119,8 @@ var WhisperList = React.createClass({
         <WhisperPost 
           key={whisper.key}
           author={whisper.author} 
-          text={whisper.text} />
+          text={whisper.text}
+          timeLeft={whisper.timeLeft} />
       );
     });
     return (
@@ -101,9 +132,15 @@ var WhisperList = React.createClass({
 });
 
 
-var autolinker = new Autolinker({truncate: 29});
+var autolinker = new Autolinker({truncate: 29, twitter: false});
 var WhisperPost = React.createClass({
   render: function() {
+
+    // Short message clean up
+    this.props.text = this.props.text.trim();
+    if (this.props.text.length > 140) {
+      this.props.text = this.props.text.substr(0, 140);
+    }
 
     // Autolinked text
     var linkedText = autolinker.link(this.props.text);
@@ -112,9 +149,10 @@ var WhisperPost = React.createClass({
       <div className="row">
         <div className="col-md-6">
           <div className="whisperPost" key={this.props.key}> 
-            <span className="author"><small><em><strong>@{this.props.author}</strong> </em></small></span>
+            <span className="author"><strong>@{this.props.author.substr(this.props.author.length - 8)}</strong> </span>
+            <span className="time"><span>{this.props.timeLeft}</span>s left </span>
             <br />
-            <span className="text" dangerouslySetInnerHTML={{__html: linkedText}} />            
+            <span className="text" dangerouslySetInnerHTML={{__html: linkedText}} />
           </div>
         </div>
       </div>
@@ -124,7 +162,7 @@ var WhisperPost = React.createClass({
 
 
 var data = [
-  {key: 0, author: (new Date).getTime(), text: "Say whatever you want"}
+  
 ];
 
 
