@@ -2,16 +2,27 @@ body {
     padding-top: 70px;
 }
 .whisperList {
-    padding-top: 20px;
+    padding-top: 15px;
 }
 .whisperPost {
-    padding-top: 15px;
+    padding: 10px 15px 10px 15px;
+    margin-top: -1px;
+    border: #E1E8ED solid 1px;
 }
 .whisperPost .author {
     font-size: 12px;
+    font-weight: bold;
+}
+.whisperPost .text {
+    margin-top: 4px;
+}
+.whisperPost .timePanel {
+    display: flex;
+    margin-top: 8px;
 }
 .whisperPost .time {
-	margin-left: 4px;
+    display: flex;
+    margin: 0.35em 0 0 8px;
     font-size: 11px;
     color: #8899a6;
 }
