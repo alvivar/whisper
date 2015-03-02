@@ -144,6 +144,15 @@ var WhisperList = React.createClass({
 
 
 var WhisperPost = React.createClass({
+  componentDidMount: function() {
+    var node = this.getDOMNode();
+    var time = $(node).find('.time');
+
+    $(node).hide().fadeIn(500);
+
+    var color = $(time).css('color');
+    $(time).css({'color': '#000'}).animate({'color': color}, 1000);
+  },
   render: function() {
 
     // Short message clean up
@@ -158,11 +167,17 @@ var WhisperPost = React.createClass({
     return(
       <div className="row">
         <div className="col-md-6">
-          <div className="whisperPost" key={this.props.key}> 
-            <span className="author"><strong>@{this.props.author.substr(this.props.author.length - 8)}</strong> </span>
-            <span className="time"><span>{this.props.timeLeft}</span>s left </span>
-            <br />
-            <span className="text" dangerouslySetInnerHTML={{__html: linkedText}} />
+          <div className="whisperPost" key={this.props.key}>
+            <div className="author">
+              <span>@{this.props.author.substr(this.props.author.length - 8)} </span>              
+            </div>
+            <div className="text">
+              <span dangerouslySetInnerHTML={{__html: linkedText}} />
+            </div>
+            <div className="timePanel">
+              <button type="button" className="btn btn-default btn-xs">{'+3'}</button>       
+              <span className="time"><span>{this.props.timeLeft}</span>s left </span>
+            </div>     
           </div>
         </div>
       </div>
