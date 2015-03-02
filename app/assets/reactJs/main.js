@@ -15,23 +15,6 @@ var Whisper = React.createClass({
       data: [],
     };
   },
-  syncTimeLeft: function() {
-    var newData = this.props.data;
-
-    for(i = 0; i < newData.length; i++) {
-      newData[i].timeLeft -= 1;
-    }
-
-    this.setProps({
-      data: newData
-    });
-  },
-  componentDidMount: function() {
-    this.interval = setInterval(this.syncTimeLeft, 1000);
-  },
-  componentWillUnmount: function() {
-    clearInterval(this.interval);
-  },
   handleWhisperPost: function(whisper) {
     // Append the new whisper
     var whispers = this.props.data;
@@ -40,11 +23,21 @@ var Whisper = React.createClass({
       data: newWhispers
     });
   },
+  handleTimeLeftSync: function() {
+    // One second left
+    var newData = this.props.data;
+    for(i = 0; i < newData.length; i++) {
+      newData[i].timeLeft -= 1;
+    }
+    this.setProps({
+      data: newData
+    });
+  },
   render: function() {
     return (
       <div className="whisper">    
         <WhisperInput author={this.props.author} onWhisperPost={this.handleWhisperPost} />
-        <WhisperList data={this.props.data}/>
+        <WhisperList data={this.props.data} onTimeLeftSync={this.handleTimeLeftSync} />
       </div>
     );
   }
@@ -52,27 +45,12 @@ var Whisper = React.createClass({
 
 
 var WhisperInput = React.createClass({
-  componentDidMount: function() {    
-    this.refs.whisperBox.getDOMNode().focus();
+  getInitialState: function() {
+    return {
+      currentPlaceholder: ''
+    };
   },
-  handleSubmit: function(e) {
-    e.preventDefault();
-
-    // Update whisper list
-    this.props.onWhisperPost({
-      key: Math.random(), 
-      author: this.props.author,
-      text: this.refs.whisperBox.getDOMNode().value,
-      timeLeft: 180
-    });
-
-    // Reset
-    this.refs.whisperBox.getDOMNode().value = "";
-    this.refs.whisperBox.getDOMNode().focus();
-  },
-  render: function() {
-
-    // Random placeholders
+  refreshCurrentPlaceholder: function() {
     var placeholders = [
       "...",
       "Something good happened?",
@@ -85,13 +63,34 @@ var WhisperInput = React.createClass({
       "I don't know...",
       "Forgive yourself!",
     ];
-    var chosenPlaceholder = _.sample(placeholders);
+    this.state.currentPlaceholder = _.sample(placeholders);    
+  },
+  componentDidMount: function() {    
+    this.refs.whisperBox.getDOMNode().focus();
+    this.refreshCurrentPlaceholder();
+  },  
+  handleSubmit: function(e) {
+    e.preventDefault();
 
+    // Update whisper list
+    this.props.onWhisperPost({
+      key: Math.random(), 
+      author: this.props.author,
+      text: this.refs.whisperBox.getDOMNode().value,
+      timeLeft: 180
+    });
+
+    // Reset
+    this.refreshCurrentPlaceholder();
+    this.refs.whisperBox.getDOMNode().value = '';
+    this.refs.whisperBox.getDOMNode().focus();
+  },
+  render: function() {
     return (      
       <div className="row">
         <form className="whisperInput col-md-6" onSubmit={this.handleSubmit}>
           <div className="input-group">
-              <input className="form-control" ref="whisperBox" type="text" placeholder={chosenPlaceholder} />
+              <input className="form-control" ref="whisperBox" type="text" placeholder={this.state.currentPlaceholder} />
               <span className="input-group-btn">
                 <button className="btn btn-default" type="submit" value="Post">whisper</button>
               </span>
@@ -103,16 +102,13 @@ var WhisperInput = React.createClass({
 });
 
 
-var WhisperListUpdater = React.createClass({
-  render: function() {
-    return (
-      <div></div>
-    );
-  }
-});
-
-
 var WhisperList = React.createClass({
+  componentDidMount: function() {
+    this.interval = setInterval(this.props.onTimeLeftSync, 1000);
+  },
+  componentWillUnmount: function() {
+    clearInterval(this.interval);
+  },
   render: function() {
     var listNodes = this.props.data.map(function(whisper) {
       return (
