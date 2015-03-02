@@ -1,11 +1,14 @@
 body {
-    /*min-height: 2000px;*/
     padding-top: 70px;
 }
-.navbar-center {
-    margin: 0;
-    float: none;
+.whisperList {
+    padding-top: 20px;
 }
-.navbar-inner {
-    text-align: center;
+.whisperPost {
+    padding-top: 10px;
 }
+.whisperPost author {
+	font-size: 10px;
+    padding-top: 10px;
+}
+
