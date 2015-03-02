@@ -133,13 +133,13 @@ var WhisperPost = React.createClass({
   render: function() {
 
     // Short message clean up
-    this.props.text = this.props.text.trim();
-    if (this.props.text.length > 140) {
-      this.props.text = this.props.text.substr(0, 140);
-    }
+    // this.props.text = this.props.text.trim();
+    // if (this.props.text.length > 140) {
+    //   this.props.text = this.props.text.substr(0, 140);
+    // }
 
     // Autolinked text
-    var linkedText = autolinker.link(this.props.text);
+    var linkedText = autolinker.link(this.props.text.trim());
 
     return(
       <div className="row">
