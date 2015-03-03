@@ -69,10 +69,12 @@ var WhisperInput = React.createClass({
       "I won't judge you...",
       "It's ok...",
       "Tell me whatever you want...",
-      "I don't know...",
       "Forgive yourself!",
       "Believe in yourself!",
       "Hate is useless...",
+      "Lots of things aren't fair...",
+      "Who am I?",
+      "Who are you?"
     ];
     this.state.currentPlaceholder = _.sample(placeholders);    
   },
