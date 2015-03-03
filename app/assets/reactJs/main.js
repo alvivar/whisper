@@ -8,15 +8,6 @@
 //      WhisperPost
 
 
-var autolinker = new Autolinker({truncate: 29, twitter: false});
-
-var constant = {
-  whisper_duration: 180,
-  list_refresh_rate: 1000,
-  seconds_to_substract: 1,
-};
-
-
 var Whisper = React.createClass({  
   getDefaultProps: function() {
     return {
@@ -36,14 +27,17 @@ var Whisper = React.createClass({
     // One second left
     var newData = this.props.data;
     for(i = 0; i < newData.length; i++) {
-      newData[i].timeLeft -= constant.seconds_to_substract
+      if (newData[i].timeLeft > 0) {
+        newData[i].timeLeft -= 1;
+      }
     }
     // Clean up!
-    newData = newData.filter(function(whisper) {
-      if (whisper.timeLeft > 0)
-        return true;
-      return false;
-    });
+    // newData = newData.filter(function(whisper) {
+    //   if (whisper.timeLeft > 0) {
+    //     return true;
+    //   }
+    //   return false;
+    // });
     this.setProps({
       data: newData
     });
@@ -77,6 +71,8 @@ var WhisperInput = React.createClass({
       "Tell me whatever you want...",
       "I don't know...",
       "Forgive yourself!",
+      "Believe in yourself!",
+      "Hate is useless...",
     ];
     this.state.currentPlaceholder = _.sample(placeholders);    
   },
@@ -92,7 +88,7 @@ var WhisperInput = React.createClass({
       key: Math.random(), 
       author: this.props.author,
       text: this.refs.whisperBox.getDOMNode().value,
-      timeLeft: constant.whisper_duration,
+      timeLeft: 90
     });
 
     // Reset
@@ -103,7 +99,7 @@ var WhisperInput = React.createClass({
   render: function() {
     return (      
       <div className="row">
-        <form className="whisperInput col-md-6" onSubmit={this.handleSubmit}>
+        <form className="whisperInput col-md-6 col-md-offset-3" onSubmit={this.handleSubmit}>
           <div className="input-group">
               <input className="form-control" ref="whisperBox" type="text" placeholder={this.state.currentPlaceholder} />
               <span className="input-group-btn">
@@ -119,7 +115,7 @@ var WhisperInput = React.createClass({
 
 var WhisperList = React.createClass({
   componentDidMount: function() {
-      this.interval = setInterval(this.props.onTimeLeftSync, constant.list_refresh_rate);
+      this.interval = setInterval(this.props.onTimeLeftSync, 1000);
   },
   componentWillUnmount: function() {
     clearInterval(this.interval);
@@ -148,26 +144,28 @@ var WhisperPost = React.createClass({
     var node = this.getDOMNode();
     var time = $(node).find('.time');
 
+    // Fade in
     $(node).hide().fadeIn(500);
-
     var color = $(time).css('color');
-    $(time).css({'color': '#000'}).animate({'color': color}, 1000);
+    $(time).css({'color': '#000'}).animate({color: color}, 2000);
   },
   render: function() {
 
-    // Short message clean up
-    // this.props.text = this.props.text.trim();
-    // if (this.props.text.length > 140) {
-    //   this.props.text = this.props.text.substr(0, 140);
-    // }
-
     // Autolinked text
-    var linkedText = autolinker.link(this.props.text.trim());
+    var linkedText = Autolinker.link(this.props.text.trim(), {truncate: 29});
+
+    // Whisper end, fade out
+    if (this.props.timeLeft < 1) {
+      var node = this.getDOMNode();
+      $(node).fadeOut(2000, function() {
+        $(node).empty();
+      });
+    }
 
     return(
       <div className="row">
-        <div className="col-md-6">
-          <div className="whisperPost" key={this.props.key}>
+        <div className="col-md-6 col-md-offset-3">
+          <div className="whisperPost" id={this.props.key}>
             <div className="author">
               <span>@{this.props.author.substr(this.props.author.length - 8)} </span>              
             </div>
@@ -175,9 +173,12 @@ var WhisperPost = React.createClass({
               <span dangerouslySetInnerHTML={{__html: linkedText}} />
             </div>
             <div className="timePanel">
-              <button type="button" className="btn btn-default btn-xs">{'+3'}</button>       
-              <span className="time"><span>{this.props.timeLeft}</span>s left </span>
-            </div>     
+              <button type="button" className="btn btn-default btn-xs">{'+' + 3}</button>
+              <button type="button" className="btn btn-default btn-xs">{'-' + 1}</button>
+              <span className="time">
+                { ('0' + Math.floor(this.props.timeLeft / 60)).slice(-29) + ":" + ('0' + this.props.timeLeft % 60).slice(-2) + ' left' }
+              </span>
+            </div>
           </div>
         </div>
       </div>
