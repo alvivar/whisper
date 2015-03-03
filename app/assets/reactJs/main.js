@@ -42,11 +42,23 @@ var Whisper = React.createClass({
       data: newData
     });
   },
+  handleWhisperTimeChange: function(whisperKey, plusTime) {
+    var newData = this.props.data;
+    var newWhisper = _.find(newData, {key: whisperKey})
+    newWhisper.timeLeft += plusTime;
+
+    this.setProps({
+      data: newData
+    });
+  },
   render: function() {
     return (
       <div className="whisper">    
-        <WhisperInput author={this.props.author} onWhisperPost={this.handleWhisperPost} />
-        <WhisperList data={this.props.data} onTimeLeftSync={this.handleTimeLeftSync} />
+        <WhisperInput author={this.props.author} 
+          onWhisperPost={this.handleWhisperPost} />
+        <WhisperList data={this.props.data} 
+          onTimeLeftSync={this.handleTimeLeftSync} 
+          onWhisperTimeChange={this.handleWhisperTimeChange} />
       </div>
     );
   }
@@ -61,10 +73,10 @@ var WhisperInput = React.createClass({
   },
   refreshCurrentPlaceholder: function() {
     var placeholders = [
-      "...",
+      "",
       "Something good happened?",
       "Why are good things so hard?",
-      "Time does not exists...",
+      "Time doesn't exists...",
       "Tame your sadness!",
       "I won't judge you...",
       "It's ok...",
@@ -74,7 +86,8 @@ var WhisperInput = React.createClass({
       "Hate is useless...",
       "Lots of things aren't fair...",
       "Who am I?",
-      "Who are you?"
+      "Who are you?",
+      "I'm here with you..."
     ];
     this.state.currentPlaceholder = _.sample(placeholders);    
   },
@@ -123,13 +136,15 @@ var WhisperList = React.createClass({
     clearInterval(this.interval);
   },  
   render: function() {
-    var listNodes = this.props.data.map(function(whisper) {
+    var onWhisperTimeChange = this.props.onWhisperTimeChange;
+    var listNodes = this.props.data.map(function(whisper, onWhisperTimeChange) {
       return (
         <WhisperPost 
           key={whisper.key}
           author={whisper.author} 
           text={whisper.text}
-          timeLeft={whisper.timeLeft} />
+          timeLeft={whisper.timeLeft}
+          onWhisperTimeChange={onWhisperTimeChange} />
       );
     });
     return (
@@ -167,7 +182,7 @@ var WhisperPost = React.createClass({
     return(
       <div className="row">
         <div className="col-md-6 col-md-offset-3">
-          <div className="whisperPost" id={this.props.key}>
+          <div className="whisperPost" key={this.props.key}>
             <div className="author">
               <span>@{this.props.author.substr(this.props.author.length - 8)} </span>              
             </div>
@@ -175,8 +190,8 @@ var WhisperPost = React.createClass({
               <span dangerouslySetInnerHTML={{__html: linkedText}} />
             </div>
             <div className="timePanel">
-              <button type="button" className="btn btn-default btn-xs">{'+' + 3}</button>
-              <button type="button" className="btn btn-default btn-xs">{'-' + 1}</button>
+              <TimeButton prefix={'+'} minutes={3} key={this.props.key} onWhisperTimeChange={this.props.onWhisperTimeChange} />
+              <TimeButton prefix={'-'} minutes={1} key={this.props.key} onWhisperTimeChange={this.props.onWhisperTimeChange} />
               <span className="time">
                 { ('0' + Math.floor(this.props.timeLeft / 60)).slice(-29) + ":" + ('0' + this.props.timeLeft % 60).slice(-2) + ' left' }
               </span>
@@ -184,6 +199,20 @@ var WhisperPost = React.createClass({
           </div>
         </div>
       </div>
+    );
+  }
+});
+
+
+var TimeButton = React.createClass({
+  handleClick: function(e) {
+    this.props.onWhisperTimeChange(this.props.key, this.props.minutes * 60);
+  },
+  render: function() {
+    return (
+      <button onClick={this.handleClick} type="button" className="timeButton btn btn-default btn-xs">
+        { this.props.prefix + this.props.minutes }
+      </button>
     );
   }
 });
