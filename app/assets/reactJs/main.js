@@ -13,6 +13,7 @@ var Whisper = React.createClass({
     return {
       author: (new Date).getTime().toString(),
       data: [],
+      count: 0,
     };
   },
   handleWhisperPost: function(whisper) {
@@ -20,41 +21,45 @@ var Whisper = React.createClass({
     var whispers = this.props.data;
     var newWhispers = [whisper].concat(whispers);    
     this.setProps({
-      data: newWhispers
+      data: newWhispers,
+      count: this.props.count + 1
     });
   },
   handleTimeLeftSync: function() {
     // One second left
-    var newData = this.props.data;
-    for(i = 0; i < newData.length; i++) {
-      if (newData[i].timeLeft > 0) {
-        newData[i].timeLeft -= 1;
+    var data = this.props.data;
+    for(i = 0; i < data.length; i++) {
+      if (data[i].timeLeft > 0) {
+        data[i].timeLeft -= 1;
       }
     }
     // Clean up!
-    // newData = newData.filter(function(whisper) {
+    // data = data.filter(function(whisper) {
     //   if (whisper.timeLeft > 0) {
     //     return true;
     //   }
     //   return false;
     // });
     this.setProps({
-      data: newData
+      data: data
     });
   },
-  handleWhisperTimeChange: function(whisperKey, plusTime) {
-    var newData = this.props.data;
-    var newWhisper = _.find(newData, {key: whisperKey})
-    newWhisper.timeLeft += plusTime;
+  handleWhisperTimeChange: function(uid, time) {
+    var data = this.props.data;
+    var whisper = _.find(data, {key: uid});
+
+    whisper.timeLeft += time;
+    whisper.timeLeft = whisper.timeLeft < 0 ? 0 : whisper.timeLeft;
 
     this.setProps({
-      data: newData
+      data: data
     });
   },
   render: function() {
     return (
       <div className="whisper">    
         <WhisperInput author={this.props.author} 
+          count={this.props.count}
           onWhisperPost={this.handleWhisperPost} />
         <WhisperList data={this.props.data} 
           onTimeLeftSync={this.handleTimeLeftSync} 
@@ -68,28 +73,28 @@ var Whisper = React.createClass({
 var WhisperInput = React.createClass({
   getInitialState: function() {
     return {
+      placeholders: [
+        "",
+        "Something good happened?",
+        "Why are good things so hard?",
+        "Time doesn't exists...",
+        "Tame your sadness!",
+        "I won't judge you...",
+        "It's ok...",
+        "Tell me whatever you want...",
+        "Forgive yourself!",
+        "Believe in yourself!",
+        "Hate is useless...",
+        "Lots of things aren't fair...",
+        "Who am I?",
+        "Who are you?",
+        "I'm here with you...",
+      ],
       currentPlaceholder: ''
     };
   },
-  refreshCurrentPlaceholder: function() {
-    var placeholders = [
-      "",
-      "Something good happened?",
-      "Why are good things so hard?",
-      "Time doesn't exists...",
-      "Tame your sadness!",
-      "I won't judge you...",
-      "It's ok...",
-      "Tell me whatever you want...",
-      "Forgive yourself!",
-      "Believe in yourself!",
-      "Hate is useless...",
-      "Lots of things aren't fair...",
-      "Who am I?",
-      "Who are you?",
-      "I'm here with you..."
-    ];
-    this.state.currentPlaceholder = _.sample(placeholders);    
+  refreshCurrentPlaceholder: function() {  
+    this.state.currentPlaceholder = _.sample(this.state.placeholders);    
   },
   componentDidMount: function() {    
     this.refs.whisperBox.getDOMNode().focus();
@@ -98,9 +103,14 @@ var WhisperInput = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
 
+    // Ignore empty 
+    if (this.refs.whisperBox.getDOMNode().value.trim().length < 1) {
+      return;
+    }
+
     // Update whisper list
     this.props.onWhisperPost({
-      key: Math.random(), 
+      key: this.props.count,
       author: this.props.author,
       text: this.refs.whisperBox.getDOMNode().value,
       timeLeft: 90
@@ -136,17 +146,18 @@ var WhisperList = React.createClass({
     clearInterval(this.interval);
   },  
   render: function() {
-    var onWhisperTimeChange = this.props.onWhisperTimeChange;
-    var listNodes = this.props.data.map(function(whisper, onWhisperTimeChange) {
+    var listNodes = _.map(this.props.data, function(whisper) {
       return (
         <WhisperPost 
           key={whisper.key}
+          uid={whisper.key}
           author={whisper.author} 
           text={whisper.text}
           timeLeft={whisper.timeLeft}
-          onWhisperTimeChange={onWhisperTimeChange} />
+          onWhisperTimeChange={this.onWhisperTimeChange} />
       );
-    });
+    }, {onWhisperTimeChange: this.props.onWhisperTimeChange});
+
     return (
       <div className="whisperList">
         {listNodes}
@@ -164,7 +175,7 @@ var WhisperPost = React.createClass({
     // Fade in
     $(node).hide().fadeIn(500);
     var color = $(time).css('color');
-    $(time).css({'color': '#000'}).animate({color: color}, 2000);
+    $(time).css({'color': '#000'}).animate({color: color}, 2500);
   },
   render: function() {
 
@@ -174,7 +185,7 @@ var WhisperPost = React.createClass({
     // Whisper end, fade out
     if (this.props.timeLeft < 1) {
       var node = this.getDOMNode();
-      $(node).fadeOut(2000, function() {
+      $(node).fadeOut(2500, function() {
         $(node).empty();
       });
     }
@@ -182,7 +193,7 @@ var WhisperPost = React.createClass({
     return(
       <div className="row">
         <div className="col-md-6 col-md-offset-3">
-          <div className="whisperPost" key={this.props.key}>
+          <div className="whisperPost" id={this.props.uid}>
             <div className="author">
               <span>@{this.props.author.substr(this.props.author.length - 8)} </span>              
             </div>
@@ -190,10 +201,10 @@ var WhisperPost = React.createClass({
               <span dangerouslySetInnerHTML={{__html: linkedText}} />
             </div>
             <div className="timePanel">
-              <TimeButton prefix={'+'} minutes={3} key={this.props.key} onWhisperTimeChange={this.props.onWhisperTimeChange} />
-              <TimeButton prefix={'-'} minutes={1} key={this.props.key} onWhisperTimeChange={this.props.onWhisperTimeChange} />
+              <TimeButton prefix={'+'} uid={this.props.uid} minutes={3} onWhisperTimeChange={this.props.onWhisperTimeChange} />
+              <TimeButton prefix={'-'} uid={this.props.uid} minutes={-1} onWhisperTimeChange={this.props.onWhisperTimeChange} />
               <span className="time">
-                { ('0' + Math.floor(this.props.timeLeft / 60)).slice(-29) + ":" + ('0' + this.props.timeLeft % 60).slice(-2) + ' left' }
+                { ('0' + Math.floor(this.props.timeLeft / 60)).slice(-2) + ":" + ('0' + this.props.timeLeft % 60).slice(-2) + ' left' }
               </span>
             </div>
           </div>
@@ -206,12 +217,16 @@ var WhisperPost = React.createClass({
 
 var TimeButton = React.createClass({
   handleClick: function(e) {
-    this.props.onWhisperTimeChange(this.props.key, this.props.minutes * 60);
+    this.props.onWhisperTimeChange(this.props.uid, this.props.minutes * 60);
+
+    var button = $(this.getDOMNode());
+    button.attr('disabled', 'disabled');
+    button.animate({'color' : '#ccc'}, 250);
   },
   render: function() {
     return (
       <button onClick={this.handleClick} type="button" className="timeButton btn btn-default btn-xs">
-        { this.props.prefix + this.props.minutes }
+        { this.props.prefix + Math.abs(this.props.minutes) }
       </button>
     );
   }
