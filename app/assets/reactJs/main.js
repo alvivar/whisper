@@ -112,7 +112,7 @@ var WhisperInput = React.createClass({
     this.props.onWhisperPost({
       key: this.props.count,
       author: this.props.author,
-      text: this.refs.whisperBox.getDOMNode().value,
+      text: this.refs.whisperBox.getDOMNode().value.trim(),
       timeLeft: 90
     });
 
