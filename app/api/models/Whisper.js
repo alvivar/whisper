@@ -7,6 +7,14 @@
 
 module.exports = {
     attributes: {
-
+        author: {
+            type: 'integer'
+        },
+        text: {
+            type: 'string'
+        },
+        timeLeft: {
+            type: 'integer'
+        },
     }
 };
