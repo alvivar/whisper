@@ -13,13 +13,22 @@ var Whisper = React.createClass({
     return {
       author: (new Date).getTime().toString(),
       data: [],
-      count: 0,
+      count: 0
     };
   },
   handleWhisperPost: function(whisper) {
+    var whisperPost = {
+      author : whisper.author,
+      text : whisper.text,
+      timeLeft : whisper.timeLeft
+    };
+
+    // POST to server
+    $.post('/whisper', whisperPost);
+
     // Append the new whisper
     var whispers = this.props.data;
-    var newWhispers = [whisper].concat(whispers);    
+    var newWhispers = [whisper].concat(whispers);
     this.setProps({
       data: newWhispers,
       count: this.props.count + 1
@@ -57,12 +66,12 @@ var Whisper = React.createClass({
   },
   render: function() {
     return (
-      <div className="whisper">    
-        <WhisperInput author={this.props.author} 
+      <div className="whisper">
+        <WhisperInput author={this.props.author}
           count={this.props.count}
           onWhisperPost={this.handleWhisperPost} />
-        <WhisperList data={this.props.data} 
-          onTimeLeftSync={this.handleTimeLeftSync} 
+        <WhisperList data={this.props.data}
+          onTimeLeftSync={this.handleTimeLeftSync}
           onWhisperTimeChange={this.handleWhisperTimeChange} />
       </div>
     );
@@ -88,22 +97,22 @@ var WhisperInput = React.createClass({
         "Lots of things aren't fair...",
         "Who am I?",
         "Who are you?",
-        "I'm here with you...",
+        "I'm here with you..."
       ],
       currentPlaceholder: ''
     };
   },
-  refreshCurrentPlaceholder: function() {  
-    this.state.currentPlaceholder = _.sample(this.state.placeholders);    
+  refreshCurrentPlaceholder: function() {
+    this.state.currentPlaceholder = _.sample(this.state.placeholders);
   },
-  componentDidMount: function() {    
+  componentDidMount: function() {
     this.refs.whisperBox.getDOMNode().focus();
     this.refreshCurrentPlaceholder();
-  },  
+  },
   handleSubmit: function(e) {
     e.preventDefault();
 
-    // Ignore empty 
+    // Ignore empty
     if (this.refs.whisperBox.getDOMNode().value.trim().length < 1) {
       return;
     }
@@ -122,7 +131,7 @@ var WhisperInput = React.createClass({
     this.refs.whisperBox.getDOMNode().focus();
   },
   render: function() {
-    return (      
+    return (
       <div className="row">
         <form className="whisperInput col-md-6 col-md-offset-3" onSubmit={this.handleSubmit}>
           <div className="input-group">
@@ -144,14 +153,14 @@ var WhisperList = React.createClass({
   },
   componentWillUnmount: function() {
     clearInterval(this.interval);
-  },  
+  },
   render: function() {
     var listNodes = _.map(this.props.data, function(whisper) {
       return (
-        <WhisperPost 
+        <WhisperPost
           key={whisper.key}
           uid={whisper.key}
-          author={whisper.author} 
+          author={whisper.author}
           text={whisper.text}
           timeLeft={whisper.timeLeft}
           onWhisperTimeChange={this.onWhisperTimeChange} />
@@ -186,7 +195,7 @@ var WhisperPost = React.createClass({
     if (this.props.timeLeft < 1) {
       var node = this.getDOMNode();
       $(node).fadeOut(2500, function() {
-        $(node).empty();
+        // $(node).empty();
       });
     }
 
@@ -195,7 +204,7 @@ var WhisperPost = React.createClass({
         <div className="col-md-6 col-md-offset-3">
           <div className="whisperPost" id={this.props.uid}>
             <div className="author">
-              <span>@{this.props.author.substr(this.props.author.length - 8)} </span>              
+              <span>@{this.props.author.substr(this.props.author.length - 8)} </span>
             </div>
             <div className="text">
               <span dangerouslySetInnerHTML={{__html: linkedText}} />
@@ -233,12 +242,32 @@ var TimeButton = React.createClass({
 });
 
 
-var data = [
-  
-];
+var data = [];
 
 
+// Get data from server
+// $.get('/whisper', function(response) {
+
+//   var keyCount = 0;
+//   for(var i = 0; i < response.length; i++) {
+//     data.push({
+//       uid: keyCount,
+//       key: keyCount,
+//       author: response[i].author,
+//       text: response[i].text,
+//       timeLeft: response[i].timeLeft,
+//     });
+//     keyCount += 1;
+//   }
+
+//   console.debug(response);
+//   console.debug(data);
+
+// });
+
+
+// Render
 React.render(
-	<Whisper data={data} />,
-	document.getElementById('main')
+  <Whisper data={data} />,
+  document.getElementById('main')
 );
