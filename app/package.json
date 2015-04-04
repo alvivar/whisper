@@ -1,14 +1,14 @@
 {
-  "name": "Whisper",
-  "version": "0.0.1",
-  "description": "Anonymous temporary short-message board.",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "alvivar <andresalvivar@gmail.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "gulp": "^3.8.11"
-  }
+    "name": "Whisper",
+    "version": "0.0.1",
+    "description": "Anonymous temporary short-message-board.",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "alvivar <andresalvivar@gmail.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "gulp": "^3.8.11"
+    }
 }

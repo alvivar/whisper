@@ -6,7 +6,7 @@
     "authors": [
         "alvivar <andresalvivar@gmail.com>"
     ],
-    "description": "Anonymous temporary short-message board.",
+    "description": "Anonymous temporary short-message-board.",
     "moduleType": [
         "amd",
         "es6",
