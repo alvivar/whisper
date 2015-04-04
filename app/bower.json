@@ -1,0 +1,28 @@
+{
+    "name": "Whisper",
+    "main": "app.js",
+    "version": "0.0.1",
+    "homepage": "https://github.com/alvivar/Whisper",
+    "authors": [
+        "alvivar <andresalvivar@gmail.com>"
+    ],
+    "description": "Anonymous temporary short-message board.",
+    "moduleType": [
+        "amd",
+        "es6",
+        "globals",
+        "node",
+        "yui"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "react": "~0.13.1"
+    }
+}
