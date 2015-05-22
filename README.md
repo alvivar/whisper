@@ -1,8 +1,10 @@
 ***Whisper*** is an anonymous temporal short-message board.
 
-Powered by React.js & Sails.js
+_(This project was abandoned, mostly because I did started for learning React
+and that went pretty well, the last sane and functional commit was
+c7d0680793d54134b15af2bd0b354d37ba8167b3)_
 
-_(Work in progress, uncomplete)_
+Powered by React.js & Sails.js
 
 By [Andrés Villalobos](http://twitter.com/matnesis).
 
