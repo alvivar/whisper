@@ -1,0 +1,23 @@
+{
+    "name": "whisper",
+    "version": "1.0.0",
+    "description": "Anonymous temporal short message board.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/alvivar/whisper.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/alvivar/whisper/issues"
+    },
+    "homepage": "https://github.com/alvivar/whisper#readme",
+    "dependencies": {
+        "graphql-yoga": "^1.17.4",
+        "prisma-client-lib": "^1.33.0"
+    }
+}
