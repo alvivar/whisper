@@ -3,6 +3,9 @@ const { GraphQLServer } = require("graphql-yoga");
 
 const resolvers = {
     Query: {
+        allowedPosts(root, args, context) {
+            return context.prisma.posts({ where: { expired: false } });
+        },
         publishedPosts(root, args, context) {
             return context.prisma.posts({ where: { published: true } });
         },
@@ -14,13 +17,16 @@ const resolvers = {
                 .user({
                     id: args.userId
                 })
-                .posts();
+                .post();
         }
     },
     Mutation: {
+        createUser(root, args, context) {
+            return context.prisma.createUser({ name: args.name });
+        },
         createDraft(root, args, context) {
             return context.prisma.createPost({
-                title: args.title,
+                content: args.content,
                 author: {
                     connect: { id: args.userId }
                 }
@@ -32,17 +38,41 @@ const resolvers = {
                 data: { published: true }
             });
         },
-        createUser(root, args, context) {
-            return context.prisma.createUser({ name: args.name });
+        like(root, args, context) {
+            return context.prisma.updateUser({
+                where: { id: args.userId },
+                data: {
+                    likedPosts: {
+                        connect: { id: args.postId }
+                    }
+                }
+            });
+        },
+        dislike(root, args, context) {
+            return context.prisma.updateUser({
+                where: { id: args.userId },
+                data: {
+                    likedPosts: {
+                        disconnect: { id: args.postId }
+                    }
+                }
+            });
         }
     },
     User: {
-        posts(root, args, context) {
+        writtenPosts(root, args, context) {
             return context.prisma
                 .user({
                     id: root.id
                 })
-                .posts();
+                .writtenPosts();
+        },
+        likedPosts(root, args, context) {
+            return context.prisma
+                .user({
+                    id: root.id
+                })
+                .likedPosts();
         }
     },
     Post: {
@@ -52,6 +82,13 @@ const resolvers = {
                     id: root.id
                 })
                 .author();
+        },
+        likedBy(root, args, context) {
+            return context.prisma
+                .post({
+                    id: root.id
+                })
+                .likedBy();
         }
     }
 };

@@ -1,18 +1,17 @@
 
-    Post publication
-    The post should dissapear after a while
-    The post dissapearing should fade
+    client Post publication
+    client The post should dissapear after a while
+    client The post dissapearing should fade
 
-    Whisper resolvers
-    Cookie to track
+    user Cookie to track browser
 
-    Install TailwindCSS
-    Deploy to AWS
+    client Install TailwindCSS
+    cloud Deploy to AWS
 
 
     2019/05/26 06:35 pm
-    x Whisper model
+    x server Whisper model
 
     2019/05/26 02:06 am
-    x Basic react app
-    x Prisma example
+    x client Basic react app
+    x server Prisma example

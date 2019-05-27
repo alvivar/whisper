@@ -15,8 +15,6 @@ type BatchPayload {
   count: Long!
 }
 
-scalar DateTime
-
 scalar Long
 
 type Mutation {
@@ -55,12 +53,12 @@ type Post {
   id: ID!
   author: User
   likedBy(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
-  title: String
   content: String
   score: Int
   published: Boolean!
-  createdAt: DateTime!
-  expiration: DateTime!
+  expired: Boolean!
+  expirationDate: Float
+  createdDate: Float
 }
 
 type PostConnection {
@@ -73,11 +71,12 @@ input PostCreateInput {
   id: ID
   author: UserCreateOneWithoutWrittenPostsInput
   likedBy: UserCreateManyWithoutLikedPostsInput
-  title: String
   content: String
   score: Int
   published: Boolean
-  expiration: DateTime!
+  expired: Boolean
+  expirationDate: Float
+  createdDate: Float
 }
 
 input PostCreateManyWithoutAuthorInput {
@@ -93,21 +92,23 @@ input PostCreateManyWithoutLikedByInput {
 input PostCreateWithoutAuthorInput {
   id: ID
   likedBy: UserCreateManyWithoutLikedPostsInput
-  title: String
   content: String
   score: Int
   published: Boolean
-  expiration: DateTime!
+  expired: Boolean
+  expirationDate: Float
+  createdDate: Float
 }
 
 input PostCreateWithoutLikedByInput {
   id: ID
   author: UserCreateOneWithoutWrittenPostsInput
-  title: String
   content: String
   score: Int
   published: Boolean
-  expiration: DateTime!
+  expired: Boolean
+  expirationDate: Float
+  createdDate: Float
 }
 
 type PostEdge {
@@ -118,28 +119,28 @@ type PostEdge {
 enum PostOrderByInput {
   id_ASC
   id_DESC
-  title_ASC
-  title_DESC
   content_ASC
   content_DESC
   score_ASC
   score_DESC
   published_ASC
   published_DESC
-  createdAt_ASC
-  createdAt_DESC
-  expiration_ASC
-  expiration_DESC
+  expired_ASC
+  expired_DESC
+  expirationDate_ASC
+  expirationDate_DESC
+  createdDate_ASC
+  createdDate_DESC
 }
 
 type PostPreviousValues {
   id: ID!
-  title: String
   content: String
   score: Int
   published: Boolean!
-  createdAt: DateTime!
-  expiration: DateTime!
+  expired: Boolean!
+  expirationDate: Float
+  createdDate: Float
 }
 
 input PostScalarWhereInput {
@@ -157,20 +158,6 @@ input PostScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  title: String
-  title_not: String
-  title_in: [String!]
-  title_not_in: [String!]
-  title_lt: String
-  title_lte: String
-  title_gt: String
-  title_gte: String
-  title_contains: String
-  title_not_contains: String
-  title_starts_with: String
-  title_not_starts_with: String
-  title_ends_with: String
-  title_not_ends_with: String
   content: String
   content_not: String
   content_in: [String!]
@@ -195,22 +182,24 @@ input PostScalarWhereInput {
   score_gte: Int
   published: Boolean
   published_not: Boolean
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  expiration: DateTime
-  expiration_not: DateTime
-  expiration_in: [DateTime!]
-  expiration_not_in: [DateTime!]
-  expiration_lt: DateTime
-  expiration_lte: DateTime
-  expiration_gt: DateTime
-  expiration_gte: DateTime
+  expired: Boolean
+  expired_not: Boolean
+  expirationDate: Float
+  expirationDate_not: Float
+  expirationDate_in: [Float!]
+  expirationDate_not_in: [Float!]
+  expirationDate_lt: Float
+  expirationDate_lte: Float
+  expirationDate_gt: Float
+  expirationDate_gte: Float
+  createdDate: Float
+  createdDate_not: Float
+  createdDate_in: [Float!]
+  createdDate_not_in: [Float!]
+  createdDate_lt: Float
+  createdDate_lte: Float
+  createdDate_gt: Float
+  createdDate_gte: Float
   AND: [PostScalarWhereInput!]
   OR: [PostScalarWhereInput!]
   NOT: [PostScalarWhereInput!]
@@ -237,27 +226,30 @@ input PostSubscriptionWhereInput {
 input PostUpdateInput {
   author: UserUpdateOneWithoutWrittenPostsInput
   likedBy: UserUpdateManyWithoutLikedPostsInput
-  title: String
   content: String
   score: Int
   published: Boolean
-  expiration: DateTime
+  expired: Boolean
+  expirationDate: Float
+  createdDate: Float
 }
 
 input PostUpdateManyDataInput {
-  title: String
   content: String
   score: Int
   published: Boolean
-  expiration: DateTime
+  expired: Boolean
+  expirationDate: Float
+  createdDate: Float
 }
 
 input PostUpdateManyMutationInput {
-  title: String
   content: String
   score: Int
   published: Boolean
-  expiration: DateTime
+  expired: Boolean
+  expirationDate: Float
+  createdDate: Float
 }
 
 input PostUpdateManyWithoutAuthorInput {
@@ -291,20 +283,22 @@ input PostUpdateManyWithWhereNestedInput {
 
 input PostUpdateWithoutAuthorDataInput {
   likedBy: UserUpdateManyWithoutLikedPostsInput
-  title: String
   content: String
   score: Int
   published: Boolean
-  expiration: DateTime
+  expired: Boolean
+  expirationDate: Float
+  createdDate: Float
 }
 
 input PostUpdateWithoutLikedByDataInput {
   author: UserUpdateOneWithoutWrittenPostsInput
-  title: String
   content: String
   score: Int
   published: Boolean
-  expiration: DateTime
+  expired: Boolean
+  expirationDate: Float
+  createdDate: Float
 }
 
 input PostUpdateWithWhereUniqueWithoutAuthorInput {
@@ -348,20 +342,6 @@ input PostWhereInput {
   likedBy_every: UserWhereInput
   likedBy_some: UserWhereInput
   likedBy_none: UserWhereInput
-  title: String
-  title_not: String
-  title_in: [String!]
-  title_not_in: [String!]
-  title_lt: String
-  title_lte: String
-  title_gt: String
-  title_gte: String
-  title_contains: String
-  title_not_contains: String
-  title_starts_with: String
-  title_not_starts_with: String
-  title_ends_with: String
-  title_not_ends_with: String
   content: String
   content_not: String
   content_in: [String!]
@@ -386,22 +366,24 @@ input PostWhereInput {
   score_gte: Int
   published: Boolean
   published_not: Boolean
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  expiration: DateTime
-  expiration_not: DateTime
-  expiration_in: [DateTime!]
-  expiration_not_in: [DateTime!]
-  expiration_lt: DateTime
-  expiration_lte: DateTime
-  expiration_gt: DateTime
-  expiration_gte: DateTime
+  expired: Boolean
+  expired_not: Boolean
+  expirationDate: Float
+  expirationDate_not: Float
+  expirationDate_in: [Float!]
+  expirationDate_not_in: [Float!]
+  expirationDate_lt: Float
+  expirationDate_lte: Float
+  expirationDate_gt: Float
+  expirationDate_gte: Float
+  createdDate: Float
+  createdDate_not: Float
+  createdDate_in: [Float!]
+  createdDate_not_in: [Float!]
+  createdDate_lt: Float
+  createdDate_lte: Float
+  createdDate_gt: Float
+  createdDate_gte: Float
   AND: [PostWhereInput!]
   OR: [PostWhereInput!]
   NOT: [PostWhereInput!]
@@ -430,9 +412,7 @@ type User {
   id: ID!
   writtenPosts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   likedPosts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
-  email: String
   name: String
-  createdAt: DateTime!
 }
 
 type UserConnection {
@@ -445,7 +425,6 @@ input UserCreateInput {
   id: ID
   writtenPosts: PostCreateManyWithoutAuthorInput
   likedPosts: PostCreateManyWithoutLikedByInput
-  email: String
   name: String
 }
 
@@ -462,14 +441,12 @@ input UserCreateOneWithoutWrittenPostsInput {
 input UserCreateWithoutLikedPostsInput {
   id: ID
   writtenPosts: PostCreateManyWithoutAuthorInput
-  email: String
   name: String
 }
 
 input UserCreateWithoutWrittenPostsInput {
   id: ID
   likedPosts: PostCreateManyWithoutLikedByInput
-  email: String
   name: String
 }
 
@@ -481,19 +458,13 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
-  email_ASC
-  email_DESC
   name_ASC
   name_DESC
-  createdAt_ASC
-  createdAt_DESC
 }
 
 type UserPreviousValues {
   id: ID!
-  email: String
   name: String
-  createdAt: DateTime!
 }
 
 input UserScalarWhereInput {
@@ -511,20 +482,6 @@ input UserScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  email: String
-  email_not: String
-  email_in: [String!]
-  email_not_in: [String!]
-  email_lt: String
-  email_lte: String
-  email_gt: String
-  email_gte: String
-  email_contains: String
-  email_not_contains: String
-  email_starts_with: String
-  email_not_starts_with: String
-  email_ends_with: String
-  email_not_ends_with: String
   name: String
   name_not: String
   name_in: [String!]
@@ -539,14 +496,6 @@ input UserScalarWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
   AND: [UserScalarWhereInput!]
   OR: [UserScalarWhereInput!]
   NOT: [UserScalarWhereInput!]
@@ -573,17 +522,14 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   writtenPosts: PostUpdateManyWithoutAuthorInput
   likedPosts: PostUpdateManyWithoutLikedByInput
-  email: String
   name: String
 }
 
 input UserUpdateManyDataInput {
-  email: String
   name: String
 }
 
 input UserUpdateManyMutationInput {
-  email: String
   name: String
 }
 
@@ -615,13 +561,11 @@ input UserUpdateOneWithoutWrittenPostsInput {
 
 input UserUpdateWithoutLikedPostsDataInput {
   writtenPosts: PostUpdateManyWithoutAuthorInput
-  email: String
   name: String
 }
 
 input UserUpdateWithoutWrittenPostsDataInput {
   likedPosts: PostUpdateManyWithoutLikedByInput
-  email: String
   name: String
 }
 
@@ -662,20 +606,6 @@ input UserWhereInput {
   likedPosts_every: PostWhereInput
   likedPosts_some: PostWhereInput
   likedPosts_none: PostWhereInput
-  email: String
-  email_not: String
-  email_in: [String!]
-  email_not_in: [String!]
-  email_lt: String
-  email_lte: String
-  email_gt: String
-  email_gte: String
-  email_contains: String
-  email_not_contains: String
-  email_starts_with: String
-  email_not_starts_with: String
-  email_ends_with: String
-  email_not_ends_with: String
   name: String
   name_not: String
   name_in: [String!]
@@ -690,14 +620,6 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -705,7 +627,6 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
-  email: String
   name: String
 }
 `

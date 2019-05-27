@@ -2,19 +2,17 @@ type User {
     id: ID! @id
     writtenPosts: [Post!]! @relation(name: "WrittenPosts")
     likedPosts: [Post!]! @relation(name: "LikedPosts")
-    email: String @unique
     name: String @unique
-    createdAt: DateTime! @createdAt
 }
 
 type Post {
     id: ID! @id
     author: User @relation(name: "WrittenPosts")
     likedBy: [User!]! @relation(name: "LikedPosts")
-    title: String
     content: String
-    score: Int
+    score: Int @default(value: 0)
     published: Boolean! @default(value: false)
-    createdAt: DateTime! @createdAt
-    expiration: DateTime!
+    expired: Boolean! @default(value: false)
+    expirationDate: Float
+    createdDate: Float
 }

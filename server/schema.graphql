@@ -1,4 +1,5 @@
 type Query {
+    allowedPosts: [Post!]!
     publishedPosts: [Post!]!
     post(postId: ID!): Post
     postsByUser(userId: ID!): [Post!]!
@@ -6,28 +7,26 @@ type Query {
 
 type Mutation {
     createUser(name: String!): User
-    createDraft(title: String!, userId: ID!): Post
+    createDraft(content: String!, userId: ID!): Post
     publish(postId: ID!): Post
-    like(postId: ID!, userId)
+    like(postId: ID!, userId: ID!): User
+    dislike(postId: ID!, userId: ID!): User
 }
 
 type User {
     id: ID!
     writtenPosts: [Post!]!
     likedPosts: [Post!]!
-    email: String
     name: String
-    createdAt: DateTime!
 }
 
 type Post {
     id: ID!
     author: User
     likedBy: [User!]!
-    title: String
     content: String
     score: Int
     published: Boolean!
-    createdAt: DateTime!
-    expiration: DateTime!
+    expired: Boolean!
+    createdAt: Float
 }
