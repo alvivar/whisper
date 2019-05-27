@@ -22,7 +22,9 @@ const resolvers = {
     },
     Mutation: {
         createUser(root, args, context) {
-            return context.prisma.createUser({ name: args.name });
+            return context.prisma.createUser({
+                name: args.name
+            });
         },
         createDraft(root, args, context) {
             return context.prisma.createPost({
@@ -35,25 +37,27 @@ const resolvers = {
         publish(root, args, context) {
             return context.prisma.updatePost({
                 where: { id: args.postId },
-                data: { published: true }
+                data: {
+                    published: true
+                }
             });
         },
         like(root, args, context) {
-            return context.prisma.updateUser({
-                where: { id: args.userId },
+            return context.prisma.updatePost({
+                where: { id: args.postId },
                 data: {
-                    likedPosts: {
-                        connect: { id: args.postId }
+                    likedBy: {
+                        connect: { id: args.userId }
                     }
                 }
             });
         },
         dislike(root, args, context) {
-            return context.prisma.updateUser({
-                where: { id: args.userId },
+            return context.prisma.updatePost({
+                where: { id: args.postId },
                 data: {
-                    likedPosts: {
-                        disconnect: { id: args.postId }
+                    likedBy: {
+                        disconnect: { id: args.userId }
                     }
                 }
             });

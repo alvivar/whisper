@@ -1,0 +1,23 @@
+mutation {
+    createUser(name: "adros") {
+        id
+    }
+}
+
+mutation {
+    createDraft(
+        content: "Classic content"
+        userId: "cjw63kd7s009t0771hp5sk8im"
+    ) {
+        id
+    }
+}
+
+mutation {
+    dislike(
+        postId: "cjw63p1p600ac0771obugp6jy"
+        userId: "cjw63kd7s009t0771hp5sk8im"
+    ) {
+        id
+    }
+}

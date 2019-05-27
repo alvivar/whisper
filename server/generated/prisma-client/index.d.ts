@@ -151,12 +151,18 @@ export type PostOrderByInput =
   | "published_DESC"
   | "expired_ASC"
   | "expired_DESC"
-  | "expirationDate_ASC"
-  | "expirationDate_DESC"
-  | "createdDate_ASC"
-  | "createdDate_DESC";
+  | "expiration_ASC"
+  | "expiration_DESC"
+  | "created_ASC"
+  | "created_DESC";
 
-export type UserOrderByInput = "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC";
+export type UserOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "created_ASC"
+  | "created_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -209,22 +215,22 @@ export interface PostWhereInput {
   published_not?: Maybe<Boolean>;
   expired?: Maybe<Boolean>;
   expired_not?: Maybe<Boolean>;
-  expirationDate?: Maybe<Float>;
-  expirationDate_not?: Maybe<Float>;
-  expirationDate_in?: Maybe<Float[] | Float>;
-  expirationDate_not_in?: Maybe<Float[] | Float>;
-  expirationDate_lt?: Maybe<Float>;
-  expirationDate_lte?: Maybe<Float>;
-  expirationDate_gt?: Maybe<Float>;
-  expirationDate_gte?: Maybe<Float>;
-  createdDate?: Maybe<Float>;
-  createdDate_not?: Maybe<Float>;
-  createdDate_in?: Maybe<Float[] | Float>;
-  createdDate_not_in?: Maybe<Float[] | Float>;
-  createdDate_lt?: Maybe<Float>;
-  createdDate_lte?: Maybe<Float>;
-  createdDate_gt?: Maybe<Float>;
-  createdDate_gte?: Maybe<Float>;
+  expiration?: Maybe<DateTimeInput>;
+  expiration_not?: Maybe<DateTimeInput>;
+  expiration_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  expiration_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  expiration_lt?: Maybe<DateTimeInput>;
+  expiration_lte?: Maybe<DateTimeInput>;
+  expiration_gt?: Maybe<DateTimeInput>;
+  expiration_gte?: Maybe<DateTimeInput>;
+  created?: Maybe<DateTimeInput>;
+  created_not?: Maybe<DateTimeInput>;
+  created_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  created_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  created_lt?: Maybe<DateTimeInput>;
+  created_lte?: Maybe<DateTimeInput>;
+  created_gt?: Maybe<DateTimeInput>;
+  created_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<PostWhereInput[] | PostWhereInput>;
   OR?: Maybe<PostWhereInput[] | PostWhereInput>;
   NOT?: Maybe<PostWhereInput[] | PostWhereInput>;
@@ -265,6 +271,14 @@ export interface UserWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  created?: Maybe<DateTimeInput>;
+  created_not?: Maybe<DateTimeInput>;
+  created_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  created_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  created_lt?: Maybe<DateTimeInput>;
+  created_lte?: Maybe<DateTimeInput>;
+  created_gt?: Maybe<DateTimeInput>;
+  created_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
@@ -283,8 +297,7 @@ export interface PostCreateInput {
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
   expired?: Maybe<Boolean>;
-  expirationDate?: Maybe<Float>;
-  createdDate?: Maybe<Float>;
+  expiration: DateTimeInput;
 }
 
 export interface UserCreateOneWithoutWrittenPostsInput {
@@ -312,8 +325,7 @@ export interface PostCreateWithoutLikedByInput {
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
   expired?: Maybe<Boolean>;
-  expirationDate?: Maybe<Float>;
-  createdDate?: Maybe<Float>;
+  expiration: DateTimeInput;
 }
 
 export interface UserCreateManyWithoutLikedPostsInput {
@@ -341,8 +353,7 @@ export interface PostCreateWithoutAuthorInput {
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
   expired?: Maybe<Boolean>;
-  expirationDate?: Maybe<Float>;
-  createdDate?: Maybe<Float>;
+  expiration: DateTimeInput;
 }
 
 export interface PostUpdateInput {
@@ -352,8 +363,7 @@ export interface PostUpdateInput {
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
   expired?: Maybe<Boolean>;
-  expirationDate?: Maybe<Float>;
-  createdDate?: Maybe<Float>;
+  expiration?: Maybe<DateTimeInput>;
 }
 
 export interface UserUpdateOneWithoutWrittenPostsInput {
@@ -403,8 +413,7 @@ export interface PostUpdateWithoutLikedByDataInput {
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
   expired?: Maybe<Boolean>;
-  expirationDate?: Maybe<Float>;
-  createdDate?: Maybe<Float>;
+  expiration?: Maybe<DateTimeInput>;
 }
 
 export interface PostUpsertWithWhereUniqueWithoutLikedByInput {
@@ -454,22 +463,22 @@ export interface PostScalarWhereInput {
   published_not?: Maybe<Boolean>;
   expired?: Maybe<Boolean>;
   expired_not?: Maybe<Boolean>;
-  expirationDate?: Maybe<Float>;
-  expirationDate_not?: Maybe<Float>;
-  expirationDate_in?: Maybe<Float[] | Float>;
-  expirationDate_not_in?: Maybe<Float[] | Float>;
-  expirationDate_lt?: Maybe<Float>;
-  expirationDate_lte?: Maybe<Float>;
-  expirationDate_gt?: Maybe<Float>;
-  expirationDate_gte?: Maybe<Float>;
-  createdDate?: Maybe<Float>;
-  createdDate_not?: Maybe<Float>;
-  createdDate_in?: Maybe<Float[] | Float>;
-  createdDate_not_in?: Maybe<Float[] | Float>;
-  createdDate_lt?: Maybe<Float>;
-  createdDate_lte?: Maybe<Float>;
-  createdDate_gt?: Maybe<Float>;
-  createdDate_gte?: Maybe<Float>;
+  expiration?: Maybe<DateTimeInput>;
+  expiration_not?: Maybe<DateTimeInput>;
+  expiration_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  expiration_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  expiration_lt?: Maybe<DateTimeInput>;
+  expiration_lte?: Maybe<DateTimeInput>;
+  expiration_gt?: Maybe<DateTimeInput>;
+  expiration_gte?: Maybe<DateTimeInput>;
+  created?: Maybe<DateTimeInput>;
+  created_not?: Maybe<DateTimeInput>;
+  created_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  created_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  created_lt?: Maybe<DateTimeInput>;
+  created_lte?: Maybe<DateTimeInput>;
+  created_gt?: Maybe<DateTimeInput>;
+  created_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
   OR?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
   NOT?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
@@ -485,8 +494,7 @@ export interface PostUpdateManyDataInput {
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
   expired?: Maybe<Boolean>;
-  expirationDate?: Maybe<Float>;
-  createdDate?: Maybe<Float>;
+  expiration?: Maybe<DateTimeInput>;
 }
 
 export interface UserUpsertWithoutWrittenPostsInput {
@@ -557,8 +565,7 @@ export interface PostUpdateWithoutAuthorDataInput {
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
   expired?: Maybe<Boolean>;
-  expirationDate?: Maybe<Float>;
-  createdDate?: Maybe<Float>;
+  expiration?: Maybe<DateTimeInput>;
 }
 
 export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
@@ -602,6 +609,14 @@ export interface UserScalarWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  created?: Maybe<DateTimeInput>;
+  created_not?: Maybe<DateTimeInput>;
+  created_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  created_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  created_lt?: Maybe<DateTimeInput>;
+  created_lte?: Maybe<DateTimeInput>;
+  created_gt?: Maybe<DateTimeInput>;
+  created_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
   OR?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
   NOT?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
@@ -621,8 +636,7 @@ export interface PostUpdateManyMutationInput {
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
   expired?: Maybe<Boolean>;
-  expirationDate?: Maybe<Float>;
-  createdDate?: Maybe<Float>;
+  expiration?: Maybe<DateTimeInput>;
 }
 
 export interface UserCreateInput {
@@ -674,8 +688,8 @@ export interface Post {
   score?: Int;
   published: Boolean;
   expired: Boolean;
-  expirationDate?: Float;
-  createdDate?: Float;
+  expiration: DateTimeOutput;
+  created: DateTimeOutput;
 }
 
 export interface PostPromise extends Promise<Post>, Fragmentable {
@@ -694,8 +708,8 @@ export interface PostPromise extends Promise<Post>, Fragmentable {
   score: () => Promise<Int>;
   published: () => Promise<Boolean>;
   expired: () => Promise<Boolean>;
-  expirationDate: () => Promise<Float>;
-  createdDate: () => Promise<Float>;
+  expiration: () => Promise<DateTimeOutput>;
+  created: () => Promise<DateTimeOutput>;
 }
 
 export interface PostSubscription
@@ -716,8 +730,8 @@ export interface PostSubscription
   score: () => Promise<AsyncIterator<Int>>;
   published: () => Promise<AsyncIterator<Boolean>>;
   expired: () => Promise<AsyncIterator<Boolean>>;
-  expirationDate: () => Promise<AsyncIterator<Float>>;
-  createdDate: () => Promise<AsyncIterator<Float>>;
+  expiration: () => Promise<AsyncIterator<DateTimeOutput>>;
+  created: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface PostNullablePromise
@@ -738,13 +752,14 @@ export interface PostNullablePromise
   score: () => Promise<Int>;
   published: () => Promise<Boolean>;
   expired: () => Promise<Boolean>;
-  expirationDate: () => Promise<Float>;
-  createdDate: () => Promise<Float>;
+  expiration: () => Promise<DateTimeOutput>;
+  created: () => Promise<DateTimeOutput>;
 }
 
 export interface User {
   id: ID_Output;
   name?: String;
+  created: DateTimeOutput;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
@@ -768,6 +783,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     last?: Int;
   }) => T;
   name: () => Promise<String>;
+  created: () => Promise<DateTimeOutput>;
 }
 
 export interface UserSubscription
@@ -793,6 +809,7 @@ export interface UserSubscription
     last?: Int;
   }) => T;
   name: () => Promise<AsyncIterator<String>>;
+  created: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserNullablePromise
@@ -818,6 +835,7 @@ export interface UserNullablePromise
     last?: Int;
   }) => T;
   name: () => Promise<String>;
+  created: () => Promise<DateTimeOutput>;
 }
 
 export interface PostConnection {
@@ -998,8 +1016,8 @@ export interface PostPreviousValues {
   score?: Int;
   published: Boolean;
   expired: Boolean;
-  expirationDate?: Float;
-  createdDate?: Float;
+  expiration: DateTimeOutput;
+  created: DateTimeOutput;
 }
 
 export interface PostPreviousValuesPromise
@@ -1010,8 +1028,8 @@ export interface PostPreviousValuesPromise
   score: () => Promise<Int>;
   published: () => Promise<Boolean>;
   expired: () => Promise<Boolean>;
-  expirationDate: () => Promise<Float>;
-  createdDate: () => Promise<Float>;
+  expiration: () => Promise<DateTimeOutput>;
+  created: () => Promise<DateTimeOutput>;
 }
 
 export interface PostPreviousValuesSubscription
@@ -1022,8 +1040,8 @@ export interface PostPreviousValuesSubscription
   score: () => Promise<AsyncIterator<Int>>;
   published: () => Promise<AsyncIterator<Boolean>>;
   expired: () => Promise<AsyncIterator<Boolean>>;
-  expirationDate: () => Promise<AsyncIterator<Float>>;
-  createdDate: () => Promise<AsyncIterator<Float>>;
+  expiration: () => Promise<AsyncIterator<DateTimeOutput>>;
+  created: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -1054,6 +1072,7 @@ export interface UserSubscriptionPayloadSubscription
 export interface UserPreviousValues {
   id: ID_Output;
   name?: String;
+  created: DateTimeOutput;
 }
 
 export interface UserPreviousValuesPromise
@@ -1061,6 +1080,7 @@ export interface UserPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  created: () => Promise<DateTimeOutput>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -1068,6 +1088,7 @@ export interface UserPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  created: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 /*
@@ -1082,6 +1103,16 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
+DateTime scalar input type, allowing Date
+*/
+export type DateTimeInput = Date | string;
+
+/*
+DateTime scalar output type, which is always a string
+*/
+export type DateTimeOutput = string;
+
+/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
 export type Int = number;
@@ -1090,11 +1121,6 @@ export type Int = number;
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
-
-/*
-The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). 
-*/
-export type Float = number;
 
 export type Long = string;
 

@@ -15,6 +15,8 @@ type BatchPayload {
   count: Long!
 }
 
+scalar DateTime
+
 scalar Long
 
 type Mutation {
@@ -57,8 +59,8 @@ type Post {
   score: Int
   published: Boolean!
   expired: Boolean!
-  expirationDate: Float
-  createdDate: Float
+  expiration: DateTime!
+  created: DateTime!
 }
 
 type PostConnection {
@@ -75,8 +77,7 @@ input PostCreateInput {
   score: Int
   published: Boolean
   expired: Boolean
-  expirationDate: Float
-  createdDate: Float
+  expiration: DateTime!
 }
 
 input PostCreateManyWithoutAuthorInput {
@@ -96,8 +97,7 @@ input PostCreateWithoutAuthorInput {
   score: Int
   published: Boolean
   expired: Boolean
-  expirationDate: Float
-  createdDate: Float
+  expiration: DateTime!
 }
 
 input PostCreateWithoutLikedByInput {
@@ -107,8 +107,7 @@ input PostCreateWithoutLikedByInput {
   score: Int
   published: Boolean
   expired: Boolean
-  expirationDate: Float
-  createdDate: Float
+  expiration: DateTime!
 }
 
 type PostEdge {
@@ -127,10 +126,10 @@ enum PostOrderByInput {
   published_DESC
   expired_ASC
   expired_DESC
-  expirationDate_ASC
-  expirationDate_DESC
-  createdDate_ASC
-  createdDate_DESC
+  expiration_ASC
+  expiration_DESC
+  created_ASC
+  created_DESC
 }
 
 type PostPreviousValues {
@@ -139,8 +138,8 @@ type PostPreviousValues {
   score: Int
   published: Boolean!
   expired: Boolean!
-  expirationDate: Float
-  createdDate: Float
+  expiration: DateTime!
+  created: DateTime!
 }
 
 input PostScalarWhereInput {
@@ -184,22 +183,22 @@ input PostScalarWhereInput {
   published_not: Boolean
   expired: Boolean
   expired_not: Boolean
-  expirationDate: Float
-  expirationDate_not: Float
-  expirationDate_in: [Float!]
-  expirationDate_not_in: [Float!]
-  expirationDate_lt: Float
-  expirationDate_lte: Float
-  expirationDate_gt: Float
-  expirationDate_gte: Float
-  createdDate: Float
-  createdDate_not: Float
-  createdDate_in: [Float!]
-  createdDate_not_in: [Float!]
-  createdDate_lt: Float
-  createdDate_lte: Float
-  createdDate_gt: Float
-  createdDate_gte: Float
+  expiration: DateTime
+  expiration_not: DateTime
+  expiration_in: [DateTime!]
+  expiration_not_in: [DateTime!]
+  expiration_lt: DateTime
+  expiration_lte: DateTime
+  expiration_gt: DateTime
+  expiration_gte: DateTime
+  created: DateTime
+  created_not: DateTime
+  created_in: [DateTime!]
+  created_not_in: [DateTime!]
+  created_lt: DateTime
+  created_lte: DateTime
+  created_gt: DateTime
+  created_gte: DateTime
   AND: [PostScalarWhereInput!]
   OR: [PostScalarWhereInput!]
   NOT: [PostScalarWhereInput!]
@@ -230,8 +229,7 @@ input PostUpdateInput {
   score: Int
   published: Boolean
   expired: Boolean
-  expirationDate: Float
-  createdDate: Float
+  expiration: DateTime
 }
 
 input PostUpdateManyDataInput {
@@ -239,8 +237,7 @@ input PostUpdateManyDataInput {
   score: Int
   published: Boolean
   expired: Boolean
-  expirationDate: Float
-  createdDate: Float
+  expiration: DateTime
 }
 
 input PostUpdateManyMutationInput {
@@ -248,8 +245,7 @@ input PostUpdateManyMutationInput {
   score: Int
   published: Boolean
   expired: Boolean
-  expirationDate: Float
-  createdDate: Float
+  expiration: DateTime
 }
 
 input PostUpdateManyWithoutAuthorInput {
@@ -287,8 +283,7 @@ input PostUpdateWithoutAuthorDataInput {
   score: Int
   published: Boolean
   expired: Boolean
-  expirationDate: Float
-  createdDate: Float
+  expiration: DateTime
 }
 
 input PostUpdateWithoutLikedByDataInput {
@@ -297,8 +292,7 @@ input PostUpdateWithoutLikedByDataInput {
   score: Int
   published: Boolean
   expired: Boolean
-  expirationDate: Float
-  createdDate: Float
+  expiration: DateTime
 }
 
 input PostUpdateWithWhereUniqueWithoutAuthorInput {
@@ -368,22 +362,22 @@ input PostWhereInput {
   published_not: Boolean
   expired: Boolean
   expired_not: Boolean
-  expirationDate: Float
-  expirationDate_not: Float
-  expirationDate_in: [Float!]
-  expirationDate_not_in: [Float!]
-  expirationDate_lt: Float
-  expirationDate_lte: Float
-  expirationDate_gt: Float
-  expirationDate_gte: Float
-  createdDate: Float
-  createdDate_not: Float
-  createdDate_in: [Float!]
-  createdDate_not_in: [Float!]
-  createdDate_lt: Float
-  createdDate_lte: Float
-  createdDate_gt: Float
-  createdDate_gte: Float
+  expiration: DateTime
+  expiration_not: DateTime
+  expiration_in: [DateTime!]
+  expiration_not_in: [DateTime!]
+  expiration_lt: DateTime
+  expiration_lte: DateTime
+  expiration_gt: DateTime
+  expiration_gte: DateTime
+  created: DateTime
+  created_not: DateTime
+  created_in: [DateTime!]
+  created_not_in: [DateTime!]
+  created_lt: DateTime
+  created_lte: DateTime
+  created_gt: DateTime
+  created_gte: DateTime
   AND: [PostWhereInput!]
   OR: [PostWhereInput!]
   NOT: [PostWhereInput!]
@@ -413,6 +407,7 @@ type User {
   writtenPosts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   likedPosts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   name: String
+  created: DateTime!
 }
 
 type UserConnection {
@@ -460,11 +455,14 @@ enum UserOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  created_ASC
+  created_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   name: String
+  created: DateTime!
 }
 
 input UserScalarWhereInput {
@@ -496,6 +494,14 @@ input UserScalarWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  created: DateTime
+  created_not: DateTime
+  created_in: [DateTime!]
+  created_not_in: [DateTime!]
+  created_lt: DateTime
+  created_lte: DateTime
+  created_gt: DateTime
+  created_gte: DateTime
   AND: [UserScalarWhereInput!]
   OR: [UserScalarWhereInput!]
   NOT: [UserScalarWhereInput!]
@@ -620,6 +626,14 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  created: DateTime
+  created_not: DateTime
+  created_in: [DateTime!]
+  created_not_in: [DateTime!]
+  created_lt: DateTime
+  created_lte: DateTime
+  created_gt: DateTime
+  created_gte: DateTime
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

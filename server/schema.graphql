@@ -1,3 +1,5 @@
+scalar DateTime
+
 type Query {
     allowedPosts: [Post!]!
     publishedPosts: [Post!]!
@@ -9,8 +11,8 @@ type Mutation {
     createUser(name: String!): User
     createDraft(content: String!, userId: ID!): Post
     publish(postId: ID!): Post
-    like(postId: ID!, userId: ID!): User
-    dislike(postId: ID!, userId: ID!): User
+    like(postId: ID!, userId: ID!): Post
+    dislike(postId: ID!, userId: ID!): Post
 }
 
 type User {
@@ -18,6 +20,7 @@ type User {
     writtenPosts: [Post!]!
     likedPosts: [Post!]!
     name: String
+    created: DateTime!
 }
 
 type Post {
@@ -28,5 +31,6 @@ type Post {
     score: Int
     published: Boolean!
     expired: Boolean!
-    createdAt: Float
+    expiration: DateTime!
+    created: DateTime!
 }
