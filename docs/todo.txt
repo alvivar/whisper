@@ -1,5 +1,17 @@
 
-    Whisper model
+    Post publication
+    The post should dissapear after a while
+    The post dissapearing should fade
+
+    Whisper resolvers
+    Cookie to track
+
+    Install TailwindCSS
+    Deploy to AWS
+
+
+    2019/05/26 06:35 pm
+    x Whisper model
 
     2019/05/26 02:06 am
     x Basic react app

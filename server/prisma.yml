@@ -3,6 +3,10 @@ datamodel: datamodel.prisma
 generate:
     - generator: javascript-client
       output: ./generated/prisma-client/
-hooks:
-    post-deploy:
-        - prisma generate
+#  Warning: The `prisma generate` command was executed twice. Since Prisma 1.31,
+#  the Prisma client is generated automatically after running `prisma deploy`.
+#  It is not necessary to generate it via a `post-deploy` hook any more, you can
+#  therefore remove the hook if you do not need it otherwise.
+# hooks:
+#     post-deploy:
+#         - prisma generate

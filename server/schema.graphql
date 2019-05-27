@@ -8,18 +8,26 @@ type Mutation {
     createUser(name: String!): User
     createDraft(title: String!, userId: ID!): Post
     publish(postId: ID!): Post
+    like(postId: ID!, userId)
 }
 
 type User {
     id: ID!
+    writtenPosts: [Post!]!
+    likedPosts: [Post!]!
     email: String
-    name: String!
-    posts: [Post!]!
+    name: String
+    createdAt: DateTime!
 }
 
 type Post {
     id: ID!
-    title: String!
-    published: Boolean!
     author: User
+    likedBy: [User!]!
+    title: String
+    content: String
+    score: Int
+    published: Boolean!
+    createdAt: DateTime!
+    expiration: DateTime!
 }
