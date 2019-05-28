@@ -9,7 +9,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 const client = new ApolloClient({
-  uri: "localhost:4000"
+  uri: "http://127.0.0.1:4000/"
 });
 
 ReactDOM.render(
