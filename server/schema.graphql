@@ -1,36 +1,36 @@
 scalar DateTime
 
 type Query {
-    allowedPosts: [Post!]!
-    publishedPosts: [Post!]!
-    post(postId: ID!): Post
-    postsByUser(userId: ID!): [Post!]!
+  allowedPosts: [Post!]!
+  publishedPosts: [Post!]!
+  post(postId: ID!): Post
+  postsByUser(userId: ID!): [Post!]!
 }
 
 type Mutation {
-    createUser(name: String!): User
-    createDraft(content: String!, userId: ID!): Post
-    publish(postId: ID!): Post
-    like(postId: ID!, userId: ID!): Post
-    dislike(postId: ID!, userId: ID!): Post
+  createUser(name: String!): User
+  createDraft(content: String!, userId: ID!): Post
+  publish(postId: ID!): Post
+  like(postId: ID!, userId: ID!): Post
+  dislike(postId: ID!, userId: ID!): Post
 }
 
 type User {
-    id: ID!
-    writtenPosts: [Post!]!
-    likedPosts: [Post!]!
-    name: String
-    created: DateTime!
+  id: ID!
+  writtenPosts: [Post!]!
+  likedPosts: [Post!]!
+  name: String
+  created: DateTime!
 }
 
 type Post {
-    id: ID!
-    author: User
-    likedBy: [User!]!
-    content: String
-    score: Int
-    published: Boolean!
-    expired: Boolean!
-    expiration: DateTime!
-    created: DateTime!
+  id: ID!
+  author: User
+  likedBy: [User!]!
+  content: String
+  score: Int
+  published: Boolean!
+  expired: Boolean!
+  expiration: DateTime!
+  created: DateTime!
 }
