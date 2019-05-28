@@ -1,24 +1,44 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+
+const FEED_QUERY = gql`
+  {
+    allowedPosts {
+      id
+      content
+    }
+  }
+`;
+
+function PostsList() {
+  return (
+    <Query query={FEED_QUERY}>
+      {({ loading, error, data }) => {
+        if (loading) return <div>Fetching</div>;
+        if (error) {
+          console.log(error);
+          console.log(data);
+          return <div>Error</div>;
+        }
+        const postsToRender = data.allowedPosts;
+        return (
+          <ul>
+            {postsToRender.map(i => (
+              <li key={i.id}>{i.content}</li>
+            ))}
+          </ul>
+        );
+      }}
+    </Query>
+  );
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <PostsList />
     </div>
   );
 }
