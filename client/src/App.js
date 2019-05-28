@@ -1,9 +1,9 @@
 import React from "react";
-import "./App.css";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import "./App.css";
 
-const FEED_QUERY = gql`
+const POSTS_QUERY = gql`
   {
     allowedPosts {
       id
@@ -14,14 +14,13 @@ const FEED_QUERY = gql`
 
 function PostsList() {
   return (
-    <Query query={FEED_QUERY}>
+    <Query query={POSTS_QUERY}>
       {({ loading, error, data }) => {
         if (loading) return <div>Fetching</div>;
-        if (error) {
-          console.log(error);
-          console.log(data);
-          return <div>Error</div>;
-        }
+        if (error) return <div>Error</div>;
+
+        console.log(data);
+
         const postsToRender = data.allowedPosts;
         return (
           <ul>
@@ -38,7 +37,17 @@ function PostsList() {
 function App() {
   return (
     <div className="App">
-      <PostsList />
+      <div className="text-center">
+        <header className="bg-purple-darker m-6 p-6 rounded shadow-lg">
+          <h1 className="text-black text-3xl">Welcome to React</h1>
+        </header>
+        <p className="text-base">
+          To get started, edit <code>src/App.js</code> and save to reload.
+        </p>
+        <p className="text-base">
+          <PostsList />
+        </p>
+      </div>
     </div>
   );
 }
