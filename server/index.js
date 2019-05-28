@@ -1,7 +1,6 @@
-const moment = require("moment");
-
 const { prisma } = require("./generated/prisma-client");
 const { GraphQLServer } = require("graphql-yoga");
+const moment = require("moment");
 
 const resolvers = {
   Query: {
@@ -113,7 +112,7 @@ const server = new GraphQLServer({
   }
 });
 
-server.start(() => console.log("Server is running on http://localhost:4000"));
+server.start(() => console.log("Server is running on http://127.0.0.1:4000"));
 
 //
 // 2
