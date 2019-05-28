@@ -18,6 +18,7 @@
     "homepage": "https://github.com/alvivar/whisper#readme",
     "dependencies": {
         "graphql-yoga": "^1.17.4",
+        "moment": "^2.24.0",
         "prisma-client-lib": "^1.33.0"
     }
 }
