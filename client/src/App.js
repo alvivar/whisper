@@ -36,8 +36,11 @@ function PostsList() {
 
 function App() {
   return (
-    <div>
-      <div className="container mx-auto bg-gray-400 p-1">
+    <div className="container m-4">
+      <div className="container mx-auto text-center">
+        <textarea className="container mx-auto rounded" />
+      </div>
+      <div className="container mx-auto bg-blue-200">
         <PostsList />
       </div>
     </div>
