@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import "./App.css";
 
 const POSTS_QUERY = gql`
-  {
+  query {
     allowedPosts {
       id
       content
@@ -19,8 +19,6 @@ function PostsList() {
         if (loading) return <div>Fetching</div>;
         if (error) return <div>Error</div>;
 
-        console.log(data);
-
         const postsToRender = data.allowedPosts;
         return (
           <div className="m-1">
@@ -32,6 +30,27 @@ function PostsList() {
       }}
     </Query>
   );
+}
+
+const POST_MUTATION = gql`
+  mutation createDraft(
+    content: "Something useful"
+    userId: "cjw7b3mmd004407271ba3o6p1"
+  ) {
+    id
+  }
+  mutation PostMutation($description: String!, $url: String!) {
+    post(description: $description, url: $url) {
+      id
+      createdAt
+      url
+      description
+    }
+  }
+`;
+
+function PostInput() {
+  return <div />;
 }
 
 function App() {
