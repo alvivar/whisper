@@ -17,18 +17,26 @@ class CreatePost extends Component {
   };
 
   render() {
+    let textArea;
     const { content, userId } = this.state;
+
     return (
       <div>
         <div className="flex">
-          <textarea
-            onChange={e => this.setState({ content: e.target.value })}
-            className="w-10/12 m-1 bg-gray-100 text-gray-800 border border-gray-200 focus:bg-white rounded"
-          />
-          <Mutation mutation={POST_MUTATION} variables={{ content, userId }}>
-            {postMutation => (
+          <Mutation mutation={POST_MUTATION}>
+            <textarea
+              ref={node => (textArea = node)}
+              onChange={e => this.setState({ content: e.target.value })}
+              className="w-10/12 m-1 bg-gray-100 text-gray-800 border border-gray-200 focus:bg-white rounded"
+            />
+            {(postMutation, { loading, error, data }) => (
               <button
-                onClick={postMutation}
+                onClick={e => {
+                  postMutation({
+                    variables: { content: content, userId: userId }
+                  });
+                  textArea.value = "";
+                }}
                 className="w-2/12 m-1 bg-transparent hover:bg-blue-400 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
               >
                 WHISPER
