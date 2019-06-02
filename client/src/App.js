@@ -8,38 +8,48 @@ import gql from "graphql-tag";
 import { useCookies } from "react-cookie";
 
 const CREATE_USER_MUTATION = gql`
-    mutation CreateUserMutation($name: String!, $sessionHash: String!) {
-        mutation {
-            createUser(name: $name, sessionHash: $sessionHash) {
-                id
-            }
+    mutation createUser($name: String!, $sessionHash: String!) {
+        createUser(name: $name, sessionHash: $sessionHash) {
+            id
+            name
         }
     }
 `;
 
 function App() {
     const [cookies, setCookie] = useCookies(["user"]);
-    // const createUserMutation = useMutation(CREATE_USER_MUTATION);
+    const createUserMutation = useMutation(CREATE_USER_MUTATION);
 
     useEffect(() => {
-        if (cookies.name) {
-            // get id
+        if (!cookies.user) {
+            const handleUserSession = async () => {
+                const sessionHash = "bewareofthesciencebehindyoursould";
+                const result = await createUserMutation({
+                    variables: {
+                        name: sessionHash,
+                        sessionHash: sessionHash
+                    }
+                });
+
+                setCookie(
+                    "user",
+                    {
+                        name: sessionHash,
+                        sessionHash: sessionHash
+                    },
+                    { path: "/" }
+                );
+            };
+
+            handleUserSession();
         } else {
-            setCookie("user", "randomhash", { path: "/" });
-            // createUserMutation({
-            //     variables: {
-            //         user: "randomhashName",
-            //         sessionHash: "randomhash"
-            //     }
-            // });
         }
     });
 
     return (
         <div className="container mx-auto max-w-xl">
             <div className="h-2" />
-            <p>{cookies.name}</p>
-            <CreatePost name={cookies.name} />
+            <CreatePost userId={cookies.user.id} />
             <div className="container mx-auto">
                 <PostsList />
             </div>

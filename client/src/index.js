@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "react-apollo";
+import { ApolloProvider } from "react-apollo-hooks";
 
 import { CookiesProvider } from "react-cookie";
 
@@ -17,9 +17,9 @@ export const client = new ApolloClient({
 
 ReactDOM.render(
     <ApolloProvider client={client}>
-        {/* <CookiesProvider> */}
-        <App />
-        {/* </CookiesProvider> */}
+        <CookiesProvider>
+            <App />
+        </CookiesProvider>
     </ApolloProvider>,
     document.getElementById("root")
 );

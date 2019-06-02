@@ -1,6 +1,6 @@
 import React from "react";
-import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import { useQuery } from "react-apollo-hooks";
 
 const POSTS_QUERY = gql`
     query {
@@ -58,33 +58,30 @@ function timeDifference(current, previous) {
 }
 
 function PostsList() {
+    const { loading, error, data } = useQuery(POSTS_QUERY);
+    if (loading) return fetchingMessage();
+    if (error) return errorMessage();
+
+    const postsToRender = data.allowedPosts;
+
     return (
-        <Query query={POSTS_QUERY}>
-            {({ loading, error, data }) => {
-                if (loading) return fetchingMessage();
-                if (error) return errorMessage();
-                const postsToRender = data.allowedPosts;
-                return (
-                    <div className="">
-                        {postsToRender.map(i => (
-                            <div
-                                key={i.id}
-                                className="p-4 mb-2 bg-gray-100 rounded-lg hover:bg-gray-200"
-                            >
-                                <div className="text-xs text-gray-600">
-                                    @{i.author.id}{" "}
-                                    {timeDifference(
-                                        new Date().getTime(),
-                                        new Date(i.created).getTime()
-                                    )}
-                                </div>
-                                <div className="text-lg">{i.content}</div>
-                            </div>
-                        ))}
+        <div className="">
+            {postsToRender.map(i => (
+                <div
+                    key={i.id}
+                    className="p-4 mb-2 bg-gray-100 rounded-lg hover:bg-gray-200"
+                >
+                    <div className="text-xs text-gray-600">
+                        @{i.author.id}{" "}
+                        {timeDifference(
+                            new Date().getTime(),
+                            new Date(i.created).getTime()
+                        )}
                     </div>
-                );
-            }}
-        </Query>
+                    <div className="text-lg">{i.content}</div>
+                </div>
+            ))}
+        </div>
     );
 }
 
