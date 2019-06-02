@@ -21,15 +21,13 @@ class CreatePost extends Component {
         const { content, userId } = this.state;
 
         return (
-            <div>
-                <div className="flex">
-                    <textarea
-                        ref={node => (textArea = node)}
-                        onChange={e =>
-                            this.setState({ content: e.target.value })
-                        }
-                        className="w-10/12 m-1 bg-gray-100 text-gray-800 border border-gray-200 focus:bg-white rounded"
-                    />
+            <div className="flex flex-wrap">
+                <textarea
+                    ref={node => (textArea = node)}
+                    onChange={e => this.setState({ content: e.target.value })}
+                    className="w-full h-16 py-4 px-4 text-lg text-gray-900 border bg-gray-100 border-gray-100 outline-none rounded-lg focus:bg-gray-300"
+                />
+                <div className="w-full">
                     <Mutation mutation={POST_MUTATION}>
                         {(postMutation, { loading, error, data }) => (
                             <button
@@ -42,9 +40,9 @@ class CreatePost extends Component {
                                     });
                                     textArea.value = "";
                                 }}
-                                className="w-2/12 m-1 bg-transparent hover:bg-blue-400 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                                className="my-2 h-12 mx-4 py-2 px-4 float-right text-gray-600 outline-none hover:bg-black hover:text-white bg-transparent border-transparent rounded-lg"
                             >
-                                WHISPER
+                                ( whisper )
                             </button>
                         )}
                     </Mutation>
