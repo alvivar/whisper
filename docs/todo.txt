@@ -1,13 +1,17 @@
 
-    client Post publication
+    client Cookie to track browser
+    client Validate empty message
+
     client The post should dissapear after a while
     client The post dissapearing should fade
 
-    user Cookie to track browser
 
-    client Install TailwindCSS
     cloud Deploy to AWS
 
+
+    2019/06/02 03:06 pm
+    x client Post publication
+    x client Install TailwindCSS
 
     2019/05/26 06:35 pm
     x server Whisper model
