@@ -161,6 +161,8 @@ export type UserOrderByInput =
   | "id_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "sessionHash_ASC"
+  | "sessionHash_DESC"
   | "created_ASC"
   | "created_DESC";
 
@@ -271,6 +273,20 @@ export interface UserWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  sessionHash?: Maybe<String>;
+  sessionHash_not?: Maybe<String>;
+  sessionHash_in?: Maybe<String[] | String>;
+  sessionHash_not_in?: Maybe<String[] | String>;
+  sessionHash_lt?: Maybe<String>;
+  sessionHash_lte?: Maybe<String>;
+  sessionHash_gt?: Maybe<String>;
+  sessionHash_gte?: Maybe<String>;
+  sessionHash_contains?: Maybe<String>;
+  sessionHash_not_contains?: Maybe<String>;
+  sessionHash_starts_with?: Maybe<String>;
+  sessionHash_not_starts_with?: Maybe<String>;
+  sessionHash_ends_with?: Maybe<String>;
+  sessionHash_not_ends_with?: Maybe<String>;
   created?: Maybe<DateTimeInput>;
   created_not?: Maybe<DateTimeInput>;
   created_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -309,6 +325,7 @@ export interface UserCreateWithoutWrittenPostsInput {
   id?: Maybe<ID_Input>;
   likedPosts?: Maybe<PostCreateManyWithoutLikedByInput>;
   name?: Maybe<String>;
+  sessionHash: String;
 }
 
 export interface PostCreateManyWithoutLikedByInput {
@@ -339,6 +356,7 @@ export interface UserCreateWithoutLikedPostsInput {
   id?: Maybe<ID_Input>;
   writtenPosts?: Maybe<PostCreateManyWithoutAuthorInput>;
   name?: Maybe<String>;
+  sessionHash: String;
 }
 
 export interface PostCreateManyWithoutAuthorInput {
@@ -378,6 +396,7 @@ export interface UserUpdateOneWithoutWrittenPostsInput {
 export interface UserUpdateWithoutWrittenPostsDataInput {
   likedPosts?: Maybe<PostUpdateManyWithoutLikedByInput>;
   name?: Maybe<String>;
+  sessionHash?: Maybe<String>;
 }
 
 export interface PostUpdateManyWithoutLikedByInput {
@@ -532,6 +551,7 @@ export interface UserUpdateWithWhereUniqueWithoutLikedPostsInput {
 export interface UserUpdateWithoutLikedPostsDataInput {
   writtenPosts?: Maybe<PostUpdateManyWithoutAuthorInput>;
   name?: Maybe<String>;
+  sessionHash?: Maybe<String>;
 }
 
 export interface PostUpdateManyWithoutAuthorInput {
@@ -609,6 +629,20 @@ export interface UserScalarWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  sessionHash?: Maybe<String>;
+  sessionHash_not?: Maybe<String>;
+  sessionHash_in?: Maybe<String[] | String>;
+  sessionHash_not_in?: Maybe<String[] | String>;
+  sessionHash_lt?: Maybe<String>;
+  sessionHash_lte?: Maybe<String>;
+  sessionHash_gt?: Maybe<String>;
+  sessionHash_gte?: Maybe<String>;
+  sessionHash_contains?: Maybe<String>;
+  sessionHash_not_contains?: Maybe<String>;
+  sessionHash_starts_with?: Maybe<String>;
+  sessionHash_not_starts_with?: Maybe<String>;
+  sessionHash_ends_with?: Maybe<String>;
+  sessionHash_not_ends_with?: Maybe<String>;
   created?: Maybe<DateTimeInput>;
   created_not?: Maybe<DateTimeInput>;
   created_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -629,6 +663,7 @@ export interface UserUpdateManyWithWhereNestedInput {
 
 export interface UserUpdateManyDataInput {
   name?: Maybe<String>;
+  sessionHash?: Maybe<String>;
 }
 
 export interface PostUpdateManyMutationInput {
@@ -644,16 +679,19 @@ export interface UserCreateInput {
   writtenPosts?: Maybe<PostCreateManyWithoutAuthorInput>;
   likedPosts?: Maybe<PostCreateManyWithoutLikedByInput>;
   name?: Maybe<String>;
+  sessionHash: String;
 }
 
 export interface UserUpdateInput {
   writtenPosts?: Maybe<PostUpdateManyWithoutAuthorInput>;
   likedPosts?: Maybe<PostUpdateManyWithoutLikedByInput>;
   name?: Maybe<String>;
+  sessionHash?: Maybe<String>;
 }
 
 export interface UserUpdateManyMutationInput {
   name?: Maybe<String>;
+  sessionHash?: Maybe<String>;
 }
 
 export interface PostSubscriptionWhereInput {
@@ -759,6 +797,7 @@ export interface PostNullablePromise
 export interface User {
   id: ID_Output;
   name?: String;
+  sessionHash: String;
   created: DateTimeOutput;
 }
 
@@ -783,6 +822,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     last?: Int;
   }) => T;
   name: () => Promise<String>;
+  sessionHash: () => Promise<String>;
   created: () => Promise<DateTimeOutput>;
 }
 
@@ -809,6 +849,7 @@ export interface UserSubscription
     last?: Int;
   }) => T;
   name: () => Promise<AsyncIterator<String>>;
+  sessionHash: () => Promise<AsyncIterator<String>>;
   created: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
@@ -835,6 +876,7 @@ export interface UserNullablePromise
     last?: Int;
   }) => T;
   name: () => Promise<String>;
+  sessionHash: () => Promise<String>;
   created: () => Promise<DateTimeOutput>;
 }
 
@@ -1072,6 +1114,7 @@ export interface UserSubscriptionPayloadSubscription
 export interface UserPreviousValues {
   id: ID_Output;
   name?: String;
+  sessionHash: String;
   created: DateTimeOutput;
 }
 
@@ -1080,6 +1123,7 @@ export interface UserPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  sessionHash: () => Promise<String>;
   created: () => Promise<DateTimeOutput>;
 }
 
@@ -1088,6 +1132,7 @@ export interface UserPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  sessionHash: () => Promise<AsyncIterator<String>>;
   created: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 

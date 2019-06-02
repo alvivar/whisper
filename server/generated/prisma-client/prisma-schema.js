@@ -407,6 +407,7 @@ type User {
   writtenPosts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   likedPosts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   name: String
+  sessionHash: String!
   created: DateTime!
 }
 
@@ -421,6 +422,7 @@ input UserCreateInput {
   writtenPosts: PostCreateManyWithoutAuthorInput
   likedPosts: PostCreateManyWithoutLikedByInput
   name: String
+  sessionHash: String!
 }
 
 input UserCreateManyWithoutLikedPostsInput {
@@ -437,12 +439,14 @@ input UserCreateWithoutLikedPostsInput {
   id: ID
   writtenPosts: PostCreateManyWithoutAuthorInput
   name: String
+  sessionHash: String!
 }
 
 input UserCreateWithoutWrittenPostsInput {
   id: ID
   likedPosts: PostCreateManyWithoutLikedByInput
   name: String
+  sessionHash: String!
 }
 
 type UserEdge {
@@ -455,6 +459,8 @@ enum UserOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  sessionHash_ASC
+  sessionHash_DESC
   created_ASC
   created_DESC
 }
@@ -462,6 +468,7 @@ enum UserOrderByInput {
 type UserPreviousValues {
   id: ID!
   name: String
+  sessionHash: String!
   created: DateTime!
 }
 
@@ -494,6 +501,20 @@ input UserScalarWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  sessionHash: String
+  sessionHash_not: String
+  sessionHash_in: [String!]
+  sessionHash_not_in: [String!]
+  sessionHash_lt: String
+  sessionHash_lte: String
+  sessionHash_gt: String
+  sessionHash_gte: String
+  sessionHash_contains: String
+  sessionHash_not_contains: String
+  sessionHash_starts_with: String
+  sessionHash_not_starts_with: String
+  sessionHash_ends_with: String
+  sessionHash_not_ends_with: String
   created: DateTime
   created_not: DateTime
   created_in: [DateTime!]
@@ -529,14 +550,17 @@ input UserUpdateInput {
   writtenPosts: PostUpdateManyWithoutAuthorInput
   likedPosts: PostUpdateManyWithoutLikedByInput
   name: String
+  sessionHash: String
 }
 
 input UserUpdateManyDataInput {
   name: String
+  sessionHash: String
 }
 
 input UserUpdateManyMutationInput {
   name: String
+  sessionHash: String
 }
 
 input UserUpdateManyWithoutLikedPostsInput {
@@ -568,11 +592,13 @@ input UserUpdateOneWithoutWrittenPostsInput {
 input UserUpdateWithoutLikedPostsDataInput {
   writtenPosts: PostUpdateManyWithoutAuthorInput
   name: String
+  sessionHash: String
 }
 
 input UserUpdateWithoutWrittenPostsDataInput {
   likedPosts: PostUpdateManyWithoutLikedByInput
   name: String
+  sessionHash: String
 }
 
 input UserUpdateWithWhereUniqueWithoutLikedPostsInput {
@@ -626,6 +652,20 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  sessionHash: String
+  sessionHash_not: String
+  sessionHash_in: [String!]
+  sessionHash_not_in: [String!]
+  sessionHash_lt: String
+  sessionHash_lte: String
+  sessionHash_gt: String
+  sessionHash_gte: String
+  sessionHash_contains: String
+  sessionHash_not_contains: String
+  sessionHash_starts_with: String
+  sessionHash_not_starts_with: String
+  sessionHash_ends_with: String
+  sessionHash_not_ends_with: String
   created: DateTime
   created_not: DateTime
   created_in: [DateTime!]
