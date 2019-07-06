@@ -31,6 +31,14 @@ const resolvers = {
                 sessionHash: args.sessionHash
             });
         },
+        setUserName(root, args, context) {
+            return context.prisma.updateUser({
+                where: { id: args.userId },
+                data: {
+                    name: args.name
+                }
+            });
+        },
         createDraft(root, args, context) {
             return context.prisma.createPost({
                 content: args.content,
