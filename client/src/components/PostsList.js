@@ -9,6 +9,7 @@ const POSTS_QUERY = gql`
             content
             author {
                 id
+                name
             }
             created
         }
@@ -72,7 +73,7 @@ function PostsList() {
                     className="p-4 mb-2 bg-gray-100 rounded-lg hover:bg-gray-200"
                 >
                     <div className="text-xs text-gray-600">
-                        @{i.author.id}{" "}
+                        {i.author.name}{" "}
                         {timeDifference(
                             new Date().getTime(),
                             new Date(i.created).getTime()
