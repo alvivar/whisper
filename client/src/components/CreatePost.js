@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo-hooks";
+import useKeyPress from "../hooks/useKeyPress";
 
 const POST_MUTATION = gql`
     mutation createDraft($content: String!, $userId: ID!) {
@@ -22,28 +23,29 @@ const SET_USER_NAME_MUTATION = gql`
 const CreatePost = ({ userId, userName }) => {
     let [name, setName] = useState(userName);
     let [content, setContent] = useState("");
-    let [inputField, setInputField] = useState();
     let [textArea, setTextArea] = useState();
+    let enterPress = useKeyPress("Enter");
 
     const createPostMutation = useMutation(POST_MUTATION);
     const setUserNameMutation = useMutation(SET_USER_NAME_MUTATION);
 
+    useEffect(() => {
+        if (enterPress && userName !== name) {
+            setUserNameMutation({
+                variables: {
+                    userId: userId,
+                    name: name
+                }
+            });
+        }
+    }, [userId, userName, name, enterPress, setUserNameMutation]);
+
     return (
         <div className="flex flex-wrap">
-            {name}
             <div className="w-full mb-2">
                 <input
-                    ref={node => setInputField(node)}
                     className="w-2/3 py-2 px-2 float-right text-right text-gray-900 border-transparent bg-gray-100 outline-none rounded-lg focus:bg-gray-300"
-                    onChange={e => {
-                        setUserNameMutation({
-                            variables: {
-                                userId: userId,
-                                name: e.target.value
-                            }
-                        });
-                        setName(e.target.value);
-                    }}
+                    onChange={e => setName(e.target.value)}
                     value={name}
                 />
             </div>
