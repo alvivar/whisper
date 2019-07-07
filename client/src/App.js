@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useMutation } from "react-apollo-hooks";
+import { useQuery, useMutation } from "react-apollo-hooks";
 import gql from "graphql-tag";
 import { useCookies } from "react-cookie";
 
@@ -16,9 +16,25 @@ const CREATE_USER_MUTATION = gql`
     }
 `;
 
+const POSTS_QUERY = gql`
+    query {
+        allowedPosts {
+            id
+            content
+            author {
+                id
+                name
+            }
+            created
+        }
+    }
+`;
+
 function App() {
     const cookieName = "user";
     const [cookies, setCookie] = useCookies([cookieName]);
+
+    const { loading, error, data } = useQuery(POSTS_QUERY);
     const createUserMutation = useMutation(CREATE_USER_MUTATION);
 
     useEffect(() => {
@@ -66,7 +82,7 @@ function App() {
                 userName={cookies.user ? cookies.user.name : ""}
             />
             <div className="container mx-auto">
-                <PostsList />
+                <PostsList loading={loading} error={error} data={data} />
             </div>
         </div>
     );
