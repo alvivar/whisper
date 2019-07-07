@@ -45,7 +45,7 @@ function App() {
 
     const [user, setUser] = useState({ id: -1, name: "", sessionHash: "" });
 
-    const { loading, error, data } = useQuery(POSTS_QUERY);
+    const { data, error, loading } = useQuery(POSTS_QUERY);
 
     const { userLoading, userError, userData } = useQuery(USER_QUERY, {
         variables: { sessionHash: user.sessionHash }
