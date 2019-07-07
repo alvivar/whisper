@@ -309,7 +309,7 @@ export interface PostCreateInput {
   id?: Maybe<ID_Input>;
   author?: Maybe<UserCreateOneWithoutWrittenPostsInput>;
   likedBy?: Maybe<UserCreateManyWithoutLikedPostsInput>;
-  content?: Maybe<String>;
+  content: String;
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
   expired?: Maybe<Boolean>;
@@ -338,7 +338,7 @@ export interface PostCreateManyWithoutLikedByInput {
 export interface PostCreateWithoutLikedByInput {
   id?: Maybe<ID_Input>;
   author?: Maybe<UserCreateOneWithoutWrittenPostsInput>;
-  content?: Maybe<String>;
+  content: String;
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
   expired?: Maybe<Boolean>;
@@ -367,7 +367,7 @@ export interface PostCreateManyWithoutAuthorInput {
 export interface PostCreateWithoutAuthorInput {
   id?: Maybe<ID_Input>;
   likedBy?: Maybe<UserCreateManyWithoutLikedPostsInput>;
-  content?: Maybe<String>;
+  content: String;
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
   expired?: Maybe<Boolean>;
@@ -722,7 +722,7 @@ export interface NodeNode {
 
 export interface Post {
   id: ID_Output;
-  content?: String;
+  content: String;
   score?: Int;
   published: Boolean;
   expired: Boolean;
@@ -1054,7 +1054,7 @@ export interface PostSubscriptionPayloadSubscription
 
 export interface PostPreviousValues {
   id: ID_Output;
-  content?: String;
+  content: String;
   score?: Int;
   published: Boolean;
   expired: Boolean;

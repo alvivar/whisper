@@ -1,0 +1,30 @@
+mutation {
+  createUser(name: "test", sessionHash: "whatave") {
+    id
+    name
+  }
+}
+
+mutation {
+  createDraft(content: "Classic content", userId: "cjw7b3mmd004407271ba3o6p1") {
+    id
+  }
+}
+
+mutation {
+  createDraft(
+    content: "Something useful"
+    userId: "cjw7b3mmd004407271ba3o6p1"
+  ) {
+    id
+  }
+}
+
+mutation {
+  dislike(
+    postId: "cjw63p1p600ac0771obugp6jy"
+    userId: "cjw7b3mmd004407271ba3o6p1"
+  ) {
+    id
+  }
+}
