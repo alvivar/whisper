@@ -8,11 +8,11 @@ const useKeyPress = targetKey => {
     const [keyPressed, setKeyPressed] = useState(false);
 
     // If pressed key is our target key then set to true
-    function downHandler({ key }) {
+    const downHandler = ({ key }) => {
         if (key === targetKey) {
             setKeyPressed(true);
         }
-    }
+    };
 
     // If released key is our target key then set to false
     const upHandler = ({ key }) => {
@@ -25,15 +25,13 @@ const useKeyPress = targetKey => {
     useEffect(() => {
         window.addEventListener("keydown", downHandler);
         window.addEventListener("keyup", upHandler);
+
         // Remove event listeners on cleanup
         return () => {
             window.removeEventListener("keydown", downHandler);
             window.removeEventListener("keyup", upHandler);
         };
-    });
-
-    // ^ This was changed to avoid a linter error:
-    // , [] Empty array ensures that effect is only run on mount and unmount
+    }, []); // Empty array ensures that effect is only run on mount and unmount
 
     return keyPressed;
 };

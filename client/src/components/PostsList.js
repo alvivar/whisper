@@ -16,15 +16,15 @@ const POSTS_QUERY = gql`
     }
 `;
 
-function fetchingMessage() {
+const fetchingMessage = () => {
     return (
         <div className="p-4 text-center text-lg text-gray-700 italic rounded-lg">
             Loading...
         </div>
     );
-}
+};
 
-function errorMessage() {
+const errorMessage = () => {
     return (
         <div className="p-4 bg-blue-100 text-center text-lg text-gray-700 italic rounded-lg">
             <p>Something wrong just happen!</p>
@@ -32,9 +32,9 @@ function errorMessage() {
             <p>Enjoy your life in the meantime!</p>
         </div>
     );
-}
+};
 
-function timeDifference(current, previous) {
+const timeDifference = (current, previous) => {
     var msPerMinute = 60 * 1000;
     var msPerHour = msPerMinute * 60;
     var msPerDay = msPerHour * 24;
@@ -56,9 +56,9 @@ function timeDifference(current, previous) {
     } else {
         return Math.round(elapsed / msPerYear) + " years ago";
     }
-}
+};
 
-function PostsList() {
+const PostsList = () => {
     const { loading, error, data } = useQuery(POSTS_QUERY);
 
     if (loading) return fetchingMessage();
@@ -85,6 +85,6 @@ function PostsList() {
             ))}
         </div>
     );
-}
+};
 
 export default PostsList;
