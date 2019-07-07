@@ -60,6 +60,7 @@ function timeDifference(current, previous) {
 
 function PostsList() {
     const { loading, error, data } = useQuery(POSTS_QUERY);
+
     if (loading) return fetchingMessage();
     if (error) return errorMessage();
 
