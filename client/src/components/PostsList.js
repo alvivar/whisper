@@ -42,11 +42,14 @@ const timeDifference = (current, previous) => {
     }
 };
 
-const PostsList = ({ loading, error, data }) => {
+const PostsList = props => {
+    console.log(props);
+    let { loading, error, data } = props;
+
     if (loading) return fetchingMessage();
     if (error) return errorMessage();
 
-    const postsToRender = data.allowedPosts;
+    const postsToRender = data ? data.allowedPosts : [];
 
     return (
         <div className="">
