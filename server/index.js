@@ -3,14 +3,27 @@ const { GraphQLServer } = require("graphql-yoga");
 const moment = require("moment");
 
 const resolvers = {
-  Query: {
-    allowedPosts(root, args, context) {
-      return context.prisma.posts({
-        where: { expired: false },
-        orderBy: "created_DESC"
-      });
+    Query: {
+        allowedPosts(root, args, context) {
+            return context.prisma.posts({
+                where: { expired: false },
+                orderBy: "created_DESC"
+            });
+        },
+        publishedPosts(root, args, context) {
+            return context.prisma.posts({ where: { published: true } });
+        },
+        post(root, args, context) {
+            return context.prisma.post({ id: args.postId });
+        },
+        postsByUser(root, args, context) {
+            return context.prisma
+                .user({
+                    id: args.userId
+                })
+                .post();
+        }
     },
-<<<<<<< HEAD
     Mutation: {
         createUser(root, args, context) {
             return context.prisma.createUser({
@@ -57,131 +70,77 @@ const resolvers = {
                         .format()
                 }
             });
-=======
-    publishedPosts(root, args, context) {
-      return context.prisma.posts({ where: { published: true } });
-    },
-    post(root, args, context) {
-      return context.prisma.post({ id: args.postId });
-    },
-    postsByUser(root, args, context) {
-      return context.prisma
-        .user({
-          id: args.userId
-        })
-        .post();
-    }
-  },
-  Mutation: {
-    createUser(root, args, context) {
-      return context.prisma.createUser({
-        name: args.name,
-        sessionHash: args.sessionHash
-      });
-    },
-    createDraft(root, args, context) {
-      return context.prisma.createPost({
-        content: args.content,
-        author: {
-          connect: { id: args.userId }
->>>>>>> ef0daad01f3cea6f30559f9591b160d88d2f019e
         },
-        expiration: moment()
-          .add("1", "hour")
-          .format()
-      });
-    },
-    publish(root, args, context) {
-      return context.prisma.updatePost({
-        where: { id: args.postId },
-        data: {
-          published: true
+        dislike(root, args, context) {
+            return context.prisma.updatePost({
+                where: { id: args.postId },
+                data: {
+                    likedBy: {
+                        disconnect: { id: args.userId }
+                    },
+                    expiration: moment()
+                        .subtract("10", "minutes")
+                        .format()
+                }
+            });
         }
-      });
     },
-    like(root, args, context) {
-      return context.prisma.updatePost({
-        where: { id: args.postId },
-        data: {
-          likedBy: {
-            connect: { id: args.userId }
-          },
-          expiration: moment()
-            .add("1", "hour")
-            .format()
-        }
-      });
-    },
-    dislike(root, args, context) {
-      return context.prisma.updatePost({
-        where: { id: args.postId },
-        data: {
-          likedBy: {
-            disconnect: { id: args.userId }
-          },
-          expiration: moment()
-            .subtract("1", "hour")
-            .format()
-        }
-      });
-    }
-  },
-  Subscription: {
-    posts: {
-      subscribe: async (root, args, context) => {
-        return context.prisma.$subscribe
-          .post({
-            where: {
-              mutation_in: ["CREATED", "UPDATED"]
+    Subscription: {
+        posts: {
+            subscribe: async (root, args, context) => {
+                return context.prisma.$subscribe
+                    .post({
+                        where: {
+                            mutation_in: ["CREATED", "UPDATED"]
+                        }
+                    })
+                    .node();
+            },
+            resolve: payload => {
+                return payload;
             }
-          })
-          .node();
-      },
-      resolve: payload => {
-        return payload;
-      }
-    }
-  },
-  User: {
-    writtenPosts(root, args, context) {
-      return context.prisma
-        .user({
-          id: root.id
-        })
-        .writtenPosts();
+        }
     },
-    likedPosts(root, args, context) {
-      return context.prisma
-        .user({
-          id: root.id
-        })
-        .likedPosts();
-    }
-  },
-  Post: {
-    author(root, args, context) {
-      return context.prisma
-        .post({
-          id: root.id
-        })
-        .author();
+    User: {
+        writtenPosts(root, args, context) {
+            return context.prisma
+                .user({
+                    id: root.id
+                })
+                .writtenPosts();
+        },
+        likedPosts(root, args, context) {
+            return context.prisma
+                .user({
+                    id: root.id
+                })
+                .likedPosts();
+        }
     },
-    likedBy(root, args, context) {
-      return context.prisma
-        .post({
-          id: root.id
-        })
-        .likedBy();
+    Post: {
+        author(root, args, context) {
+            return context.prisma
+                .post({
+                    id: root.id
+                })
+                .author();
+        },
+        likedBy(root, args, context) {
+            return context.prisma
+                .post({
+                    id: root.id
+                })
+                .likedBy();
+        }
     }
-  }
 };
 
 const server = new GraphQLServer({
-  typeDefs: "./models/schema.graphql",
-  resolvers,
-  context: {
-    prisma
-  }
+    typeDefs: "./models/schema.graphql",
+    resolvers,
+    context: {
+        prisma
+    }
 });
 
 server.start(() => console.log("Server is running on http://127.0.0.1:4000"));
