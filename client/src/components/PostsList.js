@@ -1,20 +1,4 @@
 import React from "react";
-import gql from "graphql-tag";
-import { useQuery } from "react-apollo-hooks";
-
-const POSTS_QUERY = gql`
-    query {
-        allowedPosts {
-            id
-            content
-            author {
-                id
-                name
-            }
-            created
-        }
-    }
-`;
 
 const fetchingMessage = () => {
     return (
@@ -58,9 +42,7 @@ const timeDifference = (current, previous) => {
     }
 };
 
-const PostsList = () => {
-    const { loading, error, data } = useQuery(POSTS_QUERY);
-
+const PostsList = ({ loading, error, data }) => {
     if (loading) return fetchingMessage();
     if (error) return errorMessage();
 
