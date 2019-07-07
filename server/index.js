@@ -4,6 +4,9 @@ const moment = require("moment");
 
 const resolvers = {
     Query: {
+        user(root, args, context) {
+            return context.prisma.user({ sessionHash: args.sessionHash });
+        },
         allowedPosts(root, args, context) {
             return context.prisma.posts({
                 where: { expired: false },

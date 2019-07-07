@@ -303,6 +303,7 @@ export interface UserWhereInput {
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   name?: Maybe<String>;
+  sessionHash?: Maybe<String>;
 }>;
 
 export interface PostCreateInput {

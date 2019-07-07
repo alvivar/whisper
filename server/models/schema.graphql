@@ -1,6 +1,7 @@
 scalar DateTime
 
 type Query {
+    user(sessionHash: String!): User
     allowedPosts: [Post!]!
     publishedPosts: [Post!]!
     post(postId: ID!): Post
@@ -9,7 +10,7 @@ type Query {
 
 type Mutation {
     createUser(name: String!, sessionHash: String!): User
-    setUserName(userId: ID!, name: String!): User!
+    setUserName(userId: ID!, name: String!): User
     createDraft(content: String!, userId: ID!): Post
     publish(postId: ID!): Post
     like(postId: ID!, userId: ID!): Post
