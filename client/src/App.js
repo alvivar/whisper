@@ -44,12 +44,12 @@ function App() {
     const [cookies, setCookie, removeCookie] = useCookies([cookieName]);
 
     const [user, setUser] = useState({
-        id: -1,
+        id: "",
         name: "",
         sessionHash: ""
     });
 
-    let [sessionHash, setSessionHash] = useState("");
+    const [sessionHash, setSessionHash] = useState("");
 
     const { loading: userLoading, error: userError, data: userData } = useQuery(
         USER_QUERY,
@@ -63,90 +63,67 @@ function App() {
     const {
         loading: postsLoading,
         error: postsError,
-        data: postsData
+        data: postsData,
+        refetch: postsRefetch
     } = useQuery(POSTS_QUERY);
 
     const createUserMutation = useMutation(CREATE_USER_MUTATION);
 
     useEffect(() => {
-        if (user.id < 0) {
-            // Look in the cookie for the session hash
-            if (cookies.whisperUser) {
-                const validateUserCookie = async () => {
-                    console.log("Cookie found!");
-                    console.log(cookies.whisperUser);
+        if (!user.id) {
+            const createUserSession = async () => {
+                console.log("Creating a new user...");
 
-                    await setSessionHash(cookies.whisperUser.sessionHash);
-
-                    if (userData && userData.hasOwnProperty("user")) {
-                        if (userData.user) {
-                            console.log("User from cookie session exists!");
-                            console.log(userData.user);
-
-                            await setUser({
-                                id: userData.user.id,
-                                name: userData.user.name,
-                                sessionHash: sessionHash
-                            });
-                        } else {
-                            // Lost cookie
-                            console.log("Removing cookie because deprecated");
-                            removeCookie(cookieName, { path: "/" });
-                        }
-                    }
-                };
-
-                validateUserCookie();
-            }
-            // Create a new user and save the cookie info
-            else {
-                const createUserSession = async () => {
-                    console.log("Creating a new user:");
-
-                    const name =
-                        "anon" +
-                        require("crypto")
-                            .randomBytes(10)
-                            .toString("hex");
-
-                    const sessionHash = require("crypto")
-                        .randomBytes(20)
+                const name =
+                    "anon" +
+                    require("crypto")
+                        .randomBytes(10)
                         .toString("hex");
 
-                    const result = await createUserMutation({
-                        variables: {
-                            name: name,
-                            sessionHash: sessionHash
-                        }
-                    });
+                const sessionHash = require("crypto")
+                    .randomBytes(20)
+                    .toString("hex");
 
-                    await setUser({
-                        id: result.data.createUser.id,
-                        name: result.data.createUser.name,
-                        sessionHash: result.data.createUser.sessionHash
-                    });
+                const result = await createUserMutation({
+                    variables: {
+                        name: name,
+                        sessionHash: sessionHash
+                    }
+                });
 
-                    console.log("User id:");
-                    console.log(user.id);
+                await setUser({
+                    id: result.data.createUser.id,
+                    name: result.data.createUser.name,
+                    sessionHash: result.data.createUser.sessionHash
+                });
+            };
 
-                    await setCookie(
-                        cookieName,
-                        {
-                            sessionHash: result.data.createUser.sessionHash
-                        },
-                        { path: "/" }
-                    );
-                };
-
-                createUserSession();
-            }
+            createUserSession();
         }
-    }, [user.id, cookies.whisperUser, createUserMutation, setCookie]);
+    }, []);
+
+    useEffect(() => {
+        if (user.id) {
+            console.log("Setting the cookie...");
+
+            setCookie(
+                cookieName,
+                {
+                    sessionHash: user.sessionHash
+                },
+                { path: "/" }
+            );
+        }
+    }, [user.id]);
 
     return (
         <div className="container mx-auto max-w-xl">
             <div className="h-2" />
-            <CreatePost userId={user.id} userName={user.name} />
+            <CreatePost
+                userId={user.id}
+                userName={user.name}
+                postsRefetch={postsRefetch}
+            />
             <div className="container mx-auto">
                 <PostsList
                     loading={postsLoading}
