@@ -1,10 +1,11 @@
 
+
+
     client Cookie to track browser
     client Validate empty message
 
     client The post should dissapear after a while
     client The post dissapearing should fade
-
 
     cloud Deploy to AWS
 
