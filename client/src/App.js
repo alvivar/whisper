@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useQuery, useMutation } from "react-apollo-hooks";
 import gql from "graphql-tag";
+import { useQuery, useMutation } from "react-apollo-hooks";
 import { useCookies } from "react-cookie";
 
 import PostsList from "./components/PostsList";
@@ -74,7 +74,7 @@ function App() {
                 console.log("Creating a new user...");
 
                 const name =
-                    "anon" +
+                    "anon@" +
                     require("crypto")
                         .randomBytes(10)
                         .toString("hex");
