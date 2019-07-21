@@ -62,7 +62,16 @@ const PostsList = ({ loading, error, data }) => {
                             new Date(i.created).getTime()
                         )}
                     </div>
-                    <div className="text-lg">{i.content}</div>
+                    <div className="text-xl">
+                        {i.content.split("\n").map((item, key) => {
+                            return (
+                                <span key={key}>
+                                    {item}
+                                    <br />
+                                </span>
+                            );
+                        })}
+                    </div>
                 </div>
             ))}
         </div>
