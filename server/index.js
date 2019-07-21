@@ -2,6 +2,25 @@ const { prisma } = require("./generated/prisma-client");
 const { GraphQLServer } = require("graphql-yoga");
 const moment = require("moment");
 
+const { RedisPubSub } = require("graphql-redis-subscriptions");
+var Redis = require("ioredis");
+const pubsubOptions = {
+    host: "192.168.99.100",
+    port: "6379",
+    retryStrategy: times => {
+        // reconnect after
+        return Math.min(times * 50, 2000);
+    }
+};
+
+const pubsub = new RedisPubSub({
+    publisher: new Redis(pubsubOptions),
+    subscriber: new Redis(pubsubOptions)
+});
+const PUBSUB_NEWPOST = "newPost";
+
+// console.log(process.env.REACT_APP_WATA);
+
 const resolvers = {
     Query: {
         user(root, args, context) {
@@ -42,8 +61,8 @@ const resolvers = {
                 }
             });
         },
-        createDraft(root, args, context) {
-            return context.prisma.createPost({
+        async createDraft(root, args, context) {
+            const post = await context.prisma.createPost({
                 content: args.content,
                 author: {
                     connect: { id: args.userId }
@@ -52,6 +71,12 @@ const resolvers = {
                     .add("1", "hour")
                     .format()
             });
+
+            pubsub.publish(`${PUBSUB_NEWPOST}`, {
+                newPost: post
+            });
+
+            return post;
         },
         publish(root, args, context) {
             return context.prisma.updatePost({
@@ -89,18 +114,9 @@ const resolvers = {
         }
     },
     Subscription: {
-        posts: {
+        newPost: {
             subscribe: async (root, args, context) => {
-                return context.prisma.$subscribe
-                    .post({
-                        where: {
-                            mutation_in: ["CREATED", "UPDATED"]
-                        }
-                    })
-                    .node();
-            },
-            resolve: payload => {
-                return payload;
+                return pubsub.asyncIterator(`${PUBSUB_NEWPOST}`);
             }
         }
     },
@@ -141,9 +157,7 @@ const resolvers = {
 const server = new GraphQLServer({
     typeDefs: "./models/schema.graphql",
     resolvers,
-    context: {
-        prisma
-    }
+    context: { prisma }
 });
 
 server.start(() => console.log("Server is running on http://127.0.0.1:4000"));

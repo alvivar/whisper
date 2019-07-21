@@ -18,7 +18,7 @@ type Mutation {
 }
 
 type Subscription {
-    posts: Post
+    newPost: Post
 }
 
 type User {

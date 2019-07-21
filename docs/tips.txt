@@ -2,4 +2,8 @@
     Useful stuff
 
 
+    Redis bad host format, should be without http://
+    https://stackoverflow.com/questions/17690803/node-js-getaddrinfo-enotfound
+
+
     https://itnext.io/how-to-use-tailwind-css-with-react-16e9d478b8b1
