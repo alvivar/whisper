@@ -103,7 +103,7 @@ function App() {
 
     useEffect(() => {
         if (user.id) {
-            console.log("Setting the cookie...");
+            console.log("sessionHash saved in the cookie...");
 
             setCookie(
                 cookieName,
