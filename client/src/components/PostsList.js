@@ -19,27 +19,38 @@ const errorMessage = () => {
 };
 
 const timeDifference = (current, previous) => {
-    var msPerMinute = 60 * 1000;
-    var msPerHour = msPerMinute * 60;
-    var msPerDay = msPerHour * 24;
-    var msPerMonth = msPerDay * 30;
-    var msPerYear = msPerDay * 365;
+    const msPerMinute = 60 * 1000;
+    const msPerHour = msPerMinute * 60;
+    const msPerDay = msPerHour * 24;
+    const msPerMonth = msPerDay * 30;
+    const msPerYear = msPerDay * 365;
 
-    var elapsed = current - previous;
+    const elapsed = current - previous;
+
+    let result = 0;
+    let tag = "";
 
     if (elapsed < msPerMinute) {
-        return Math.round(elapsed / 1000) + " seconds ago";
+        result = Math.round(elapsed / 1000);
+        tag = "seconds ago";
     } else if (elapsed < msPerHour) {
-        return Math.round(elapsed / msPerMinute) + " minutes ago";
+        result = Math.round(elapsed / msPerMinute);
+        tag = "minutes ago";
     } else if (elapsed < msPerDay) {
-        return Math.round(elapsed / msPerHour) + " hours ago";
+        result = Math.round(elapsed / msPerHour);
+        tag = "hours ago";
     } else if (elapsed < msPerMonth) {
-        return Math.round(elapsed / msPerDay) + " days ago";
+        result = Math.round(elapsed / msPerDay);
+        tag = "days ago";
     } else if (elapsed < msPerYear) {
-        return Math.round(elapsed / msPerMonth) + " months ago";
+        result = Math.round(elapsed / msPerMonth);
+        tag = "months ago";
     } else {
-        return Math.round(elapsed / msPerYear) + " years ago";
+        result = Math.round(elapsed / msPerYear);
+        tag = "years ago";
     }
+
+    return `${result < 0 ? 0 : result} ${tag}`;
 };
 
 const PostsList = ({ loading, error, data }) => {
@@ -57,13 +68,10 @@ const PostsList = ({ loading, error, data }) => {
                 >
                     <div className="text-xs text-gray-600">
                         {i.author.name}{" "}
-                        {(i =
-                            timeDifference(
-                                new Date().getTime(),
-                                new Date(i.created).getTime()
-                            ) > 0)
-                            ? i
-                            : 0}
+                        {timeDifference(
+                            new Date().getTime(),
+                            new Date(i.created).getTime()
+                        )}
                     </div>
                     <div className="text-xl">
                         {i.content.split("\n").map((item, key) => {
