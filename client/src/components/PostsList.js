@@ -57,10 +57,13 @@ const PostsList = ({ loading, error, data }) => {
                 >
                     <div className="text-xs text-gray-600">
                         {i.author.name}{" "}
-                        {timeDifference(
-                            new Date().getTime(),
-                            new Date(i.created).getTime()
-                        )}
+                        {(i =
+                            timeDifference(
+                                new Date().getTime(),
+                                new Date(i.created).getTime()
+                            ) > 0)
+                            ? i
+                            : 0}
                     </div>
                     <div className="text-xl">
                         {i.content.split("\n").map((item, key) => {
