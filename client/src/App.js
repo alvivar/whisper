@@ -107,9 +107,7 @@ function App() {
 
             setCookie(
                 cookieName,
-                {
-                    sessionHash: user.sessionHash
-                },
+                { sessionHash: user.sessionHash },
                 { path: "/" }
             );
         }
