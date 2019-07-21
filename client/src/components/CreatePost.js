@@ -21,10 +21,10 @@ const SET_USER_NAME_MUTATION = gql`
 `;
 
 const CreatePost = ({ userId, userName, postsRefetch }) => {
-    let [name, setName] = useState(userName);
-    let [content, setContent] = useState("");
-    let [textArea, setTextArea] = useState();
-    let enterPress = useKeyPress("Enter");
+    const [name, setName] = useState(userName);
+    const [content, setContent] = useState("");
+    const [textArea, setTextArea] = useState();
+    const enterPress = useKeyPress("Enter");
 
     const createPostMutation = useMutation(POST_MUTATION);
     const setUserNameMutation = useMutation(SET_USER_NAME_MUTATION);
@@ -49,7 +49,7 @@ const CreatePost = ({ userId, userName, postsRefetch }) => {
         <div className="flex flex-wrap">
             <div className="w-full mb-2">
                 <input
-                    className="w-2/3 py-2 px-2 float-right text-right text-gray-900 border-transparent bg-gray-100 outline-none rounded-lg focus:bg-gray-300"
+                    className="w-2/3 py-2 px-2 float-right text-right text-gray-900 bg-gray-100 border-transparent outline-none rounded-lg focus:bg-gray-300"
                     onChange={e => setName(e.target.value)}
                     value={name}
                 />
