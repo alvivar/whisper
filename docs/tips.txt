@@ -2,6 +2,14 @@
     Useful stuff
 
 
+    I learned how to setup the websocket part of the RedisPubSub subscription here
+    https://medium.com/@VladimirNovick/graphql-with-react-hooks-e1ee3862c057
+
+
+    Awesome trick, React Newline to break (nl2br)
+    https://medium.com/@kevinsimper/react-newline-to-break-nl2br-a1c240ba746
+
+
     Redis bad host format, should be without http://
     https://stackoverflow.com/questions/17690803/node-js-getaddrinfo-enotfound
 

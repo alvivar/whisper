@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import gql from "graphql-tag";
-import { useQuery, useMutation } from "react-apollo-hooks";
+import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
 import { useCookies } from "react-cookie";
 
 import PostsList from "./components/PostsList";
@@ -39,6 +39,15 @@ const POSTS_QUERY = gql`
     }
 `;
 
+const NEWPOST = gql`
+    subscription {
+        newPost {
+            id
+            content
+        }
+    }
+`;
+
 function App() {
     const cookieName = "whisperUser";
     const [cookies, setCookie, removeCookie] = useCookies([cookieName]);
@@ -49,16 +58,6 @@ function App() {
         sessionHash: ""
     });
 
-    // const [sessionHash, setSessionHash] = useState("");
-    // const { loading: userLoading, error: userError, data: userData } = useQuery(
-    //     USER_QUERY,
-    //     {
-    //         variables: {
-    //             sessionHash: sessionHash
-    //         }
-    //     }
-    // );
-
     const {
         loading: postsLoading,
         error: postsError,
@@ -67,6 +66,18 @@ function App() {
     } = useQuery(POSTS_QUERY);
 
     const createUserMutation = useMutation(CREATE_USER_MUTATION);
+
+    const {
+        loading: newPostLoading,
+        error: newPostError,
+        data: newPostData
+    } = useSubscription(NEWPOST, {
+        onSubscriptionData: ({ client, subscriptionData }) => {
+            console.log(client);
+            console.log(subscriptionData);
+            postsRefetch();
+        }
+    });
 
     useEffect(() => {
         if (!user.id) {
