@@ -89,14 +89,22 @@ const CreatePost = ({ userId, userName, postsRefetch }) => {
                 onChange={e => setContent(e.target.value)}
                 value={content}
             />
-            <div className="w-full">
+            <div>
                 <button
                     onClick={e => {
                         if (userId) createPost(userId, content);
                     }}
                     className="my-2 h-12 mx-4 py-2 px-4 float-right text-gray-600 outline-none hover:bg-black hover:text-white bg-transparent border-transparent rounded-lg"
                 >
-                    ( whisper )
+                    Whisper
+                </button>
+            </div>
+            <div>
+                <button
+                    onClick={e => postsRefetch()}
+                    className="my-2 h-12 mx-4 py-2 px-4 float-right text-gray-600 outline-none hover:bg-black hover:text-white bg-transparent border-transparent rounded-lg"
+                >
+                    New
                 </button>
             </div>
         </div>
