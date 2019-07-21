@@ -3,7 +3,7 @@ const { GraphQLServer } = require("graphql-yoga");
 const moment = require("moment");
 
 const { RedisPubSub } = require("graphql-redis-subscriptions");
-var Redis = require("ioredis");
+const Redis = require("ioredis");
 const pubsubOptions = {
     host: "192.168.99.100",
     port: "6379",
