@@ -1,8 +1,5 @@
 
-    Ctrl + Enter to publish
-    Changing the name should auto save after 1 second of writing
-    Changing the name saved feedback
-
+    client Changing the name saved feedback
     client Validate empty message
 
     client The post should dissapear after a while
@@ -11,6 +8,8 @@
     cloud Deploy to AWS
 
     2019/07/20 08:54 pm
+    x client Ctrl + Enter to publish
+    x client Changing the name should auto save after 1 second of writing
     x client Cookie to track browser
 
     2019/06/02 03:06 pm
