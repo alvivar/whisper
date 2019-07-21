@@ -42,10 +42,7 @@ const timeDifference = (current, previous) => {
     }
 };
 
-const PostsList = props => {
-    console.log(props);
-    let { loading, error, data } = props;
-
+const PostsList = ({ loading, error, data }) => {
     if (loading) return fetchingMessage();
     if (error) return errorMessage();
 
