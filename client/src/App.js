@@ -41,28 +41,68 @@ const POSTS_QUERY = gql`
 
 function App() {
     const cookieName = "whisperUser";
-    const [cookies, setCookie] = useCookies([cookieName]);
+    const [cookies, setCookie, removeCookie] = useCookies([cookieName]);
 
-    const [user, setUser] = useState({ id: -1, name: "", sessionHash: "" });
-
-    const { data, error, loading } = useQuery(POSTS_QUERY);
-
-    const { userLoading, userError, userData } = useQuery(USER_QUERY, {
-        variables: { sessionHash: user.sessionHash }
+    const [user, setUser] = useState({
+        id: -1,
+        name: "",
+        sessionHash: ""
     });
+
+    let [sessionHash, setSessionHash] = useState("");
+
+    const { loading: userLoading, error: userError, data: userData } = useQuery(
+        USER_QUERY,
+        {
+            variables: {
+                sessionHash: sessionHash
+            }
+        }
+    );
+
+    const {
+        loading: postsLoading,
+        error: postsError,
+        data: postsData
+    } = useQuery(POSTS_QUERY);
 
     const createUserMutation = useMutation(CREATE_USER_MUTATION);
 
     useEffect(() => {
         if (user.id < 0) {
-            // Look in the cookie for session hash
+            // Look in the cookie for the session hash
             if (cookies.whisperUser) {
-                console.log(cookies.whisperUser);
-                setUser(cookies.whisperUser);
+                const validateUserCookie = async () => {
+                    console.log("Cookie found!");
+                    console.log(cookies.whisperUser);
+
+                    await setSessionHash(cookies.whisperUser.sessionHash);
+
+                    if (userData && userData.hasOwnProperty("user")) {
+                        if (userData.user) {
+                            console.log("User from cookie session exists!");
+                            console.log(userData.user);
+
+                            await setUser({
+                                id: userData.user.id,
+                                name: userData.user.name,
+                                sessionHash: sessionHash
+                            });
+                        } else {
+                            // Lost cookie
+                            console.log("Removing cookie because deprecated");
+                            removeCookie(cookieName, { path: "/" });
+                        }
+                    }
+                };
+
+                validateUserCookie();
             }
             // Create a new user and save the cookie info
             else {
                 const createUserSession = async () => {
+                    console.log("Creating a new user:");
+
                     const name =
                         "anon" +
                         require("crypto")
@@ -80,26 +120,26 @@ function App() {
                         }
                     });
 
-                    await setCookie(
-                        cookieName,
-                        {
-                            id: result.data.createUser.id,
-                            name: result.data.createUser.name,
-                            sessionHash: result.data.createUser.sessionHash
-                        },
-                        { path: "/" }
-                    );
-
                     await setUser({
                         id: result.data.createUser.id,
                         name: result.data.createUser.name,
                         sessionHash: result.data.createUser.sessionHash
                     });
+
+                    console.log("User id:");
+                    console.log(user.id);
+
+                    await setCookie(
+                        cookieName,
+                        {
+                            sessionHash: result.data.createUser.sessionHash
+                        },
+                        { path: "/" }
+                    );
                 };
 
                 createUserSession();
             }
-        } else {
         }
     }, [user.id, cookies.whisperUser, createUserMutation, setCookie]);
 
@@ -108,7 +148,11 @@ function App() {
             <div className="h-2" />
             <CreatePost userId={user.id} userName={user.name} />
             <div className="container mx-auto">
-                <PostsList loading={loading} error={error} data={data} />
+                <PostsList
+                    loading={postsLoading}
+                    error={postsError}
+                    data={postsData}
+                />
             </div>
         </div>
     );
