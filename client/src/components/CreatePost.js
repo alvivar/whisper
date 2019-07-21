@@ -38,7 +38,7 @@ const CreatePost = ({ userId, userName, postsRefetch }) => {
     const createPost = async (userId, content) => {
         await createPostMutation({
             variables: {
-                content: content,
+                content: content.trim(),
                 userId: userId
             }
         });
