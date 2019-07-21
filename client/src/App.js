@@ -58,6 +58,17 @@ function App() {
         sessionHash: ""
     });
 
+    // const {
+    //     loading: userLoading,
+    //     error: userError,
+    //     data: userData,
+    //     refetch: postsRefetch
+    // } = useQuery(USER_QUERY, {
+    //     variables: {
+    //         sessionHash: ""
+    //     }
+    // });
+
     const {
         loading: postsLoading,
         error: postsError,
@@ -67,11 +78,7 @@ function App() {
 
     const createUserMutation = useMutation(CREATE_USER_MUTATION);
 
-    const {
-        loading: newPostLoading,
-        error: newPostError,
-        data: newPostData
-    } = useSubscription(NEWPOST, {
+    useSubscription(NEWPOST, {
         onSubscriptionData: ({ client, subscriptionData }) => {
             console.log(client);
             console.log(subscriptionData);
