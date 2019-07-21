@@ -7,10 +7,7 @@ const Redis = require("ioredis");
 const pubsubOptions = {
     host: "192.168.99.100",
     port: "6379",
-    retryStrategy: times => {
-        // reconnect after
-        return Math.min(times * 50, 2000);
-    }
+    retryStrategy: times => Math.min(times * 50, 2000)
 };
 
 const pubsub = new RedisPubSub({
