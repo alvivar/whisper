@@ -20,7 +20,7 @@ const SET_USER_NAME_MUTATION = gql`
     }
 `;
 
-const CreatePost = ({ userId, userName }) => {
+const CreatePost = ({ userId, userName, postsRefetch }) => {
     let [name, setName] = useState(userName);
     let [content, setContent] = useState("");
     let [textArea, setTextArea] = useState();
@@ -39,6 +39,11 @@ const CreatePost = ({ userId, userName }) => {
             });
         }
     }, [userId, userName, name, enterPress, setUserNameMutation]);
+
+    useEffect(() => {
+        console.log("Trimming name...");
+        if (!name.trim()) setName(userName);
+    }, [userName]);
 
     return (
         <div className="flex flex-wrap">
@@ -59,13 +64,20 @@ const CreatePost = ({ userId, userName }) => {
                 <button
                     onClick={e => {
                         if (userId) {
-                            createPostMutation({
-                                variables: {
-                                    content: content,
-                                    userId: userId
-                                }
-                            });
-                            textArea.value = "";
+                            const updateAfterMutation = async () => {
+                                await createPostMutation({
+                                    variables: {
+                                        content: content,
+                                        userId: userId
+                                    }
+                                });
+
+                                postsRefetch();
+                                setContent("");
+                                textArea.focus();
+                            };
+
+                            updateAfterMutation();
                         }
                     }}
                     className="my-2 h-12 mx-4 py-2 px-4 float-right text-gray-600 outline-none hover:bg-black hover:text-white bg-transparent border-transparent rounded-lg"
