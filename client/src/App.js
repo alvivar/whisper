@@ -49,16 +49,15 @@ function App() {
         sessionHash: ""
     });
 
-    const [sessionHash, setSessionHash] = useState("");
-
-    const { loading: userLoading, error: userError, data: userData } = useQuery(
-        USER_QUERY,
-        {
-            variables: {
-                sessionHash: sessionHash
-            }
-        }
-    );
+    // const [sessionHash, setSessionHash] = useState("");
+    // const { loading: userLoading, error: userError, data: userData } = useQuery(
+    //     USER_QUERY,
+    //     {
+    //         variables: {
+    //             sessionHash: sessionHash
+    //         }
+    //     }
+    // );
 
     const {
         loading: postsLoading,
