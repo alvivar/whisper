@@ -26,6 +26,7 @@ const CreatePost = ({ userId, userName, postsRefetch }) => {
     const createPostMutation = useMutation(POST_MUTATION);
     const setUserNameMutation = useMutation(SET_USER_NAME_MUTATION);
 
+    const [room, setRoom] = useState("universe");
     const [name, setName] = useState(userName);
     const [content, setContent] = useState("");
     const [textArea, setTextArea] = useState();
@@ -45,7 +46,6 @@ const CreatePost = ({ userId, userName, postsRefetch }) => {
 
         setContent("");
         textArea.focus();
-        postsRefetch();
     };
 
     useEffect(() => {
@@ -76,35 +76,26 @@ const CreatePost = ({ userId, userName, postsRefetch }) => {
 
     return (
         <div className="flex flex-wrap">
-            <div className="w-full mb-2">
-                <input
-                    className="w-2/3 py-2 px-2 float-right text-right text-gray-900 bg-gray-100 border-transparent outline-none rounded-lg focus:bg-gray-300"
-                    onChange={e => setName(e.target.value)}
-                    value={name}
-                />
-            </div>
+            <input
+                className="float-right w-full p-1 my-2 text-right text-gray-600 focus:text-gray-800 bg-blue-100 focus:bg-blue-200 border-transparent outline-none rounded-lg"
+                onChange={e => setName(e.target.value)}
+                value={name}
+            />
             <textarea
                 ref={node => setTextArea(node)}
-                className="w-full h-16 py-4 px-4 text-lg text-gray-900 border bg-gray-100 border-gray-100 outline-none rounded-lg focus:bg-gray-300"
+                className="w-full h-32 py-4 px-4 text-lg text-gray-800 border bg-blue-100 focus:bg-blue-200 border-gray-100 outline-none rounded-lg"
                 onChange={e => setContent(e.target.value)}
                 value={content}
             />
-            <div>
+            <div className="w-full">
                 <button
                     onClick={e => {
                         if (userId) createPost(userId, content);
                     }}
-                    className="my-2 h-12 mx-4 py-2 px-4 float-right text-gray-600 outline-none hover:bg-black hover:text-white bg-transparent border-transparent rounded-lg"
+                    className="float-right h-16 my-2 py-2 px-4 text-sm text-gray-500 hover:text-white outline-none bg-blue-100 hover:bg-blue-400 border-transparent rounded-lg"
                 >
-                    Whisper
-                </button>
-            </div>
-            <div>
-                <button
-                    onClick={e => postsRefetch()}
-                    className="my-2 h-12 mx-4 py-2 px-4 float-right text-gray-600 outline-none hover:bg-black hover:text-white bg-transparent border-transparent rounded-lg"
-                >
-                    New
+                    <span className="text-xl">whisper</span>{" "}
+                    <span className="text-xs">ctrl + enter</span>
                 </button>
             </div>
         </div>
