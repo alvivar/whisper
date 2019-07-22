@@ -60,18 +60,20 @@ const PostsList = ({ loading, error, data }) => {
     const postsToRender = data ? data.allowedPosts : [];
 
     return (
-        <div className="">
+        <div>
             {postsToRender.map(i => (
                 <div
                     key={i.id}
-                    className="p-4 mb-2 bg-gray-100 rounded-lg hover:bg-gray-200"
+                    className="p-4 mb-2 bg-blue-100 hover:bg-blue-200 rounded-lg "
                 >
-                    <div className="text-xs text-gray-600">
-                        {i.author.name}{" "}
-                        {timeDifference(
-                            new Date().getTime(),
-                            new Date(i.created).getTime()
-                        )}
+                    <div className="text-xm text-gray-600">
+                        <span>{i.author.name} </span>
+                        <span className="text-xs italic">
+                            {timeDifference(
+                                new Date().getTime(),
+                                new Date(i.created).getTime()
+                            )}
+                        </span>
                     </div>
                     <div className="text-xl">
                         {i.content.split("\n").map((item, key) => {
