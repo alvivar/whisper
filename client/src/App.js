@@ -78,7 +78,11 @@ function App() {
 
     const createUserMutation = useMutation(CREATE_USER_MUTATION);
 
-    useSubscription(NEWPOST, {
+    const {
+        loading: newPostLoading,
+        error: newPostError,
+        data: newPostData
+    } = useSubscription(NEWPOST, {
         onSubscriptionData: ({ client, subscriptionData }) => {
             console.log(client);
             console.log(subscriptionData);
