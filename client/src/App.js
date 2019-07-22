@@ -96,10 +96,11 @@ function App() {
                 console.log("Creating a new user...");
 
                 const name =
-                    "anon@" +
+                    "anon" +
                     require("crypto")
                         .randomBytes(10)
-                        .toString("hex");
+                        .toString("hex") +
+                    "@universe";
 
                 const sessionHash = require("crypto")
                     .randomBytes(20)
@@ -137,7 +138,6 @@ function App() {
 
     return (
         <div className="container mx-auto max-w-xl">
-            <div className="h-2" />
             <CreatePost
                 userId={user.id}
                 userName={user.name}
