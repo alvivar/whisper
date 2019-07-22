@@ -33,7 +33,7 @@ const wsLink = new WebSocketLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-    // return the headers to the context so httpLink can read them
+    // Return the headers to the context so httpLink can read them
     return {
         headers: {
             "X-Hasura-access-key": "HASH"
@@ -42,7 +42,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const link = split(
-    // split based on operation type
+    // Split based on operation type
     ({ query }) => {
         const { kind, operation } = getMainDefinition(query);
         return kind === "OperationDefinition" && operation === "subscription";
