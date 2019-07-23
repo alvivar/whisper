@@ -90,7 +90,7 @@ const CreatePost = ({
             />
             <textarea
                 ref={node => setTextArea(node)}
-                className="w-full h-32 py-4 px-4 text-lg text-gray-800 border bg-blue-100 focus:bg-blue-200 border-gray-100 outline-none rounded-lg"
+                className="w-full h-32 py-4 px-4 text-lg text-gray-800 border bg-blue-100 focus:bg-blue-200 border-transparent outline-none rounded-lg"
                 onChange={e => setContent(e.target.value)}
                 value={content}
             />
