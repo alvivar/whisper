@@ -60,6 +60,16 @@ const CreatePost = ({
     }, [name, userName]);
 
     useEffect(() => {
+        console.log(`Extracting channel from ${name}`);
+        if (name.includes("@")) {
+            const words = name.split("@");
+            setChannel(words[1]);
+        } else {
+            setChannel(name);
+        }
+    }, [name, userName, channel]);
+
+    useEffect(() => {
         console.log("New name detected");
         if (debouncedNewName && debouncedNewName !== userName) {
             console.log("Saving new name");
