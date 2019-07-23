@@ -53,11 +53,11 @@ const timeDifference = (current, previous) => {
     return `${result < 0 ? 0 : result} ${tag}`;
 };
 
-const PostsList = ({ loading, error, data }) => {
+const PostsList = ({ loading, error, data, newPosts }) => {
     if (loading) return fetchingMessage();
     if (error) return errorMessage();
 
-    const postsToRender = data ? data.allowedPosts : [];
+    const postsToRender = [...newPosts, ...(data ? data.allowedPosts : [])];
 
     return (
         <div>

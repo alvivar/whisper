@@ -2,7 +2,7 @@ type User {
     id: ID! @id
     writtenPosts: [Post!]! @relation(name: "WrittenPosts")
     likedPosts: [Post!]! @relation(name: "LikedPosts")
-    name: String @unique
+    name: String! @unique
     sessionHash: String! @unique
     created: DateTime! @createdAt
 }
@@ -11,6 +11,7 @@ type Post {
     id: ID! @id
     author: User @relation(name: "WrittenPosts")
     likedBy: [User!]! @relation(name: "LikedPosts")
+    channel: String!
     content: String!
     score: Int @default(value: 0)
     published: Boolean! @default(value: false)

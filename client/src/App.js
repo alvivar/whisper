@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import gql from "graphql-tag";
 import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
 import { useCookies } from "react-cookie";
+import gql from "graphql-tag";
 
 import PostsList from "./components/PostsList";
 import CreatePost from "./components/CreatePost";
@@ -40,10 +40,15 @@ const POSTS_QUERY = gql`
 `;
 
 const NEWPOST = gql`
-    subscription {
-        newPost {
+    subscription newPost($channel: String!) {
+        newPost(channel: $channel) {
             id
             content
+            author {
+                id
+                name
+            }
+            created
         }
     }
 `;
@@ -51,6 +56,8 @@ const NEWPOST = gql`
 function App() {
     const cookieName = "whisperUser";
     const [cookies, setCookie, removeCookie] = useCookies([cookieName]);
+
+    const [newPosts, setNewPosts] = useState([]);
 
     const [user, setUser] = useState({
         id: "",
@@ -78,22 +85,29 @@ function App() {
 
     const createUserMutation = useMutation(CREATE_USER_MUTATION);
 
+    const [channel, setChannel] = useState("universe");
+
     const {
         loading: newPostLoading,
         error: newPostError,
         data: newPostData
     } = useSubscription(NEWPOST, {
+        variables: {
+            channel
+        },
         onSubscriptionData: ({ client, subscriptionData }) => {
+            console.log("PubSub NEWPOST received");
             console.log(client);
             console.log(subscriptionData);
-            postsRefetch();
+            // postsRefetch();
+            setNewPosts([subscriptionData.data.newPost, ...newPosts]);
         }
     });
 
     useEffect(() => {
         if (!user.id) {
             const createUserSession = async () => {
-                console.log("Creating a new user...");
+                console.log("Creating a new user");
 
                 const name =
                     "anon" +
@@ -126,7 +140,7 @@ function App() {
 
     useEffect(() => {
         if (user.id) {
-            console.log("sessionHash saved in the cookie...");
+            console.log("sessionHash saved in the cookie");
 
             setCookie(
                 cookieName,
@@ -142,12 +156,15 @@ function App() {
                 userId={user.id}
                 userName={user.name}
                 postsRefetch={postsRefetch}
+                channel={channel}
+                setChannel={setChannel}
             />
             <div className="container mx-auto">
                 <PostsList
                     loading={postsLoading}
                     error={postsError}
                     data={postsData}
+                    newPosts={newPosts}
                 />
             </div>
         </div>
