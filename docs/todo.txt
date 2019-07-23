@@ -1,6 +1,5 @@
 
     client Changing the room refetch by room
-    client Debounce setChannel to avoid resocket
 
     client Changing the name saved feedback
     client Validate empty message
@@ -10,9 +9,10 @@
 
     cloud Deploy to AWS
 
+
     2019/07/23 12:08 am
+    x client Debounce setChannel to avoid resocket
     x Better subscriptions using channels
-    x
 
     2019/07/20 08:54 pm
     x client Ctrl + Enter to publish

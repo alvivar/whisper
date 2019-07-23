@@ -33,10 +33,13 @@ const CreatePost = ({
     const setUserNameMutation = useMutation(SET_USER_NAME_MUTATION);
 
     const [name, setName] = useState(userName);
+    const debouncedName = useDebounce(name, 1000);
+
     const [content, setContent] = useState("");
     const [textArea, setTextArea] = useState();
 
-    const debouncedNewName = useDebounce(name, 1000);
+    const [channelB, setChannelB] = useState(channel);
+    const deboundedChannel = useDebounce(channelB, 1000);
 
     const ctrlKeyDown = useKeyPress("Control");
     const enterKeyDown = useKeyPress("Enter");
@@ -60,27 +63,34 @@ const CreatePost = ({
     }, [name, userName]);
 
     useEffect(() => {
-        console.log(`Extracting channel from ${name}`);
-        if (name.includes("@")) {
-            const words = name.split("@");
-            setChannel(words[1]);
-        } else {
-            setChannel(name);
-        }
-    }, [name, userName, channel]);
-
-    useEffect(() => {
-        console.log("New name detected");
-        if (debouncedNewName && debouncedNewName !== userName) {
+        console.log("Name modified");
+        if (debouncedName && debouncedName !== userName) {
             console.log("Saving new name");
             setUserNameMutation({
                 variables: {
                     userId: userId,
-                    name: debouncedNewName
+                    name: debouncedName
                 }
             });
         }
-    }, [debouncedNewName]);
+    }, [debouncedName]);
+
+    useEffect(() => {
+        console.log(`Extracting channel from ${name}`);
+        if (name.includes("@")) {
+            setChannelB(name.split("@")[1]);
+        } else {
+            setChannelB(name);
+        }
+    }, [name]);
+
+    useEffect(() => {
+        console.log("Channel modified");
+        if (deboundedChannel && deboundedChannel !== channel) {
+            console.log("Saving new channel");
+            setChannel(deboundedChannel);
+        }
+    }, [deboundedChannel]);
 
     useEffect(() => {
         console.log("Detecting Ctrl + Enter");
