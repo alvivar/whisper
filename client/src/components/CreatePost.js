@@ -92,9 +92,8 @@ const CreatePost = ({
 
     return (
         <div className="flex flex-wrap">
-            {channel}
             <input
-                className="float-right w-full p-1 my-2 text-right text-gray-600 focus:text-gray-800 bg-blue-100 focus:bg-blue-200 border-transparent outline-none rounded-lg"
+                className="float-right w-full p-1 my-2 text-gray-600 focus:text-gray-800 bg-blue-100 focus:bg-blue-200 border-transparent outline-none rounded-lg"
                 onChange={e => setName(e.target.value)}
                 value={name}
             />
