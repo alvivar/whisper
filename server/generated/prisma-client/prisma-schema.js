@@ -55,6 +55,7 @@ type Post {
   id: ID!
   author: User
   likedBy(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  channel: String!
   content: String!
   score: Int
   published: Boolean!
@@ -73,6 +74,7 @@ input PostCreateInput {
   id: ID
   author: UserCreateOneWithoutWrittenPostsInput
   likedBy: UserCreateManyWithoutLikedPostsInput
+  channel: String!
   content: String!
   score: Int
   published: Boolean
@@ -93,6 +95,7 @@ input PostCreateManyWithoutLikedByInput {
 input PostCreateWithoutAuthorInput {
   id: ID
   likedBy: UserCreateManyWithoutLikedPostsInput
+  channel: String!
   content: String!
   score: Int
   published: Boolean
@@ -103,6 +106,7 @@ input PostCreateWithoutAuthorInput {
 input PostCreateWithoutLikedByInput {
   id: ID
   author: UserCreateOneWithoutWrittenPostsInput
+  channel: String!
   content: String!
   score: Int
   published: Boolean
@@ -118,6 +122,8 @@ type PostEdge {
 enum PostOrderByInput {
   id_ASC
   id_DESC
+  channel_ASC
+  channel_DESC
   content_ASC
   content_DESC
   score_ASC
@@ -134,6 +140,7 @@ enum PostOrderByInput {
 
 type PostPreviousValues {
   id: ID!
+  channel: String!
   content: String!
   score: Int
   published: Boolean!
@@ -157,6 +164,20 @@ input PostScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  channel: String
+  channel_not: String
+  channel_in: [String!]
+  channel_not_in: [String!]
+  channel_lt: String
+  channel_lte: String
+  channel_gt: String
+  channel_gte: String
+  channel_contains: String
+  channel_not_contains: String
+  channel_starts_with: String
+  channel_not_starts_with: String
+  channel_ends_with: String
+  channel_not_ends_with: String
   content: String
   content_not: String
   content_in: [String!]
@@ -225,6 +246,7 @@ input PostSubscriptionWhereInput {
 input PostUpdateInput {
   author: UserUpdateOneWithoutWrittenPostsInput
   likedBy: UserUpdateManyWithoutLikedPostsInput
+  channel: String
   content: String
   score: Int
   published: Boolean
@@ -233,6 +255,7 @@ input PostUpdateInput {
 }
 
 input PostUpdateManyDataInput {
+  channel: String
   content: String
   score: Int
   published: Boolean
@@ -241,6 +264,7 @@ input PostUpdateManyDataInput {
 }
 
 input PostUpdateManyMutationInput {
+  channel: String
   content: String
   score: Int
   published: Boolean
@@ -279,6 +303,7 @@ input PostUpdateManyWithWhereNestedInput {
 
 input PostUpdateWithoutAuthorDataInput {
   likedBy: UserUpdateManyWithoutLikedPostsInput
+  channel: String
   content: String
   score: Int
   published: Boolean
@@ -288,6 +313,7 @@ input PostUpdateWithoutAuthorDataInput {
 
 input PostUpdateWithoutLikedByDataInput {
   author: UserUpdateOneWithoutWrittenPostsInput
+  channel: String
   content: String
   score: Int
   published: Boolean
@@ -336,6 +362,20 @@ input PostWhereInput {
   likedBy_every: UserWhereInput
   likedBy_some: UserWhereInput
   likedBy_none: UserWhereInput
+  channel: String
+  channel_not: String
+  channel_in: [String!]
+  channel_not_in: [String!]
+  channel_lt: String
+  channel_lte: String
+  channel_gt: String
+  channel_gte: String
+  channel_contains: String
+  channel_not_contains: String
+  channel_starts_with: String
+  channel_not_starts_with: String
+  channel_ends_with: String
+  channel_not_ends_with: String
   content: String
   content_not: String
   content_in: [String!]
@@ -406,7 +446,7 @@ type User {
   id: ID!
   writtenPosts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   likedPosts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
-  name: String
+  name: String!
   sessionHash: String!
   created: DateTime!
 }
@@ -421,7 +461,7 @@ input UserCreateInput {
   id: ID
   writtenPosts: PostCreateManyWithoutAuthorInput
   likedPosts: PostCreateManyWithoutLikedByInput
-  name: String
+  name: String!
   sessionHash: String!
 }
 
@@ -438,14 +478,14 @@ input UserCreateOneWithoutWrittenPostsInput {
 input UserCreateWithoutLikedPostsInput {
   id: ID
   writtenPosts: PostCreateManyWithoutAuthorInput
-  name: String
+  name: String!
   sessionHash: String!
 }
 
 input UserCreateWithoutWrittenPostsInput {
   id: ID
   likedPosts: PostCreateManyWithoutLikedByInput
-  name: String
+  name: String!
   sessionHash: String!
 }
 
@@ -467,7 +507,7 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
-  name: String
+  name: String!
   sessionHash: String!
   created: DateTime!
 }

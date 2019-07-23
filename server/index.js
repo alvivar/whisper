@@ -60,6 +60,7 @@ const resolvers = {
         },
         async createDraft(root, args, context) {
             const post = await context.prisma.createPost({
+                channel: args.channel,
                 content: args.content,
                 author: {
                     connect: { id: args.userId }
@@ -69,7 +70,7 @@ const resolvers = {
                     .format()
             });
 
-            pubsub.publish(`${PUBSUB_NEWPOST}`, {
+            pubsub.publish(`${PUBSUB_NEWPOST}.${args.channel}`, {
                 newPost: post
             });
 
@@ -113,7 +114,9 @@ const resolvers = {
     Subscription: {
         newPost: {
             subscribe: async (root, args, context) => {
-                return pubsub.asyncIterator(`${PUBSUB_NEWPOST}`);
+                return pubsub.asyncIterator(
+                    `${PUBSUB_NEWPOST}.${args.channel}`
+                );
             }
         }
     },

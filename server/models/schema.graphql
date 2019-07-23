@@ -11,21 +11,21 @@ type Query {
 type Mutation {
     createUser(name: String!, sessionHash: String!): User
     setUserName(userId: ID!, name: String!): User
-    createDraft(content: String!, userId: ID!): Post
+    createDraft(content: String!, channel: String!, userId: ID!): Post
     publish(postId: ID!): Post
     like(postId: ID!, userId: ID!): Post
     dislike(postId: ID!, userId: ID!): Post
 }
 
 type Subscription {
-    newPost: Post
+    newPost(channel: String!): Post
 }
 
 type User {
     id: ID!
     writtenPosts: [Post!]!
     likedPosts: [Post!]!
-    name: String
+    name: String!
     sessionHash: String!
     created: DateTime!
 }
@@ -34,7 +34,8 @@ type Post {
     id: ID!
     author: User
     likedBy: [User!]!
-    content: String
+    channel: String!
+    content: String!
     score: Int
     published: Boolean!
     expired: Boolean!

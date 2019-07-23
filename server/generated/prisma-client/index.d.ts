@@ -143,6 +143,8 @@ export interface ClientConstructor<T> {
 export type PostOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "channel_ASC"
+  | "channel_DESC"
   | "content_ASC"
   | "content_DESC"
   | "score_ASC"
@@ -191,6 +193,20 @@ export interface PostWhereInput {
   likedBy_every?: Maybe<UserWhereInput>;
   likedBy_some?: Maybe<UserWhereInput>;
   likedBy_none?: Maybe<UserWhereInput>;
+  channel?: Maybe<String>;
+  channel_not?: Maybe<String>;
+  channel_in?: Maybe<String[] | String>;
+  channel_not_in?: Maybe<String[] | String>;
+  channel_lt?: Maybe<String>;
+  channel_lte?: Maybe<String>;
+  channel_gt?: Maybe<String>;
+  channel_gte?: Maybe<String>;
+  channel_contains?: Maybe<String>;
+  channel_not_contains?: Maybe<String>;
+  channel_starts_with?: Maybe<String>;
+  channel_not_starts_with?: Maybe<String>;
+  channel_ends_with?: Maybe<String>;
+  channel_not_ends_with?: Maybe<String>;
   content?: Maybe<String>;
   content_not?: Maybe<String>;
   content_in?: Maybe<String[] | String>;
@@ -310,6 +326,7 @@ export interface PostCreateInput {
   id?: Maybe<ID_Input>;
   author?: Maybe<UserCreateOneWithoutWrittenPostsInput>;
   likedBy?: Maybe<UserCreateManyWithoutLikedPostsInput>;
+  channel: String;
   content: String;
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
@@ -325,7 +342,7 @@ export interface UserCreateOneWithoutWrittenPostsInput {
 export interface UserCreateWithoutWrittenPostsInput {
   id?: Maybe<ID_Input>;
   likedPosts?: Maybe<PostCreateManyWithoutLikedByInput>;
-  name?: Maybe<String>;
+  name: String;
   sessionHash: String;
 }
 
@@ -339,6 +356,7 @@ export interface PostCreateManyWithoutLikedByInput {
 export interface PostCreateWithoutLikedByInput {
   id?: Maybe<ID_Input>;
   author?: Maybe<UserCreateOneWithoutWrittenPostsInput>;
+  channel: String;
   content: String;
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
@@ -356,7 +374,7 @@ export interface UserCreateManyWithoutLikedPostsInput {
 export interface UserCreateWithoutLikedPostsInput {
   id?: Maybe<ID_Input>;
   writtenPosts?: Maybe<PostCreateManyWithoutAuthorInput>;
-  name?: Maybe<String>;
+  name: String;
   sessionHash: String;
 }
 
@@ -368,6 +386,7 @@ export interface PostCreateManyWithoutAuthorInput {
 export interface PostCreateWithoutAuthorInput {
   id?: Maybe<ID_Input>;
   likedBy?: Maybe<UserCreateManyWithoutLikedPostsInput>;
+  channel: String;
   content: String;
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
@@ -378,6 +397,7 @@ export interface PostCreateWithoutAuthorInput {
 export interface PostUpdateInput {
   author?: Maybe<UserUpdateOneWithoutWrittenPostsInput>;
   likedBy?: Maybe<UserUpdateManyWithoutLikedPostsInput>;
+  channel?: Maybe<String>;
   content?: Maybe<String>;
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
@@ -429,6 +449,7 @@ export interface PostUpdateWithWhereUniqueWithoutLikedByInput {
 
 export interface PostUpdateWithoutLikedByDataInput {
   author?: Maybe<UserUpdateOneWithoutWrittenPostsInput>;
+  channel?: Maybe<String>;
   content?: Maybe<String>;
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
@@ -457,6 +478,20 @@ export interface PostScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  channel?: Maybe<String>;
+  channel_not?: Maybe<String>;
+  channel_in?: Maybe<String[] | String>;
+  channel_not_in?: Maybe<String[] | String>;
+  channel_lt?: Maybe<String>;
+  channel_lte?: Maybe<String>;
+  channel_gt?: Maybe<String>;
+  channel_gte?: Maybe<String>;
+  channel_contains?: Maybe<String>;
+  channel_not_contains?: Maybe<String>;
+  channel_starts_with?: Maybe<String>;
+  channel_not_starts_with?: Maybe<String>;
+  channel_ends_with?: Maybe<String>;
+  channel_not_ends_with?: Maybe<String>;
   content?: Maybe<String>;
   content_not?: Maybe<String>;
   content_in?: Maybe<String[] | String>;
@@ -510,6 +545,7 @@ export interface PostUpdateManyWithWhereNestedInput {
 }
 
 export interface PostUpdateManyDataInput {
+  channel?: Maybe<String>;
   content?: Maybe<String>;
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
@@ -582,6 +618,7 @@ export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
 
 export interface PostUpdateWithoutAuthorDataInput {
   likedBy?: Maybe<UserUpdateManyWithoutLikedPostsInput>;
+  channel?: Maybe<String>;
   content?: Maybe<String>;
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
@@ -668,6 +705,7 @@ export interface UserUpdateManyDataInput {
 }
 
 export interface PostUpdateManyMutationInput {
+  channel?: Maybe<String>;
   content?: Maybe<String>;
   score?: Maybe<Int>;
   published?: Maybe<Boolean>;
@@ -679,7 +717,7 @@ export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   writtenPosts?: Maybe<PostCreateManyWithoutAuthorInput>;
   likedPosts?: Maybe<PostCreateManyWithoutLikedByInput>;
-  name?: Maybe<String>;
+  name: String;
   sessionHash: String;
 }
 
@@ -723,6 +761,7 @@ export interface NodeNode {
 
 export interface Post {
   id: ID_Output;
+  channel: String;
   content: String;
   score?: Int;
   published: Boolean;
@@ -743,6 +782,7 @@ export interface PostPromise extends Promise<Post>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  channel: () => Promise<String>;
   content: () => Promise<String>;
   score: () => Promise<Int>;
   published: () => Promise<Boolean>;
@@ -765,6 +805,7 @@ export interface PostSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  channel: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
   score: () => Promise<AsyncIterator<Int>>;
   published: () => Promise<AsyncIterator<Boolean>>;
@@ -787,6 +828,7 @@ export interface PostNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
+  channel: () => Promise<String>;
   content: () => Promise<String>;
   score: () => Promise<Int>;
   published: () => Promise<Boolean>;
@@ -797,7 +839,7 @@ export interface PostNullablePromise
 
 export interface User {
   id: ID_Output;
-  name?: String;
+  name: String;
   sessionHash: String;
   created: DateTimeOutput;
 }
@@ -1055,6 +1097,7 @@ export interface PostSubscriptionPayloadSubscription
 
 export interface PostPreviousValues {
   id: ID_Output;
+  channel: String;
   content: String;
   score?: Int;
   published: Boolean;
@@ -1067,6 +1110,7 @@ export interface PostPreviousValuesPromise
   extends Promise<PostPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  channel: () => Promise<String>;
   content: () => Promise<String>;
   score: () => Promise<Int>;
   published: () => Promise<Boolean>;
@@ -1079,6 +1123,7 @@ export interface PostPreviousValuesSubscription
   extends Promise<AsyncIterator<PostPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  channel: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
   score: () => Promise<AsyncIterator<Int>>;
   published: () => Promise<AsyncIterator<Boolean>>;
@@ -1114,7 +1159,7 @@ export interface UserSubscriptionPayloadSubscription
 
 export interface UserPreviousValues {
   id: ID_Output;
-  name?: String;
+  name: String;
   sessionHash: String;
   created: DateTimeOutput;
 }
