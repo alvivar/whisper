@@ -22,13 +22,7 @@ const SET_USER_NAME_MUTATION = gql`
     }
 `;
 
-const CreatePost = ({
-    userId,
-    userName,
-    // postsRefetch,
-    channel,
-    setChannel
-}) => {
+const CreatePost = ({ userId, userName, channel, setChannel }) => {
     const createPostMutation = useMutation(POST_MUTATION);
     const setUserNameMutation = useMutation(SET_USER_NAME_MUTATION);
 
