@@ -1,11 +1,10 @@
 
     client Changing the room refetch by room
-
     client Changing the name saved feedback
-    client Validate empty message
+    client Validate empty message & feedback
 
-    client The post should dissapear after a while
-    client The post dissapearing should fade
+    client The post should dissapear after a while?
+    client The post dissapearing should fade?
 
     cloud Deploy to AWS
 
