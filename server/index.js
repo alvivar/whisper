@@ -30,7 +30,9 @@ const resolvers = {
             });
         },
         publishedPosts(root, args, context) {
-            return context.prisma.posts({ where: { published: true } });
+            return context.prisma.posts({
+                where: { published: true }
+            });
         },
         post(root, args, context) {
             return context.prisma.post({ id: args.postId });
@@ -41,6 +43,11 @@ const resolvers = {
                     id: args.userId
                 })
                 .post();
+        },
+        postsByChannel(root, { channel }, context) {
+            return context.prisma.posts({
+                where: { channel: channel }
+            });
         }
     },
     Mutation: {

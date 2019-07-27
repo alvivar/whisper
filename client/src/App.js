@@ -25,9 +25,23 @@ const CREATE_USER_MUTATION = gql`
     }
 `;
 
-const POSTS_QUERY = gql`
-    query {
-        allowedPosts {
+// const POSTS_QUERY = gql`
+//     query {
+//         allowedPosts {
+//             id
+//             content
+//             author {
+//                 id
+//                 name
+//             }
+//             created
+//         }
+//     }
+// `;
+
+const POSTS_BY_CHANNEL = gql`
+    query postsByChannel($channel: String!) {
+        postsByChannel(channel: $channel) {
             id
             content
             author {
@@ -76,16 +90,20 @@ function App() {
     //     }
     // });
 
+    const createUserMutation = useMutation(CREATE_USER_MUTATION);
+
+    const [channel, setChannel] = useState("universe");
+
     const {
         loading: postsLoading,
         error: postsError,
         data: postsData,
         refetch: postsRefetch
-    } = useQuery(POSTS_QUERY);
-
-    const createUserMutation = useMutation(CREATE_USER_MUTATION);
-
-    const [channel, setChannel] = useState("universe");
+    } = useQuery(POSTS_BY_CHANNEL, {
+        variables: {
+            channel: channel
+        }
+    });
 
     const {
         loading: newPostLoading,
@@ -99,8 +117,8 @@ function App() {
             console.log("PubSub NEWPOST received");
             console.log(client);
             console.log(subscriptionData);
-            // postsRefetch();
             setNewPosts([subscriptionData.data.newPost, ...newPosts]);
+            // postsRefetch();
         }
     });
 

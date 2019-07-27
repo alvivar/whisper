@@ -57,7 +57,7 @@ const PostsList = ({ loading, error, data, newPosts }) => {
     if (loading) return fetchingMessage();
     if (error) return errorMessage();
 
-    const postsToRender = [...newPosts, ...(data ? data.allowedPosts : [])];
+    const postsToRender = [...newPosts, ...(data ? data.postsByChannel : [])];
 
     return (
         <div>
