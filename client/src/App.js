@@ -25,27 +25,11 @@ const CREATE_USER_MUTATION = gql`
     }
 `;
 
-// const POSTS_QUERY = gql`
-//     query {
-//         allowedPosts {
-//             id
-//             content
-//             author {
-//                 id
-//                 name
-//             }
-//             created
-//         }
-//     }
-// `;
-
 const POSTS_BY_CHANNEL = gql`
     query postsByChannel($channel: String!) {
         postsByChannel(channel: $channel) {
-            id
             content
             author {
-                id
                 name
             }
             created
@@ -56,10 +40,8 @@ const POSTS_BY_CHANNEL = gql`
 const NEWPOST = gql`
     subscription newPost($channel: String!) {
         newPost(channel: $channel) {
-            id
             content
             author {
-                id
                 name
             }
             created
@@ -118,7 +100,6 @@ function App() {
             console.log(client);
             console.log(subscriptionData);
             setNewPosts([subscriptionData.data.newPost, ...newPosts]);
-            // postsRefetch();
         }
     });
 

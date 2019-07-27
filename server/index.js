@@ -38,15 +38,12 @@ const resolvers = {
             return context.prisma.post({ id: args.postId });
         },
         postsByUser(root, args, context) {
-            return context.prisma
-                .user({
-                    id: args.userId
-                })
-                .post();
+            return context.prisma.user({ id: args.userId }).post();
         },
         postsByChannel(root, { channel }, context) {
             return context.prisma.posts({
-                where: { channel: channel }
+                where: { channel: channel },
+                orderBy: "created_DESC"
             });
         }
     },
