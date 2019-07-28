@@ -26,12 +26,12 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
     const createPostMutation = useMutation(POST_MUTATION);
     const setUserNameMutation = useMutation(SET_USER_NAME_MUTATION);
 
-    const [name, setName] = useState(user.name);
-    const debouncedName = useDebounce(name, 1000);
+    const [inputName, setInputName] = useState(user.name);
+    const debouncedName = useDebounce(inputName, 1000);
 
-    const nameBgOk = "bg-blue-100 focus:bg-blue-200";
-    const nameBgError = "bg-red-300 focus:bg-red-400";
-    const [nameBg, setNameBg] = useState(nameBgOk);
+    const inputBgOk = "bg-blue-100 focus:bg-blue-200";
+    const inputBgError = "bg-red-300 focus:bg-red-400";
+    const [inputBg, setInputBg] = useState(inputBgOk);
 
     const textAreaBgOk = "bg-blue-100 focus:bg-blue-200";
     const textAreaBgError = "bg-red-300 focus:bg-red-400";
@@ -71,11 +71,11 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
 
     useEffect(() => {
         console.log("Trimming name");
-        if (!name.trim()) {
-            setName(user.name);
-            setNameBg(nameBgOk);
+        if (!inputName.trim()) {
+            setInputName(user.name);
+            setInputBg(inputBgOk);
         }
-    }, [name, user.name]);
+    }, [inputName, user.name]);
 
     useEffect(() => {
         setContentWords((content.trim().match(/\S+/g) || []).length);
@@ -101,10 +101,10 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
                         sessionHash: user.sessionHash
                     });
 
-                    setNameBg(nameBgOk);
+                    setInputBg(inputBgOk);
                     console.log("Name saved");
                 } catch (error) {
-                    setNameBg(nameBgError);
+                    setInputBg(inputBgError);
                     console.log("Name error, already in db probably");
                 }
             };
@@ -114,13 +114,13 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
     }, [debouncedName]);
 
     useEffect(() => {
-        console.log(`Extracting channel from ${name}`);
-        if (name.includes("@")) {
-            setChannelB(name.split("@")[1]);
+        console.log(`Extracting channel from ${inputName}`);
+        if (inputName.includes("@")) {
+            setChannelB(inputName.split("@")[1]);
         } else {
-            setChannelB(name);
+            setChannelB(inputName);
         }
-    }, [name]);
+    }, [inputName]);
 
     useEffect(() => {
         console.log("Channel modified");
@@ -141,9 +141,9 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
     return (
         <div className="flex flex-wrap">
             <input
-                className={`float-right w-full p-1 my-2 text-gray-600 focus:text-gray-800 ${nameBg} border-transparent outline-none rounded-lg`}
-                onChange={e => setName(e.target.value)}
-                value={name}
+                className={`float-right w-full p-1 my-2 text-gray-600 focus:text-gray-800 ${inputBg} border-transparent outline-none rounded-lg`}
+                onChange={e => setInputName(e.target.value)}
+                value={inputName}
             />
             <textarea
                 ref={node => setTextArea(node)}
