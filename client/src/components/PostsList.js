@@ -60,7 +60,7 @@ const getUserBg = (nameA, nameB) => {
         console.log(nameB);
         return "bg-orange-200 hover:bg-orange-300";
     } else {
-        return "bg-blue-100 hover:bg-blue-200";
+        return "bg-indigo-100 hover:bg-indigo-200";
     }
 };
 
