@@ -38,8 +38,8 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
     const [textAreaBg, setTextAreaBg] = useState(textAreaBgOk);
     const [textArea, setTextArea] = useState();
 
-    const [contentLetters, setContentLetters] = useState(0);
     const [contentWords, setContentWords] = useState(0);
+    const [contentLetters, setContentLetters] = useState(0);
     const [content, setContent] = useState("");
 
     const [channelB, setChannelB] = useState(channel);
@@ -78,8 +78,8 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
     }, [name, userName]);
 
     useEffect(() => {
-        setContentLetters(content.trim().length);
         setContentWords((content.trim().match(/\S+/g) || []).length);
+        setContentLetters(content.trim().length);
         setTextAreaBg(textAreaBgOk);
     }, [content]);
 
@@ -99,7 +99,7 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
                     console.log("Name saved");
                 } catch (error) {
                     setNameBg(nameBgError);
-                    console.log("Name error, already in db");
+                    console.log("Name error, already in db probably");
                 }
             };
 
@@ -156,10 +156,10 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
                     <span className="text-xs">ctrl + enter</span>
                 </button>
 
-                <button className="float-right h-16 mr-2 my-2 py-2 px-2 text-sm text-gray-400 outline-none bg-gray-100 border-transparent rounded-lg">
-                    {`${contentLetters} Letters`}
+                <button className="float-right h-16 mr-2 my-2 py-2 px-4 text-sm text-gray-400 outline-none bg-gray-100 border-transparent rounded-lg">
+                    {`${contentWords} words`}
                     <br />
-                    {`${contentWords} Words`}
+                    {`${contentLetters} letters`}
                 </button>
             </div>
         </div>

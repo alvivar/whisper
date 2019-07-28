@@ -10,11 +10,11 @@ const pubsubOptions = {
     retryStrategy: times => Math.min(times * 50, 2000)
 };
 
+const PUBSUB_NEWPOST = "NEWPOST";
 const pubsub = new RedisPubSub({
     publisher: new Redis(pubsubOptions),
     subscriber: new Redis(pubsubOptions)
 });
-const PUBSUB_NEWPOST = "newPost";
 
 // console.log(process.env.REACT_APP_WATA);
 
