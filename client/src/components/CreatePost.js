@@ -29,12 +29,16 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
     const [name, setName] = useState(userName);
     const debouncedName = useDebounce(name, 1000);
 
-    const bgNameOk = "bg-blue-100 focus:bg-blue-200";
-    const bgNameError = "bg-red-300 focus:bg-red-400";
-    const [nameBg, setNameBg] = useState(bgNameOk);
+    const nameBgOk = "bg-blue-100 focus:bg-blue-200";
+    const nameBgError = "bg-red-300 focus:bg-red-400";
+    const [nameBg, setNameBg] = useState(nameBgOk);
 
-    const [content, setContent] = useState("");
+    const textAreaBgOk = "bg-blue-100 focus:bg-blue-200";
+    const textAreaBgError = "bg-red-300 focus:bg-red-400";
+    const [textAreaBg, setTextAreaBg] = useState(textAreaBgOk);
+
     const [textArea, setTextArea] = useState();
+    const [content, setContent] = useState("");
 
     const [channelB, setChannelB] = useState(channel);
     const deboundedChannel = useDebounce(channelB, 1000);
@@ -43,6 +47,13 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
     const enterKeyDown = useKeyPress("Enter");
 
     const createPost = async (userId, channel, content) => {
+        if (content.trim() < 1) {
+            console.log("Can't create an empty post");
+            textArea.focus();
+            setTextAreaBg(textAreaBgError);
+            return;
+        }
+
         await createPostMutation({
             variables: {
                 userId: userId,
@@ -51,6 +62,7 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
             }
         });
 
+        console.log("Post created");
         setContent("");
         textArea.focus();
     };
@@ -59,7 +71,7 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
         console.log("Trimming name");
         if (!name.trim()) {
             setName(userName);
-            setNameBg(bgNameOk);
+            setNameBg(nameBgOk);
         }
     }, [name, userName]);
 
@@ -75,10 +87,10 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
                         }
                     });
 
-                    setNameBg(bgNameOk);
+                    setNameBg(nameBgOk);
                     console.log("Name saved");
                 } catch (error) {
-                    setNameBg(bgNameError);
+                    setNameBg(nameBgError);
                     console.log("Name error, already in db");
                 }
             };
@@ -121,7 +133,7 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
             />
             <textarea
                 ref={node => setTextArea(node)}
-                className="w-full h-32 py-4 px-4 text-lg text-gray-800 border bg-blue-100 focus:bg-blue-200 border-transparent outline-none rounded-lg"
+                className={`w-full h-32 py-4 px-4 text-lg text-gray-800 ${textAreaBg} border border-transparent outline-none rounded-lg`}
                 onChange={e => setContent(e.target.value)}
                 value={content}
             />
