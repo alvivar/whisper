@@ -55,7 +55,7 @@ type Post {
   id: ID!
   author: User
   likedBy(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
-  channel: String!
+  channel: String
   content: String!
   score: Int
   published: Boolean!
@@ -74,7 +74,7 @@ input PostCreateInput {
   id: ID
   author: UserCreateOneWithoutWrittenPostsInput
   likedBy: UserCreateManyWithoutLikedPostsInput
-  channel: String!
+  channel: String
   content: String!
   score: Int
   published: Boolean
@@ -95,7 +95,7 @@ input PostCreateManyWithoutLikedByInput {
 input PostCreateWithoutAuthorInput {
   id: ID
   likedBy: UserCreateManyWithoutLikedPostsInput
-  channel: String!
+  channel: String
   content: String!
   score: Int
   published: Boolean
@@ -106,7 +106,7 @@ input PostCreateWithoutAuthorInput {
 input PostCreateWithoutLikedByInput {
   id: ID
   author: UserCreateOneWithoutWrittenPostsInput
-  channel: String!
+  channel: String
   content: String!
   score: Int
   published: Boolean
@@ -140,7 +140,7 @@ enum PostOrderByInput {
 
 type PostPreviousValues {
   id: ID!
-  channel: String!
+  channel: String
   content: String!
   score: Int
   published: Boolean!
