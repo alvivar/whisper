@@ -116,7 +116,7 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
     useEffect(() => {
         console.log(`Extracting channel from ${inputName}`);
         if (inputName.includes("@")) {
-            setChannelB(inputName.split("@")[1]);
+            setChannelB(inputName.split("@")[1] || "@");
         } else {
             setChannelB(inputName);
         }
@@ -125,7 +125,7 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
     useEffect(() => {
         console.log("Channel modified");
         if (deboundedChannel && deboundedChannel !== channel) {
-            console.log("Saving new channel");
+            console.log(`Saving new channel: ${deboundedChannel}`);
             setChannel(deboundedChannel);
         }
     }, [deboundedChannel]);
@@ -162,11 +162,15 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
                     <span className="text-xs">ctrl + enter</span>
                 </button>
 
-                <button className="float-right h-16 mr-2 my-2 py-2 px-4 text-sm text-gray-400 outline-none bg-gray-100 border-transparent rounded-lg">
-                    {`${contentWords} words`}
-                    <br />
-                    {`${contentLetters} letters`}
-                </button>
+                {contentLetters < 1 ? (
+                    <span />
+                ) : (
+                    <button className="float-right h-16 mr-2 my-2 py-2 px-4 text-sm text-gray-400 outline-none bg-gray-100 border-transparent rounded-lg">
+                        {`${contentWords} words`}
+                        <br />
+                        {`${contentLetters} letters`}
+                    </button>
+                )}
             </div>
         </div>
     );
