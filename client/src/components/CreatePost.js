@@ -29,6 +29,10 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
     const [name, setName] = useState(userName);
     const debouncedName = useDebounce(name, 1000);
 
+    const bgNameOk = "bg-blue-100 focus:bg-blue-200";
+    const bgNameError = "bg-red-300 focus:bg-red-400";
+    const [nameBg, setNameBg] = useState(bgNameOk);
+
     const [content, setContent] = useState("");
     const [textArea, setTextArea] = useState();
 
@@ -42,7 +46,7 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
         await createPostMutation({
             variables: {
                 userId: userId,
-                channel: channel,
+                channel: channel.trim(),
                 content: content.trim()
             }
         });
@@ -53,19 +57,33 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
 
     useEffect(() => {
         console.log("Trimming name");
-        if (!name.trim()) setName(userName);
+        if (!name.trim()) {
+            setName(userName);
+            setNameBg(bgNameOk);
+        }
     }, [name, userName]);
 
     useEffect(() => {
         console.log("Name modified");
         if (debouncedName && debouncedName !== userName) {
-            console.log("Saving new name");
-            setUserNameMutation({
-                variables: {
-                    userId: userId,
-                    name: debouncedName
+            const setUserName = async () => {
+                try {
+                    await setUserNameMutation({
+                        variables: {
+                            userId: userId,
+                            name: debouncedName
+                        }
+                    });
+
+                    setNameBg(bgNameOk);
+                    console.log("Name saved");
+                } catch (error) {
+                    setNameBg(bgNameError);
+                    console.log("Name error, already in db");
                 }
-            });
+            };
+
+            setUserName();
         }
     }, [debouncedName]);
 
@@ -97,7 +115,7 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
     return (
         <div className="flex flex-wrap">
             <input
-                className="float-right w-full p-1 my-2 text-gray-600 focus:text-gray-800 bg-blue-100 focus:bg-blue-200 border-transparent outline-none rounded-lg"
+                className={`float-right w-full p-1 my-2 text-gray-600 focus:text-gray-800 ${nameBg} border-transparent outline-none rounded-lg`}
                 onChange={e => setName(e.target.value)}
                 value={name}
             />
