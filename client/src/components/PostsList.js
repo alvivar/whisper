@@ -61,22 +61,22 @@ const PostsList = ({ loading, error, data, newPosts }) => {
 
     return (
         <div>
-            {postsToRender.map(i => (
+            {postsToRender.map((item, key) => (
                 <div
-                    key={i.id}
+                    key={key}
                     className="p-4 mb-2 bg-blue-100 hover:bg-blue-200 rounded-lg "
                 >
                     <div className="text-xm text-gray-600">
-                        <span>{i.author.name} </span>
+                        <span>{item.author.name} </span>
                         <span className="text-xs italic">
                             {timeDifference(
                                 new Date().getTime(),
-                                new Date(i.created).getTime()
+                                new Date(item.created).getTime()
                             )}
                         </span>
                     </div>
                     <div className="text-xl">
-                        {i.content.split("\n").map((item, key) => {
+                        {item.content.split("\n").map((item, key) => {
                             return (
                                 <span key={key}>
                                     {item}
