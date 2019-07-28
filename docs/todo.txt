@@ -1,8 +1,11 @@
 
+    client Differentiate user posts from others
+
     client The post should dissapear after a while?
     client The post dissapearing should fade?
 
-    cloud Deploy to AWS
+    cloud Deploy prisma with safe to Digital Ocean
+    cloud Deploy redis with safe to Digital Ocean
 
 
     2019/07/27 04:51 pm
