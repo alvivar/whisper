@@ -48,10 +48,10 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
 
     const createPost = async (userId, channel, content) => {
         if (content.trim() < 1) {
-            console.log("Can't create an empty post");
             textArea.focus();
             setTextAreaBg(textAreaBgError);
-            return;
+            console.log("Can't create an empty post");
+            return false;
         }
 
         await createPostMutation({
