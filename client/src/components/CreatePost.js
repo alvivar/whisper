@@ -36,8 +36,10 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
     const textAreaBgOk = "bg-blue-100 focus:bg-blue-200";
     const textAreaBgError = "bg-red-300 focus:bg-red-400";
     const [textAreaBg, setTextAreaBg] = useState(textAreaBgOk);
-
     const [textArea, setTextArea] = useState();
+
+    const [contentLetters, setContentLetters] = useState(0);
+    const [contentWords, setContentWords] = useState(0);
     const [content, setContent] = useState("");
 
     const [channelB, setChannelB] = useState(channel);
@@ -74,6 +76,12 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
             setNameBg(nameBgOk);
         }
     }, [name, userName]);
+
+    useEffect(() => {
+        setContentLetters(content.trim().length);
+        setContentWords((content.trim().match(/\S+/g) || []).length);
+        setTextAreaBg(textAreaBgOk);
+    }, [content]);
 
     useEffect(() => {
         console.log("Name modified");
@@ -133,7 +141,7 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
             />
             <textarea
                 ref={node => setTextArea(node)}
-                className={`w-full h-32 py-4 px-4 text-lg text-gray-800 ${textAreaBg} border border-transparent outline-none rounded-lg`}
+                className={`w-full h-32 py-4 px-4 text-gray-800 ${textAreaBg} border border-transparent outline-none rounded-lg`}
                 onChange={e => setContent(e.target.value)}
                 value={content}
             />
@@ -146,6 +154,12 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
                 >
                     <span className="text-xl">whisper</span>{" "}
                     <span className="text-xs">ctrl + enter</span>
+                </button>
+
+                <button className="float-right h-16 mr-2 my-2 py-2 px-2 text-sm text-gray-400 outline-none bg-gray-100 border-transparent rounded-lg">
+                    {`${contentLetters} Letters`}
+                    <br />
+                    {`${contentWords} Words`}
                 </button>
             </div>
         </div>

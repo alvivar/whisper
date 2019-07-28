@@ -1,6 +1,4 @@
 
-    client Validate empty message & feedback
-
     client The post should dissapear after a while?
     client The post dissapearing should fade?
 
@@ -8,6 +6,8 @@
 
 
     2019/07/27 04:51 pm
+    x client Validate empty message & feedback
+    x client Count letters and words
     x client Changing the name saved feedback
     x client Changing the room refetch by room
 
