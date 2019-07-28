@@ -152,14 +152,14 @@ function App() {
     return (
         <div className="container mx-auto max-w-xl">
             <CreatePost
-                userId={user.id}
-                userName={user.name}
-                postsRefetch={postsRefetch}
+                user={user}
+                setUser={setUser}
                 channel={channel}
                 setChannel={setChannel}
             />
             <div className="container mx-auto">
                 <PostsList
+                    userName={user.name}
                     loading={postsLoading}
                     error={postsError}
                     data={postsData}

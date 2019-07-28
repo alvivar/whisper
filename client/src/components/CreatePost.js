@@ -22,11 +22,11 @@ const SET_USER_NAME_MUTATION = gql`
     }
 `;
 
-const CreatePost = ({ userId, userName, channel, setChannel }) => {
+const CreatePost = ({ user, setUser, channel, setChannel }) => {
     const createPostMutation = useMutation(POST_MUTATION);
     const setUserNameMutation = useMutation(SET_USER_NAME_MUTATION);
 
-    const [name, setName] = useState(userName);
+    const [name, setName] = useState(user.name);
     const debouncedName = useDebounce(name, 1000);
 
     const nameBgOk = "bg-blue-100 focus:bg-blue-200";
@@ -58,7 +58,7 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
 
         await createPostMutation({
             variables: {
-                userId: userId,
+                userId: user.id,
                 channel: channel.trim(),
                 content: content.trim()
             }
@@ -72,10 +72,10 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
     useEffect(() => {
         console.log("Trimming name");
         if (!name.trim()) {
-            setName(userName);
+            setName(user.name);
             setNameBg(nameBgOk);
         }
-    }, [name, userName]);
+    }, [name, user.name]);
 
     useEffect(() => {
         setContentWords((content.trim().match(/\S+/g) || []).length);
@@ -85,14 +85,20 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
 
     useEffect(() => {
         console.log("Name modified");
-        if (debouncedName && debouncedName !== userName) {
+        if (debouncedName && debouncedName !== user.name) {
             const setUserName = async () => {
                 try {
                     await setUserNameMutation({
                         variables: {
-                            userId: userId,
+                            userId: user.id,
                             name: debouncedName
                         }
+                    });
+
+                    await setUser({
+                        id: user.id,
+                        name: debouncedName,
+                        sessionHash: user.sessionHash
                     });
 
                     setNameBg(nameBgOk);
@@ -128,7 +134,7 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
         console.log("Detecting Ctrl + Enter");
         if (ctrlKeyDown && enterKeyDown) {
             console.log("Ctrl + Enter pressed");
-            createPost(userId, channel, content);
+            createPost(user.id, channel, content);
         }
     }, [ctrlKeyDown, enterKeyDown]);
 
@@ -148,7 +154,7 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
             <div className="w-full">
                 <button
                     onClick={e => {
-                        if (userId) createPost(userId, channel, content);
+                        if (user.id) createPost(user.id, channel, content);
                     }}
                     className="float-right h-16 my-2 py-2 px-4 text-sm text-gray-500 hover:text-white outline-none bg-blue-100 hover:bg-blue-400 border-transparent rounded-lg"
                 >

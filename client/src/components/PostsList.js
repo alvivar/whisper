@@ -53,7 +53,18 @@ const timeDifference = (current, previous) => {
     return `${result < 0 ? 0 : result} ${tag}`;
 };
 
-const PostsList = ({ loading, error, data, newPosts }) => {
+const getUserBg = (nameA, nameB) => {
+    if (nameA.trim() === nameB.trim()) {
+        console.log("getUserBg:");
+        console.log(nameA);
+        console.log(nameB);
+        return "bg-orange-200 hover:bg-orange-300";
+    } else {
+        return "bg-blue-100 hover:bg-blue-200";
+    }
+};
+
+const PostsList = ({ userName, loading, error, data, newPosts }) => {
     if (loading) return fetchingMessage();
     if (error) return errorMessage();
 
@@ -64,7 +75,8 @@ const PostsList = ({ loading, error, data, newPosts }) => {
             {postsToRender.map((item, key) => (
                 <div
                     key={key}
-                    className="p-4 mb-2 bg-blue-100 hover:bg-blue-200 rounded-lg "
+                    className={`p-4 mb-2
+                    ${getUserBg(item.author.name, userName)} rounded-lg`}
                 >
                     <div className="text-xm text-gray-600">
                         <span>{item.author.name} </span>

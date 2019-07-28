@@ -1,6 +1,4 @@
 
-    client Differentiate user posts from others
-
     client The post should dissapear after a while?
     client The post dissapearing should fade?
 
@@ -9,6 +7,7 @@
 
 
     2019/07/27 04:51 pm
+    x client Differentiate user posts from others
     x client Validate empty message & feedback
     x client Count letters and words
     x client Changing the name saved feedback
