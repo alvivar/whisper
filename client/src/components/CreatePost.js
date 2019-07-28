@@ -64,9 +64,9 @@ const CreatePost = ({ userId, userName, channel, setChannel }) => {
             }
         });
 
-        console.log("Post created");
         setContent("");
         textArea.focus();
+        console.log("Post created");
     };
 
     useEffect(() => {
