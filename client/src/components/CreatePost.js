@@ -26,8 +26,8 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
     const createPostMutation = useMutation(POST_MUTATION);
     const setUserNameMutation = useMutation(SET_USER_NAME_MUTATION);
 
-    const [inputName, setInputName] = useState(user.name);
-    const debouncedName = useDebounce(inputName, 1000);
+    const [name, setName] = useState(user.name);
+    const debouncedName = useDebounce(name, 1000);
 
     const inputBgOk = "bg-blue-100 focus:bg-blue-200";
     const inputBgError = "bg-red-300 focus:bg-red-400";
@@ -42,14 +42,14 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
     const [contentLetters, setContentLetters] = useState(0);
     const [content, setContent] = useState("");
 
-    const [channelB, setChannelB] = useState(channel);
-    const deboundedChannel = useDebounce(channelB, 1000);
+    const [channelToDebounce, setChannelToDebounce] = useState(channel);
+    const deboundedChannel = useDebounce(channelToDebounce, 1000);
 
     const ctrlKeyDown = useKeyPress("Control");
     const enterKeyDown = useKeyPress("Enter");
 
     const createPost = async (userId, channel, content) => {
-        if (content.trim() < 1) {
+        if (!content.trim()) {
             textArea.focus();
             setTextAreaBg(textAreaBgError);
             console.log("Can't create an empty post");
@@ -71,11 +71,11 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
 
     useEffect(() => {
         console.log("Trimming name");
-        if (!inputName.trim()) {
-            setInputName(user.name);
+        if (!name.trim()) {
+            setName(user.name);
             setInputBg(inputBgOk);
         }
-    }, [inputName, user.name]);
+    }, [name, user.name]);
 
     useEffect(() => {
         setContentWords((content.trim().match(/\S+/g) || []).length);
@@ -114,19 +114,21 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
     }, [debouncedName]);
 
     useEffect(() => {
-        console.log(`Extracting channel from ${inputName}`);
-        if (inputName.includes("@")) {
-            setChannelB(inputName.split("@")[1] || "@");
+        console.log(`Extracting channel from ${name}`);
+        if (name.includes("@")) {
+            let channel = name.split("@")[1].trim() || "@";
+            channel = channel ? channel : "@";
+            setChannelToDebounce(channel);
         } else {
-            setChannelB(inputName);
+            setChannelToDebounce(name.trim());
         }
-    }, [inputName]);
+    }, [name]);
 
     useEffect(() => {
         console.log("Channel modified");
         if (deboundedChannel && deboundedChannel !== channel) {
-            console.log(`Saving new channel: ${deboundedChannel}`);
             setChannel(deboundedChannel);
+            console.log(`Saving new channel: ${deboundedChannel}`);
         }
     }, [deboundedChannel]);
 
@@ -142,8 +144,8 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
         <div className="flex flex-wrap">
             <input
                 className={`float-right w-full p-1 my-2 text-gray-600 focus:text-gray-800 ${inputBg} border-transparent outline-none rounded-lg`}
-                onChange={e => setInputName(e.target.value)}
-                value={inputName}
+                onChange={e => setName(e.target.value)}
+                value={name}
             />
             <textarea
                 ref={node => setTextArea(node)}
