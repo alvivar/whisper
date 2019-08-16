@@ -5,7 +5,6 @@ async function main() {
     const users = await prisma.users().$fragment(`
         fragment UsersWithoutPosts on User {
             id
-            name
             writtenPosts {
                 id
             }
