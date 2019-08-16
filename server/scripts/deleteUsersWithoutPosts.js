@@ -1,6 +1,7 @@
 const { prisma } = require("../generated/prisma-client");
 
 // Remove users without written posts.
+
 async function main() {
     const users = await prisma.users().$fragment(`
         fragment UsersWithoutPosts on User {
@@ -20,7 +21,7 @@ async function main() {
     });
 
     console.log(usersWithoutPosts);
-    console.log(`Users without posts deleted!`);
+    console.log(`Users without written posts deleted!`);
 }
 
 main()
