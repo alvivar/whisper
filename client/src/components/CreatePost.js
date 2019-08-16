@@ -85,7 +85,7 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
 
     useEffect(() => {
         console.log("Name modified");
-        if (debouncedName && debouncedName !== user.name) {
+        if (debouncedName) {
             const setUserName = async () => {
                 try {
                     await setUserNameMutation({
