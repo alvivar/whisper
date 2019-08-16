@@ -17,7 +17,7 @@ const pubsub = new RedisPubSub({
     subscriber: new Redis(pubsubOptions)
 });
 
-// console.log(process.env.REACT_APP_WATA);
+// console.log(process.env.PRISMA_MANAGEMENT_API_SECRET);
 
 const resolvers = {
     Query: {
