@@ -1,4 +1,5 @@
 
+    client Don't allow to write a post if the name is bad
     client Cookie user reload
 
     client The post should dissapear after a while?
