@@ -31,6 +31,7 @@ services:
     redis:
         container_name: whisper_redis_server
         image: redis
+        command: redis-server --requirepass redispass1234
         restart: always
         ports:
             - "6379:6379"
