@@ -1,4 +1,6 @@
 
+    client Cookie user reload
+
     client The post should dissapear after a while?
     client The post dissapearing should fade?
 
