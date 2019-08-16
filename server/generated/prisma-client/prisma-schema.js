@@ -721,7 +721,6 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
-  name: String
   sessionHash: String
 }
 `

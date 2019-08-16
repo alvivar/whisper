@@ -2,7 +2,7 @@ type User {
     id: ID! @id
     writtenPosts: [Post!]! @relation(name: "WrittenPosts")
     likedPosts: [Post!]! @relation(name: "LikedPosts")
-    name: String! @unique
+    name: String!
     sessionHash: String! @unique
     created: DateTime! @createdAt
 }
