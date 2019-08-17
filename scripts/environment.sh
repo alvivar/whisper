@@ -1,0 +1,1 @@
+export PRISMA_MANAGEMENT_API_SECRET="dockerpass1234"
