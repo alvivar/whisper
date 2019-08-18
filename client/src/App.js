@@ -157,15 +157,13 @@ function App() {
                 channel={channel}
                 setChannel={setChannel}
             />
-            <div className="container mx-auto">
-                <PostsList
-                    userName={user.name}
-                    loading={postsLoading}
-                    error={postsError}
-                    data={postsData}
-                    newPosts={newPosts}
-                />
-            </div>
+            <PostsList
+                userName={user.name}
+                loading={postsLoading}
+                error={postsError}
+                data={postsData}
+                newPosts={newPosts}
+            />
         </div>
     );
 }
