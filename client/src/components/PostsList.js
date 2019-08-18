@@ -53,14 +53,23 @@ const timeDifference = (current, previous) => {
     return `${result < 0 ? 0 : result} ${tag}`;
 };
 
-const getUserBg = (nameA, nameB) => {
+const getUserBg = (nameA, nameB, created) => {
     if (nameA.trim() === nameB.trim()) {
-        console.log("getUserBg:");
-        console.log(nameA);
-        console.log(nameB);
-        return "bg-orange-200 hover:bg-orange-300";
+        // Created by itself
+        return "bg-indigo-200 hover:bg-indigo-300";
     } else {
-        return "bg-indigo-100 hover:bg-indigo-200";
+        // Create by another person
+        const secondsAgo = new Date().getTime() - created;
+        const isNewPost = 5 * 60 * 1000;
+        const isRecentPost = 25 * 60 * 1000;
+
+        if (secondsAgo < isNewPost) {
+            return "bg-orange-200 hover:bg-orange-300";
+        } else if (secondsAgo < isRecentPost) {
+            return "bg-blue-200 hover:bg-blue-300";
+        } else {
+            return "bg-gray-200 hover:bg-gray-300";
+        }
     }
 };
 
@@ -71,12 +80,16 @@ const PostsList = ({ userName, loading, error, data, newPosts }) => {
     const postsToRender = [...newPosts, ...(data ? data.postsByChannel : [])];
 
     return (
-        <div>
+        <div className="px-2">
             {postsToRender.map((item, key) => (
                 <div
                     key={key}
                     className={`p-4 mb-2
-                    ${getUserBg(item.author.name, userName)} rounded-lg`}
+                    ${getUserBg(
+                        item.author.name,
+                        userName,
+                        new Date(item.created).getTime()
+                    )} rounded-lg`}
                 >
                     <div className="text-xm text-gray-600">
                         <span>{item.author.name} </span>
