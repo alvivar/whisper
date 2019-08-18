@@ -28,7 +28,12 @@ const wsLink = new WebSocketLink({
     uri: "ws://127.0.0.1:4000",
     options: {
         reconnect: true,
-        connectionParams: { headers: { "X-Hasura-access-key": "HASH" } }
+        connectionParams: {
+            headers: {
+                Authorization:
+                    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InNlcnZpY2UiOiJkZWZhdWx0QGRlZmF1bHQiLCJyb2xlcyI6WyJhZG1pbiJdfSwiaWF0IjoxNTY2MDg5OTA0LCJleHAiOjE1NjY2OTQ3MDR9.vpxYCIUzIstl0bLB4dOtgmRd2jSvjRi6v1buKWIqFnQ"
+            }
+        }
     }
 });
 
@@ -36,7 +41,8 @@ const authLink = setContext((_, { headers }) => {
     // Return the headers to the context so httpLink can read them
     return {
         headers: {
-            "X-Hasura-access-key": "HASH"
+            Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InNlcnZpY2UiOiJkZWZhdWx0QGRlZmF1bHQiLCJyb2xlcyI6WyJhZG1pbiJdfSwiaWF0IjoxNTY2MDg5OTA0LCJleHAiOjE1NjY2OTQ3MDR9.vpxYCIUzIstl0bLB4dOtgmRd2jSvjRi6v1buKWIqFnQ"
         }
     };
 });
