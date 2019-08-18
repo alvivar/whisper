@@ -2,6 +2,10 @@
     Useful stuff
 
 
+    I learned how to proxy websockets through Nginx from here
+    https://medium.com/@ibraheemabukaff/how-to-proxy-websockets-with-nginx-e333a5f0c0bb
+
+
     I learned how to setup the websocket part of the RedisPubSub subscription here
     https://medium.com/@VladimirNovick/graphql-with-react-hooks-e1ee3862c057
 
@@ -14,4 +18,5 @@
     https://stackoverflow.com/questions/17690803/node-js-getaddrinfo-enotfound
 
 
+    Talwind is really cool
     https://itnext.io/how-to-use-tailwind-css-with-react-16e9d478b8b1
