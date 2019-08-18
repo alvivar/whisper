@@ -1,4 +1,6 @@
 
+    client Verify if React is truly on development mode with pm2 and stuff
+
     client Don't allow to write a post if the name is an error
     client Names shouldn't contain @
     client Favicon
