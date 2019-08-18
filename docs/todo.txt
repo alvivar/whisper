@@ -1,13 +1,17 @@
 
+    client Favicon
     client Don't allow to write a post if the name is bad
     client Cookie user reload
 
     client The post should dissapear after a while?
     client The post dissapearing should fade?
 
-    cloud Deploy prisma with safe to Digital Ocean
-    cloud Deploy redis with safe to Digital Ocean
+    client bug WebSocket sockjs-node error (Webpack?)
 
+
+    2019/08/17 08:01 pm
+    x cloud Deploy prisma with safe to Digital Ocean
+    x cloud Deploy redis with safe to Digital Ocean
 
     2019/07/27 04:51 pm
     x client Differentiate user posts from others
