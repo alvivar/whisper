@@ -1,4 +1,7 @@
 
+    all Development vs Production environment variables for easy deploy
+    digitalocean Script to redeploy everything
+
     client Favicon
     client Don't allow to write a post if the name is bad
     client Cookie user reload
