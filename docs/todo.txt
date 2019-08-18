@@ -1,7 +1,10 @@
 
+    client bug Sending the whispers waits, while waiting pressing the button again could send multiple messages
+    client Upside down chat
+    client Long words
+    client Different colors for different persons, same color always for the current user
     all Development vs Production environment variables for easy deploy
-    digitalocean Script to redeploy everything
-
+    digitalocean Script to deploy everything
     client Favicon
     client Don't allow to write a post if the name is bad
     client Cookie user reload
@@ -13,6 +16,7 @@
 
 
     2019/08/17 08:01 pm
+    x client mobile Fix padding issues
     x cloud Deploy prisma with safe to Digital Ocean
     x cloud Deploy redis with safe to Digital Ocean
 
