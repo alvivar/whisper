@@ -19,13 +19,17 @@ import "./css/tailwind.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
+// @todo Environment variables
+// const prismaEndpoint = "127.0.0.1:4000"; // Local Prisma on development
+const prismaEndpoint = "165.22.45.96/prsm/"; // DigitalOcean on production
+
 const httpLink = new HttpLink({
-    uri: "http://127.0.0.1:4000"
+    uri: `http://${prismaEndpoint}`
 });
 
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-    uri: "ws://127.0.0.1:4000",
+    uri: `ws://${prismaEndpoint}`,
     options: {
         reconnect: true,
         connectionParams: {
@@ -60,7 +64,7 @@ const link = split(
 const client = new ApolloClient({
     link: authLink.concat(link),
     cache: new InMemoryCache(),
-    uri: "http://127.0.0.1:4000/"
+    uri: `http://${prismaEndpoint}`
 });
 
 ReactDOM.render(

@@ -5,7 +5,9 @@ const moment = require("moment");
 const { RedisPubSub } = require("graphql-redis-subscriptions");
 const Redis = require("ioredis");
 const pubsubOptions = {
-    host: "192.168.99.100",
+    // @todo Environment variables
+    // host: "192.168.99.100", // Docker Toolbox fix
+    host: "127.0.0.1",
     port: "6379",
     password: "redispass1234",
     retryStrategy: times => Math.min(times * 50, 2000)
