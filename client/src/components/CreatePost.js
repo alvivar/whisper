@@ -141,7 +141,7 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
     }, [ctrlKeyDown, enterKeyDown]);
 
     return (
-        <div className="flex flex-wrap">
+        <div className="flex flex-wrap px-2">
             <input
                 className={`float-right w-full p-1 my-2 text-gray-600 focus:text-gray-800 ${inputBg} border-transparent outline-none rounded-lg`}
                 onChange={e => setName(e.target.value)}
