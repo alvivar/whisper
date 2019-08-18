@@ -53,44 +53,45 @@ const timeDifference = (current, previous) => {
     return `${result < 0 ? 0 : result} ${tag}`;
 };
 
-const getUserBg = (nameA, nameB, created) => {
-    if (nameA.trim() === nameB.trim()) {
-        // Created by itself
-        return "bg-indigo-200 hover:bg-indigo-300";
-    } else {
-        // Create by another person
-        const secondsAgo = new Date().getTime() - created;
-        const isNewPost = 5 * 60 * 1000;
-        const isRecentPost = 25 * 60 * 1000;
-
-        if (secondsAgo < isNewPost) {
-            return "bg-orange-200 hover:bg-orange-300";
-        } else if (secondsAgo < isRecentPost) {
-            return "bg-blue-200 hover:bg-blue-300";
-        } else {
-            return "bg-gray-200 hover:bg-gray-300";
-        }
-    }
-};
-
 const PostsList = ({ userName, loading, error, data, newPosts }) => {
     if (loading) return fetchingMessage();
     if (error) return errorMessage();
 
+    // Data appended as needed
     const postsToRender = [...newPosts, ...(data ? data.postsByChannel : [])];
+
+    // Color variation
+
+    const bgFlow = [
+        "bg-blue-200 hover:bg-blue-300",
+        "bg-indigo-200 hover:bg-indigo-300",
+        "bg-teal-200 hover:bg-teal-300",
+        "bg-orange-200 hover:bg-orange-300",
+        "bg-pink-200 hover:bg-pink-300",
+        "bg-green-200 hover:bg-green-300",
+        "bg-yellow-200 hover:bg-yellow-300",
+        "bg-purple-200 hover:bg-purple-300",
+        "bg-red-200 hover:bg-red-300",
+        "bg-gray-200 hover:bg-gray-300"
+    ];
+
+    let bgFlowIndex = -1;
+    let lastName = "";
+
+    const postsWithBg = postsToRender.map(value => {
+        if (lastName !== value.author.name) {
+            lastName = value.author.name;
+            bgFlowIndex = (bgFlowIndex + 1) % bgFlow.length;
+        }
+
+        value.bg = bgFlow[bgFlowIndex];
+        return value;
+    });
 
     return (
         <div className="px-2">
-            {postsToRender.map((item, key) => (
-                <div
-                    key={key}
-                    className={`p-4 mb-2
-                    ${getUserBg(
-                        item.author.name,
-                        userName,
-                        new Date(item.created).getTime()
-                    )} rounded-lg`}
-                >
+            {postsWithBg.map((item, key) => (
+                <div key={key} className={`p-4 mb-2 ${item.bg} rounded-lg`}>
                     <div className="text-xm text-gray-600">
                         <span>{item.author.name} </span>
                         <span className="text-xs italic">
