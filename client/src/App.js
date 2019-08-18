@@ -156,6 +156,7 @@ function App() {
                 setUser={setUser}
                 channel={channel}
                 setChannel={setChannel}
+                setNewPosts={setNewPosts}
             />
             <PostsList
                 userName={user.name}

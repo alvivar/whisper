@@ -22,7 +22,7 @@ const SET_USER_NAME_MUTATION = gql`
     }
 `;
 
-const CreatePost = ({ user, setUser, channel, setChannel }) => {
+const CreatePost = ({ user, setUser, channel, setChannel, setNewPosts }) => {
     const createPostMutation = useMutation(POST_MUTATION);
     const setUserNameMutation = useMutation(SET_USER_NAME_MUTATION);
 
@@ -58,7 +58,7 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
 
         await createPostMutation({
             variables: {
-                userId: user.id,
+                userId: userId,
                 channel: channel.trim(),
                 content: content.trim()
             }
@@ -127,6 +127,7 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
     useEffect(() => {
         console.log("Channel modified");
         if (deboundedChannel && deboundedChannel !== channel) {
+            setNewPosts([]);
             setChannel(deboundedChannel);
             console.log(`Saving new channel: ${deboundedChannel}`);
         }
