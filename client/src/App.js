@@ -159,11 +159,11 @@ function App() {
                 setNewPosts={setNewPosts}
             />
             <PostsList
-                userName={user.name}
                 loading={postsLoading}
                 error={postsError}
                 data={postsData}
                 newPosts={newPosts}
+                channel={channel}
             />
         </div>
     );

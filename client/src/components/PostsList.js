@@ -53,19 +53,27 @@ const timeDifference = (current, previous) => {
     return `${result < 0 ? 0 : result} ${tag}`;
 };
 
-const PostsList = ({ userName, loading, error, data, newPosts }) => {
+const PostsList = ({ loading, error, data, newPosts, channel }) => {
     if (loading) return fetchingMessage();
     if (error) return errorMessage();
 
     // Data appended as needed
-    const postsToRender = [...newPosts, ...(data ? data.postsByChannel : [])];
+
+    const newPostsByChannel = newPosts.filter(i =>
+        i.author.name.includes(`@${channel}`)
+    );
+
+    const postsToRender = [
+        ...newPostsByChannel,
+        ...(data ? data.postsByChannel : [])
+    ];
 
     // Color variation
 
     const bgFlow = [
         "bg-blue-200 hover:bg-blue-300",
-        "bg-indigo-200 hover:bg-indigo-300",
         "bg-teal-200 hover:bg-teal-300",
+        "bg-indigo-200 hover:bg-indigo-300",
         "bg-orange-200 hover:bg-orange-300",
         "bg-pink-200 hover:bg-pink-300",
         "bg-green-200 hover:bg-green-300",
@@ -80,8 +88,11 @@ const PostsList = ({ userName, loading, error, data, newPosts }) => {
 
     const postsWithBg = postsToRender.map(value => {
         if (lastName !== value.author.name) {
+            value.firstName = true;
             lastName = value.author.name;
             bgFlowIndex = (bgFlowIndex + 1) % bgFlow.length;
+        } else {
+            value.firstName = false;
         }
 
         value.bg = bgFlow[bgFlowIndex];
@@ -93,7 +104,7 @@ const PostsList = ({ userName, loading, error, data, newPosts }) => {
             {postsWithBg.map((item, key) => (
                 <div key={key} className={`p-4 mb-2 ${item.bg} rounded-lg`}>
                     <div className="text-xm text-gray-600">
-                        <span>{item.author.name} </span>
+                        <span>{item.firstName ? item.author.name : ""} </span>
                         <span className="text-xs italic">
                             {timeDifference(
                                 new Date().getTime(),
