@@ -65,7 +65,7 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
         });
 
         setContent("");
-        textArea.focus();
+        // textArea.focus();
         console.log("Post created");
     };
 
