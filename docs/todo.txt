@@ -3,7 +3,7 @@
 T o  d o
 
 
-    client Changing the title according to unread messages
+    client Changing the favicon according to unread messages
     client Detect and compact links
     client Likes to collects whispers
     client A table for the channels
@@ -44,6 +44,7 @@ D o n e
 
 
     2019/09/16 08:37 pm
+    x client Changing the title according to unread messages
     x client Don't allow to write a post if the name is an error
     x client bug Sending the whispers waits, while waiting pressing the button again could send multiple messages
     x client Changing the name or channel should remove the red feedback

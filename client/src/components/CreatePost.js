@@ -182,7 +182,7 @@ const CreatePost = ({
                     disabled={buttonEnabled ? "" : true}
                 >
                     <span className="text-xl">
-                        {buttonEnabled ? " whisper " : " hm "}
+                        {buttonEnabled ? " whisper " : " hm... "}
                     </span>
                     <span className="text-xs">
                         {buttonEnabled ? " ctrl + enter " : ""}

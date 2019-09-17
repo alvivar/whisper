@@ -98,8 +98,12 @@ function App() {
             console.log("PubSub NEWPOST received");
             console.log(client);
             console.log(subscriptionData);
+
+            const newPost = subscriptionData.data.newPost;
+            document.title = `Whisper | ${newPost.author.name} whispers ${newPost.content}`;
+
             setButtonEnabled(true);
-            setNewPosts([subscriptionData.data.newPost, ...newPosts]);
+            setNewPosts([newPost, ...newPosts]);
         }
     });
 
