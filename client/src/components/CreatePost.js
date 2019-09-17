@@ -22,7 +22,14 @@ const SET_USER_NAME_MUTATION = gql`
     }
 `;
 
-const CreatePost = ({ user, setUser, channel, setChannel }) => {
+const CreatePost = ({
+    user,
+    setUser,
+    channel,
+    setChannel,
+    buttonEnabled,
+    setButtonEnabled
+}) => {
     const createPostMutation = useMutation(POST_MUTATION);
     const setUserNameMutation = useMutation(SET_USER_NAME_MUTATION);
 
@@ -50,7 +57,7 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
     const enterKeyDown = useKeyPress("Enter");
 
     const createPost = async (userId, channel, content) => {
-        if (!content.trim()) {
+        if (!content.trim() || !buttonEnabled) {
             textArea.focus();
             setTextAreaBg(textAreaBgError);
             console.log("Can't create an empty post");
@@ -66,6 +73,7 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
         });
 
         setContent("");
+        setButtonEnabled(false);
         // textArea.focus();
         console.log("Post created");
     };
@@ -103,9 +111,12 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
                     });
 
                     setInputBg(inputBgOk);
+                    setButtonEnabled(true);
+                    setTextAreaBg(textAreaBgOk);
                     console.log("Name saved");
                 } catch (error) {
                     setInputBg(inputBgError);
+                    setButtonEnabled(false);
                     console.log("Name error, already in db probably");
                 }
             };
@@ -151,6 +162,7 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
                 }}
                 value={name}
             />
+
             <textarea
                 ref={node => setTextArea(node)}
                 className={`w-full h-32 py-4 px-4 text-gray-800 ${textAreaBg} border border-transparent outline-none rounded-lg`}
@@ -162,10 +174,19 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
                     onClick={e => {
                         if (user.id) createPost(user.id, channel, content);
                     }}
-                    className="float-right h-16 my-2 py-2 px-4 text-sm text-gray-500 hover:text-white outline-none bg-blue-100 hover:bg-blue-400 border-transparent rounded-lg"
+                    className={
+                        buttonEnabled
+                            ? "float-right h-16 my-2 py-2 px-4 text-sm text-gray-500 hover:text-white bg-blue-100 hover:bg-blue-400 outline-none border-transparent rounded-lg"
+                            : "float-right h-16 my-2 py-2 px-4 text-sm text-gray-500 bg-gray-100 outline-none border-transparent rounded-lg"
+                    }
+                    disabled={buttonEnabled ? "" : true}
                 >
-                    <span className="text-xl">whisper</span>{" "}
-                    <span className="text-xs">ctrl + enter</span>
+                    <span className="text-xl">
+                        {buttonEnabled ? " whisper " : " hm "}
+                    </span>
+                    <span className="text-xs">
+                        {buttonEnabled ? " ctrl + enter " : ""}
+                    </span>
                 </button>
 
                 {contentLetters < 1 ? (

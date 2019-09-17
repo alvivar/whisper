@@ -50,16 +50,15 @@ const NEWPOST = gql`
 `;
 
 function App() {
-    const cookieName = "whisperUser";
-    const [cookies, setCookie, removeCookie] = useCookies([cookieName]);
-
-    const [newPosts, setNewPosts] = useState([]);
-
     const [user, setUser] = useState({
         id: "",
         name: "",
         sessionHash: ""
     });
+
+    const [newPosts, setNewPosts] = useState([]);
+
+    const [buttonEnabled, setButtonEnabled] = useState(true);
 
     // const {
     //     loading: userLoading,
@@ -99,6 +98,7 @@ function App() {
             console.log("PubSub NEWPOST received");
             console.log(client);
             console.log(subscriptionData);
+            setButtonEnabled(true);
             setNewPosts([subscriptionData.data.newPost, ...newPosts]);
         }
     });
@@ -137,18 +137,6 @@ function App() {
         }
     }, []);
 
-    useEffect(() => {
-        if (user.id) {
-            console.log("sessionHash saved in the cookie");
-
-            setCookie(
-                cookieName,
-                { sessionHash: user.sessionHash },
-                { path: "/" }
-            );
-        }
-    }, [user.id]);
-
     return (
         <div className="container mx-auto max-w-xl">
             <CreatePost
@@ -156,7 +144,8 @@ function App() {
                 setUser={setUser}
                 channel={channel}
                 setChannel={setChannel}
-                setNewPosts={setNewPosts}
+                buttonEnabled={buttonEnabled}
+                setButtonEnabled={setButtonEnabled}
             />
             <PostsList
                 loading={postsLoading}
