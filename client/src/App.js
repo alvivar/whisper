@@ -109,9 +109,9 @@ function App() {
                 console.log("Creating a new user");
 
                 const name =
-                    "anon" +
+                    "anon_" +
                     require("crypto")
-                        .randomBytes(10)
+                        .randomBytes(8)
                         .toString("hex") +
                     "@universe";
 
