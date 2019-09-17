@@ -20,8 +20,8 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 // @todo Environment variables
-const prismaEndpoint = "127.0.0.1:4000"; // Local Prisma on development
-// const prismaEndpoint = "165.22.45.96/prsm/"; // DigitalOcean on production
+// const prismaEndpoint = "127.0.0.1:4000"; // Local Prisma on development
+const prismaEndpoint = "165.22.45.96/prsm/"; // DigitalOcean on production
 
 const httpLink = new HttpLink({
     uri: `http://${prismaEndpoint}`
