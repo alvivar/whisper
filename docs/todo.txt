@@ -1,14 +1,38 @@
 
+
+        T o  d o
+
+
+    client bug Sending the whispers waits, while waiting pressing the button again could send multiple messages
+    client Don't allow to write a post if the name is an error
+
+    client Changing the title according to unread messages
+    client Detect and compact links
+    client Likes to collects whispers
+    client A table for the channels
+    client Automatic pagination
+
+    client Bug filtrado la @ ante el cambio de canal
+
+    client Read more after certain amount of words
+    client Channel view count
+
+    Cleaning received messages doesn't work with changing from room to room
+
+    client Detect socket disconnection to force refresh
+
+    client Emoji component
+    client ASCII art as stickers
+    Upgrade droplet statistics https://www.digitalocean.com/docs/monitoring/how-to/upgrade-legacy-agent/
+
     client Verify if React is truly on development mode with pm2 and stuff
 
-    client Don't allow to write a post if the name is an error
     client Names shouldn't contain @
     client Favicon
 
     all Development vs Production environment variables for easy deploy
     digitalocean Script to deploy everything
 
-    client bug Sending the whispers waits, while waiting pressing the button again could send multiple messages
     client Long words need to be splitted
 
     client Cookie user reload
@@ -16,9 +40,14 @@
     client Upside down chat (?)
     client The post should dissapear after a while?
     client The post dissapearing should fade?
-
     client bug WebSocket sockjs-node error (Webpack?)
 
+
+        D o n e
+
+
+    2019/09/16 08:37 pm
+    x client Changing the name or channel should remove the red feedback
 
     2019/08/18 11:41 am
     x client Different colors for different persons
