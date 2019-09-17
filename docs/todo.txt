@@ -1,7 +1,4 @@
-
-
 T o  d o
-
 
     client Changing the favicon according to unread messages
     client Detect and compact links
@@ -41,7 +38,6 @@ T o  d o
 
 
 D o n e
-
 
     2019/09/16 08:37 pm
     x client Changing the title according to unread messages
