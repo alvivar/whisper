@@ -27,6 +27,8 @@ const httpLink = new HttpLink({
     uri: `http://${prismaEndpoint}`
 });
 
+// @todo Understandh the Authorization thing on the links below
+
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
     uri: `ws://${prismaEndpoint}`,
