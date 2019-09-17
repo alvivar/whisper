@@ -30,6 +30,7 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
     const debouncedName = useDebounce(name, 1000);
 
     const inputBgOk = "bg-blue-100 focus:bg-blue-200";
+    const inputBgEditing = "bg-green-100 focus:bg-green-200";
     const inputBgError = "bg-red-300 focus:bg-red-400";
     const [inputBg, setInputBg] = useState(inputBgOk);
 
@@ -144,7 +145,10 @@ const CreatePost = ({ user, setUser, channel, setChannel }) => {
         <div className="flex flex-wrap px-2">
             <input
                 className={`float-right w-full p-1 my-2 text-gray-600 focus:text-gray-800 ${inputBg} border-transparent outline-none rounded-lg`}
-                onChange={e => setName(e.target.value)}
+                onChange={e => {
+                    setName(e.target.value);
+                    setInputBg(inputBgEditing);
+                }}
                 value={name}
             />
             <textarea
