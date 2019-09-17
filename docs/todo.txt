@@ -1,10 +1,7 @@
 
 
-        T o  d o
+T o  d o
 
-
-    client bug Sending the whispers waits, while waiting pressing the button again could send multiple messages
-    client Don't allow to write a post if the name is an error
 
     client Changing the title according to unread messages
     client Detect and compact links
@@ -23,7 +20,6 @@
 
     client Emoji component
     client ASCII art as stickers
-    Upgrade droplet statistics https://www.digitalocean.com/docs/monitoring/how-to/upgrade-legacy-agent/
 
     client Verify if React is truly on development mode with pm2 and stuff
 
@@ -31,6 +27,7 @@
     client Favicon
 
     all Development vs Production environment variables for easy deploy
+    digitalocean Upgrade droplet statistics https://www.digitalocean.com/docs/monitoring/how-to/upgrade-legacy-agent/
     digitalocean Script to deploy everything
 
     client Long words need to be splitted
@@ -43,10 +40,12 @@
     client bug WebSocket sockjs-node error (Webpack?)
 
 
-        D o n e
+D o n e
 
 
     2019/09/16 08:37 pm
+    x client Don't allow to write a post if the name is an error
+    x client bug Sending the whispers waits, while waiting pressing the button again could send multiple messages
     x client Changing the name or channel should remove the red feedback
 
     2019/08/18 11:41 am
