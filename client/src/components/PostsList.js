@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import useDebounce from "../hooks/useDebounce";
 
 const fetchingMessage = () => {
     return (
@@ -53,9 +56,86 @@ const timeDifference = (current, previous) => {
     return `${result < 0 ? 0 : result} ${tag}`;
 };
 
+// const List2 = () => {
+//     const [listItems, setListItems] = useState(
+//         Array.from(Array(30).keys(), n => n + 1)
+//     );
+//     const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
+
+//     function fetchMoreListItems() {
+//         setTimeout(() => {
+//             setListItems(prevState => [
+//                 ...prevState,
+//                 ...Array.from(Array(20).keys(), n => n + prevState.length + 1)
+//             ]);
+//             setIsFetching(false);
+//         }, 2000);
+//     }
+
+//     return (
+//         <>
+//             <ul className="list-group mb-2">
+//                 {listItems.map(listItem => (
+//                     <li className="list-group-item">List Item {listItem}</li>
+//                 ))}
+//             </ul>
+//             {isFetching && "Fetching more list items..."}
+//         </>
+//     );
+// };
+
 const PostsList = ({ loading, error, data, newPosts, channel }) => {
     if (loading) return fetchingMessage();
     if (error) return errorMessage();
+
+    // const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
+
+    // function fetchMoreListItems() {
+    //     setTimeout(() => {}, 2000);
+    // }
+
+    // useEffect(() => {
+    //     console.log("Name modified");
+    //     if (debouncedName) {
+    //         const setUserName = async () => {
+    //             try {
+    //                 const {
+    //                     loading: postsLoading,
+    //                     error: postsError,
+    //                     data: postsData,
+    //                     refetch: postsRefetch
+    //                 } = useQuery(POSTS_BY_CHANNEL, {
+    //                     variables: {
+    //                         channel: channel
+    //                     }
+    //                 });
+    //                 await setUserNameMutation({
+    //                     variables: {
+    //                         userId: user.id,
+    //                         name: debouncedName
+    //                     }
+    //                 });
+
+    //                 await setUser({
+    //                     id: user.id,
+    //                     name: debouncedName,
+    //                     sessionHash: user.sessionHash
+    //                 });
+
+    //                 setInputBg(inputBgOk);
+    //                 setTextAreaBg(textAreaBgOk);
+    //                 setButtonEnabled(true);
+    //                 console.log("Name saved");
+    //             } catch (error) {
+    //                 setInputBg(inputBgError);
+    //                 setButtonEnabled(false);
+    //                 console.log("Name error, already in db probably");
+    //             }
+    //         };
+
+    //         setUserName();
+    //     }
+    // }, [isFetching]);
 
     // Data appended as needed
 
@@ -68,7 +148,7 @@ const PostsList = ({ loading, error, data, newPosts, channel }) => {
         ...(data ? data.postsByChannel : [])
     ];
 
-    // Color variation
+    // Color variation on a new author
 
     const bgFlow = [
         "bg-blue-200 hover:bg-blue-300",
@@ -113,6 +193,7 @@ const PostsList = ({ loading, error, data, newPosts, channel }) => {
                         </span>
                     </div>
                     <div className="text-xl">
+                        {/* {item.content} */}
                         {item.content.split("\n").map((item, key) => {
                             return (
                                 <span key={key}>
@@ -124,6 +205,7 @@ const PostsList = ({ loading, error, data, newPosts, channel }) => {
                     </div>
                 </div>
             ))}
+            {/* <List2></List2> */}
         </div>
     );
 };
