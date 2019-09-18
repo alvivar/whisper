@@ -57,13 +57,14 @@ const CreatePost = ({
     const enterKeyDown = useKeyPress("Enter");
 
     const createPost = async (userId, channel, content) => {
-        if (!content.trim() || !buttonEnabled) {
+        if (!content.trim()) {
             textArea.focus();
             setTextAreaBg(textAreaBgError);
             console.log("Can't create an empty post");
             return false;
         }
 
+        setButtonEnabled(false);
         await createPostMutation({
             variables: {
                 userId: userId,
@@ -73,8 +74,6 @@ const CreatePost = ({
         });
 
         setContent("");
-        setButtonEnabled(false);
-        // textArea.focus();
         console.log("Post created");
     };
 
@@ -86,12 +85,14 @@ const CreatePost = ({
         }
     }, [name, user.name]);
 
+    // When the content changes
     useEffect(() => {
         setContentWords((content.trim().match(/\S+/g) || []).length);
         setContentLetters(content.trim().length);
         setTextAreaBg(textAreaBgOk);
     }, [content]);
 
+    // When the name should be saved, after debouncing
     useEffect(() => {
         console.log("Name modified");
         if (debouncedName) {
@@ -111,8 +112,8 @@ const CreatePost = ({
                     });
 
                     setInputBg(inputBgOk);
-                    setButtonEnabled(true);
                     setTextAreaBg(textAreaBgOk);
+                    setButtonEnabled(true);
                     console.log("Name saved");
                 } catch (error) {
                     setInputBg(inputBgError);
@@ -125,6 +126,7 @@ const CreatePost = ({
         }
     }, [debouncedName]);
 
+    // Channel extraction to debounce
     useEffect(() => {
         console.log(`Extracting channel from ${name}`);
         if (name.includes("@")) {
@@ -136,6 +138,7 @@ const CreatePost = ({
         }
     }, [name]);
 
+    // Channel debounced
     useEffect(() => {
         console.log("Channel modified");
         if (deboundedChannel && deboundedChannel !== channel) {
@@ -144,6 +147,7 @@ const CreatePost = ({
         }
     }, [deboundedChannel]);
 
+    // Ctrl+Enter to post
     useEffect(() => {
         console.log("Detecting Ctrl + Enter");
         if (ctrlKeyDown && enterKeyDown) {
@@ -162,7 +166,6 @@ const CreatePost = ({
                 }}
                 value={name}
             />
-
             <textarea
                 ref={node => setTextArea(node)}
                 className={`w-full h-32 py-4 px-4 text-gray-800 ${textAreaBg} border border-transparent outline-none rounded-lg`}
