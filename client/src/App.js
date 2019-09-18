@@ -6,6 +6,9 @@ import gql from "graphql-tag";
 import PostsList from "./components/PostsList";
 import CreatePost from "./components/CreatePost";
 
+import useInfiniteScroll from "./hooks/useInfiniteScroll";
+import useDebounce from "./hooks/useDebounce";
+
 const USER_QUERY = gql`
     query user($sessionHash: String!) {
         user(sessionHash: $sessionHash) {
@@ -26,8 +29,8 @@ const CREATE_USER_MUTATION = gql`
 `;
 
 const POSTS_BY_CHANNEL = gql`
-    query postsByChannel($channel: String!) {
-        postsByChannel(channel: $channel) {
+    query postsByChannel($channel: String!, $skip: Int!, $first: Int!) {
+        postsByChannel(channel: $channel, skip: $skip, first: $first) {
             content
             author {
                 name
@@ -56,6 +59,7 @@ function App() {
         sessionHash: ""
     });
 
+    const [oldPosts, setOldPosts] = useState([]);
     const [newPosts, setNewPosts] = useState([]);
 
     const [buttonEnabled, setButtonEnabled] = useState(true);
@@ -73,7 +77,11 @@ function App() {
 
     const createUserMutation = useMutation(CREATE_USER_MUTATION);
 
+    //  Fetch the posts as needed
+
     const [channel, setChannel] = useState("universe");
+    const [skip, setSkip] = useState(0);
+    // const [first, setFirst] = useState(10);
 
     const {
         loading: postsLoading,
@@ -82,9 +90,26 @@ function App() {
         refetch: postsRefetch
     } = useQuery(POSTS_BY_CHANNEL, {
         variables: {
-            channel: channel
+            channel: channel,
+            skip: skip,
+            first: 10
         }
     });
+
+    // Auto fetching
+
+    const fetchMorePosts = () => {
+        console.log("Old posts");
+        console.log(oldPosts);
+        setOldPosts([...oldPosts, ...postsData.postsByChannel]);
+        setSkip(skip + 10);
+        window.scrollTo(0, document.body.scrollHeight);
+        setIsFetching(false);
+    };
+
+    const [isFetching, setIsFetching] = useInfiniteScroll(fetchMorePosts);
+
+    // New post subscription
 
     const {
         loading: newPostLoading,
@@ -156,6 +181,7 @@ function App() {
                 error={postsError}
                 data={postsData}
                 newPosts={newPosts}
+                oldPosts={oldPosts}
                 channel={channel}
             />
         </div>

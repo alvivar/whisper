@@ -6,7 +6,7 @@ type Query {
     publishedPosts: [Post!]!
     post(postId: ID!): Post
     postsByUser(userId: ID!): [Post!]!
-    postsByChannel(channel: String!): [Post!]!
+    postsByChannel(channel: String!, skip: Int!, first: Int!): [Post!]!
 }
 
 type Mutation {

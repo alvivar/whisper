@@ -6,8 +6,8 @@ const { RedisPubSub } = require("graphql-redis-subscriptions");
 const Redis = require("ioredis");
 const pubsubOptions = {
     // @todo Environment variables
-    // host: "192.168.99.100", // Docker Toolbox fix
-    host: "127.0.0.1",
+    host: "192.168.99.100", // Docker Toolbox fix
+    // host: "127.0.0.1",
     port: "6379",
     password: "redispass1234",
     retryStrategy: times => Math.min(times * 50, 2000)
@@ -43,11 +43,12 @@ const resolvers = {
         postsByUser(root, args, context) {
             return context.prisma.user({ id: args.userId }).post();
         },
-        postsByChannel(root, { channel }, context) {
+        postsByChannel(root, { channel, skip, first }, context) {
             return context.prisma.posts({
                 where: { channel: channel },
                 orderBy: "created_DESC",
-                first: 50
+                skip: skip,
+                first: first
             });
         }
     },

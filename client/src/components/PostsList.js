@@ -84,7 +84,7 @@ const timeDifference = (current, previous) => {
 //     );
 // };
 
-const PostsList = ({ loading, error, data, newPosts, channel }) => {
+const PostsList = ({ loading, error, data, newPosts, oldPosts, channel }) => {
     if (loading) return fetchingMessage();
     if (error) return errorMessage();
 
@@ -145,6 +145,7 @@ const PostsList = ({ loading, error, data, newPosts, channel }) => {
 
     const postsToRender = [
         ...newPostsByChannel,
+        ...oldPosts,
         ...(data ? data.postsByChannel : [])
     ];
 
