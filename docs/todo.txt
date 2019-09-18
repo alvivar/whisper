@@ -1,10 +1,14 @@
+
 T o  d o
 
+    client Automatic pagination
     client Changing the favicon according to unread messages
+
+    all Development vs Production environment variables for easy deploy
+
     client Detect and compact links
     client Likes to collects whispers
     client A table for the channels
-    client Automatic pagination
 
     client Bug filtrado la @ ante el cambio de canal
 
@@ -21,9 +25,7 @@ T o  d o
     client Verify if React is truly on development mode with pm2 and stuff
 
     client Names shouldn't contain @
-    client Favicon
 
-    all Development vs Production environment variables for easy deploy
     digitalocean Upgrade droplet statistics https://www.digitalocean.com/docs/monitoring/how-to/upgrade-legacy-agent/
     digitalocean Script to deploy everything
 
@@ -38,6 +40,9 @@ T o  d o
 
 
 D o n e
+
+    2019/09/17 10:04 pm
+    x client Favicon
 
     2019/09/16 08:37 pm
     x client Changing the title according to unread messages
