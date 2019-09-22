@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import useDebounce from "../hooks/useDebounce";
-
 const fetchingMessage = () => {
     return (
-        <div className="p-4 text-center text-lg text-gray-700 italic rounded-lg">
+        <div className="mr-2 my-2 py-2 px-4 italic text-lg text-gray-600 bg-orange-100 outline-none border-transparent rounded-lg">
             Loading...
         </div>
     );
@@ -13,10 +10,13 @@ const fetchingMessage = () => {
 
 const errorMessage = () => {
     return (
-        <div className="p-4 bg-blue-100 text-center text-lg text-gray-700 italic rounded-lg">
-            <p>Something wrong just happen!</p>
-            <p>An alert has been send, I'll fixing this as soon as possible!</p>
-            <p>Enjoy your life in the meantime!</p>
+        <div className="mr-2 my-2 py-2 px-4 text-lg text-gray-600 bg-orange-100 outline-none border-transparent rounded-lg">
+            <p>😯💛</p>
+            <p className="italic">
+                Something wrong is happening... I'll fix this as soon as
+                possible!
+            </p>
+            <p className="italic">Enjoy your life in the meantime!</p>
         </div>
     );
 };
@@ -56,86 +56,9 @@ const timeDifference = (current, previous) => {
     return `${result < 0 ? 0 : result} ${tag}`;
 };
 
-// const List2 = () => {
-//     const [listItems, setListItems] = useState(
-//         Array.from(Array(30).keys(), n => n + 1)
-//     );
-//     const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
-
-//     function fetchMoreListItems() {
-//         setTimeout(() => {
-//             setListItems(prevState => [
-//                 ...prevState,
-//                 ...Array.from(Array(20).keys(), n => n + prevState.length + 1)
-//             ]);
-//             setIsFetching(false);
-//         }, 2000);
-//     }
-
-//     return (
-//         <>
-//             <ul className="list-group mb-2">
-//                 {listItems.map(listItem => (
-//                     <li className="list-group-item">List Item {listItem}</li>
-//                 ))}
-//             </ul>
-//             {isFetching && "Fetching more list items..."}
-//         </>
-//     );
-// };
-
 const PostsList = ({ loading, error, data, newPosts, channel }) => {
     if (loading) return fetchingMessage();
     if (error) return errorMessage();
-
-    // const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
-
-    // function fetchMoreListItems() {
-    //     setTimeout(() => {}, 2000);
-    // }
-
-    // useEffect(() => {
-    //     console.log("Name modified");
-    //     if (debouncedName) {
-    //         const setUserName = async () => {
-    //             try {
-    //                 const {
-    //                     loading: postsLoading,
-    //                     error: postsError,
-    //                     data: postsData,
-    //                     refetch: postsRefetch
-    //                 } = useQuery(POSTS_BY_CHANNEL, {
-    //                     variables: {
-    //                         channel: channel
-    //                     }
-    //                 });
-    //                 await setUserNameMutation({
-    //                     variables: {
-    //                         userId: user.id,
-    //                         name: debouncedName
-    //                     }
-    //                 });
-
-    //                 await setUser({
-    //                     id: user.id,
-    //                     name: debouncedName,
-    //                     sessionHash: user.sessionHash
-    //                 });
-
-    //                 setInputBg(inputBgOk);
-    //                 setTextAreaBg(textAreaBgOk);
-    //                 setButtonEnabled(true);
-    //                 console.log("Name saved");
-    //             } catch (error) {
-    //                 setInputBg(inputBgError);
-    //                 setButtonEnabled(false);
-    //                 console.log("Name error, already in db probably");
-    //             }
-    //         };
-
-    //         setUserName();
-    //     }
-    // }, [isFetching]);
 
     // Data appended as needed
 
@@ -165,7 +88,6 @@ const PostsList = ({ loading, error, data, newPosts, channel }) => {
 
     let bgFlowIndex = -1;
     let lastName = "";
-
     const postsWithBg = postsToRender.map(value => {
         if (lastName !== value.author.name) {
             value.firstName = true;
@@ -205,7 +127,6 @@ const PostsList = ({ loading, error, data, newPosts, channel }) => {
                     </div>
                 </div>
             ))}
-            {/* <List2></List2> */}
         </div>
     );
 };
