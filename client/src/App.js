@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
 import gql from "graphql-tag";
 
-import PostsList from "./components/PostsList";
+import PostsListAutoFetch from "./components/PostsListAutoFetch";
 import CreatePost from "./components/CreatePost";
 
 const USER_QUERY = gql`
@@ -158,7 +158,7 @@ function App() {
                 buttonEnabled={buttonEnabled}
                 setButtonEnabled={setButtonEnabled}
             />
-            <PostsList
+            <PostsListAutoFetch
                 loading={postsLoading}
                 error={postsError}
                 data={postsData}

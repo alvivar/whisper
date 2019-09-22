@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 const fetchingMessage = () => {
     return (
         <div className="mr-2 my-2 py-2 px-4 italic text-lg text-gray-600 bg-orange-100 outline-none border-transparent rounded-lg">
-            Loading...
+            <p>Loading...</p>
         </div>
     );
 };
