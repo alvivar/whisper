@@ -9,8 +9,8 @@ services:
         environment:
             PRISMA_CONFIG: |
                 # On console, for the prisma cli:
-                # export PRISMA_MANAGEMENT_API_SECRET="dockerpass1234"
-                managementApiSecret: dockerpass1234
+                # export PRISMA_MANAGEMENT_API_SECRET="@prisma.pass.management.20190922154720"
+                managementApiSecret: @prisma.pass.management.20190922154720
                 port: 4466
                 databases:
                   default:

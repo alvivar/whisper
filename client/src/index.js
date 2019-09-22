@@ -19,7 +19,7 @@ import "./css/tailwind.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-// @todo Environment variables
+// @todo @environment
 const prismaEndpoint = "127.0.0.1:4000"; // Local Prisma on development
 // const prismaEndpoint = "165.22.45.96/prsm/"; // DigitalOcean on production
 

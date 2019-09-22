@@ -1,1 +1,1 @@
-export PRISMA_MANAGEMENT_API_SECRET="dockerpass1234"
+export PRISMA_MANAGEMENT_API_SECRET="@prisma.pass.management.20190922154720"

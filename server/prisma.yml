@@ -1,5 +1,5 @@
-# @todo Environment variables
-endpoint: http://192.168.99.100:4466 # Docker Toolbox fix
+# @todo @environment
+endpoint: http://192.168.99.100:4466 # @docker toolbox fix
 # endpoint: http://127.0.0.1:4466
 datamodel: ./models/datamodel.prisma
 secret: pass1234
