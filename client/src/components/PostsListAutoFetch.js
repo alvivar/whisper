@@ -72,7 +72,7 @@ const timeDifference = (current, previous) => {
 const PostsList = ({ newPosts, channel }) => {
     // Query & pagination
 
-    const postsBatch = 8;
+    const postsBatch = 10;
     const [first, setFirst] = useState(postsBatch);
 
     const { loading, error, data, refetch } = useQuery(POSTS_BY_CHANNEL, {
@@ -83,23 +83,32 @@ const PostsList = ({ newPosts, channel }) => {
         }
     });
 
+    // When the data grows move the scroll to his previous position
+
+    const [previousScrollTop, setPreviousScrollTop] = useState(null);
+
+    useEffect(() => {
+        console.log(`Adjusting scroll to ${previousScrollTop}`);
+        if (previousScrollTop) {
+            document.documentElement.scrollTop = document.body.scrollTop = previousScrollTop;
+            setTimeout(() => {
+                document.documentElement.scrollTop = document.body.scrollTop = previousScrollTop;
+            }, 100);
+        }
+    }, [data]);
+
     // Refetch when the limit changes
 
     useEffect(() => {
+        console.log("Refetching...");
         refetch({ first: first });
     }, [first]);
-
-    // When the data grows move the scroll to previous bottom
-
-    const [chosenPostId, setChosenPostId] = useState();
-
-    useEffect(() => {
-        if (chosenPostId) window.scrollTo(0, chosenPostId);
-    }, [data]);
 
     // When the channel changes restart the pagination
 
     useEffect(() => {
+        console.log("Channel changed, let's reset the pagination");
+        setPreviousScrollTop(0);
         setFirst(postsBatch);
     }, [channel]);
 
@@ -183,7 +192,14 @@ const PostsList = ({ newPosts, channel }) => {
             {postsWithBg.length >= first ? (
                 <button
                     onClick={e => {
-                        setChosenPostId(document.documentElement.scrollTop);
+                        let scrollTop =
+                            document.documentElement.scrollTop ||
+                            document.body.scrollTop;
+
+                        console.log(
+                            `setPreviousScrollTop called: ${scrollTop}`
+                        );
+                        setPreviousScrollTop(scrollTop);
 
                         let page = first + postsBatch;
                         page = page < 0 ? 0 : page;
