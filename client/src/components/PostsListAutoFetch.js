@@ -91,7 +91,6 @@ const PostsList = ({ newPosts, channel }) => {
 
     // When the data grows move the scroll to previous bottom
 
-    const lastPostRef = useRef();
     const [chosenPostId, setChosenPostId] = useState();
 
     useEffect(() => {
@@ -154,7 +153,6 @@ const PostsList = ({ newPosts, channel }) => {
         <div className="px-2">
             {postsWithBg.map((item, key) => (
                 <div
-                    ref={lastPostRef}
                     key={key}
                     id={`post${key}`}
                     className={`p-4 mb-2 ${item.bg} rounded-lg`}
@@ -192,7 +190,7 @@ const PostsList = ({ newPosts, channel }) => {
                         setFirst(page);
                     }}
                     className={
-                        "float-right h-16 w-1/4 p-4 mb-2 text-sm text-gray-500 hover:text-white bg-blue-100 hover:bg-blue-400 outline-none border-transparent rounded-lg"
+                        "float-right w-full h-16 p-4 mb-2 text-sm text-gray-500 hover:text-white bg-blue-100 hover:bg-blue-400 outline-none border-transparent rounded-lg"
                     }
                 >
                     <span className="text-xl">more!</span>
