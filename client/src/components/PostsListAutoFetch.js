@@ -1,6 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
+import gql from "graphql-tag";
 
-const fetchingMessage = () => {
+const POSTS_BY_CHANNEL = gql`
+    query postsByChannel($channel: String!, $skip: Int!, $first: Int!) {
+        postsByChannel(channel: $channel, skip: $skip, first: $first) {
+            content
+            author {
+                name
+            }
+            created
+        }
+    }
+`;
+
+const loadingMessage = () => {
     return (
         <div className="mr-2 my-2 py-2 px-4 italic text-lg text-gray-600 bg-orange-100 outline-none border-transparent rounded-lg">
             <p>Loading...</p>
@@ -13,8 +27,7 @@ const errorMessage = () => {
         <div className="mr-2 my-2 py-2 px-4 text-lg text-gray-600 bg-orange-100 outline-none border-transparent rounded-lg">
             <p>😯💛</p>
             <p className="italic">
-                Something wrong is happening... I'll fix this as soon as
-                possible!
+                Something wrong is happening, 'll fix this as soon as possible.
             </p>
             <p className="italic">Enjoy your life in the meantime!</p>
         </div>
@@ -56,8 +69,44 @@ const timeDifference = (current, previous) => {
     return `${result < 0 ? 0 : result} ${tag}`;
 };
 
-const PostsList = ({ loading, error, data, newPosts, channel }) => {
-    if (loading) return fetchingMessage();
+const PostsList = ({ newPosts, channel }) => {
+    // Query & pagination
+
+    const postsBatch = 8;
+    const [first, setFirst] = useState(postsBatch);
+
+    const { loading, error, data, refetch } = useQuery(POSTS_BY_CHANNEL, {
+        variables: {
+            channel: channel,
+            skip: 0,
+            first: first
+        }
+    });
+
+    // Refetch when the limit changes
+
+    useEffect(() => {
+        refetch({ first: first });
+    }, [first]);
+
+    // When the data grows move the scroll to previous bottom
+
+    const lastPostRef = useRef();
+    const [chosenPostId, setChosenPostId] = useState();
+
+    useEffect(() => {
+        if (chosenPostId) window.scrollTo(0, chosenPostId);
+    }, [data]);
+
+    // When the channel changes restart the pagination
+
+    useEffect(() => {
+        setFirst(postsBatch);
+    }, [channel]);
+
+    // In the meantime
+
+    if (loading) return loadingMessage();
     if (error) return errorMessage();
 
     // Data appended as needed
@@ -104,7 +153,12 @@ const PostsList = ({ loading, error, data, newPosts, channel }) => {
     return (
         <div className="px-2">
             {postsWithBg.map((item, key) => (
-                <div key={key} className={`p-4 mb-2 ${item.bg} rounded-lg`}>
+                <div
+                    ref={lastPostRef}
+                    key={key}
+                    id={`post${key}`}
+                    className={`p-4 mb-2 ${item.bg} rounded-lg`}
+                >
                     <div className="text-xm text-gray-600">
                         <span>{item.firstName ? item.author.name : ""} </span>
                         <span className="text-xs italic">
@@ -127,6 +181,25 @@ const PostsList = ({ loading, error, data, newPosts, channel }) => {
                     </div>
                 </div>
             ))}
+
+            {postsWithBg.length >= first ? (
+                <button
+                    onClick={e => {
+                        setChosenPostId(document.documentElement.scrollTop);
+
+                        let page = first + postsBatch;
+                        page = page < 0 ? 0 : page;
+                        setFirst(page);
+                    }}
+                    className={
+                        "float-right h-16 w-1/4 p-4 mb-2 text-sm text-gray-500 hover:text-white bg-blue-100 hover:bg-blue-400 outline-none border-transparent rounded-lg"
+                    }
+                >
+                    <span className="text-xl">more!</span>
+                </button>
+            ) : (
+                <div></div>
+            )}
         </div>
     );
 };

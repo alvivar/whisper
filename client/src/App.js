@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
 import gql from "graphql-tag";
 
@@ -20,18 +20,6 @@ const CREATE_USER_MUTATION = gql`
             id
             name
             sessionHash
-        }
-    }
-`;
-
-const POSTS_BY_CHANNEL = gql`
-    query postsByChannel($channel: String!, $skip: Int!, $first: Int!) {
-        postsByChannel(channel: $channel, skip: $skip, first: $first) {
-            content
-            author {
-                name
-            }
-            created
         }
     }
 `;
@@ -72,26 +60,9 @@ function App() {
 
     const createUserMutation = useMutation(CREATE_USER_MUTATION);
 
-    //  Fetch the posts as needed
+    // New post subscription
 
     const [channel, setChannel] = useState("universe");
-    const [skip, setSkip] = useState(0);
-    const first = 10;
-
-    const {
-        loading: postsLoading,
-        error: postsError,
-        data: postsData,
-        refetch: postsRefetch
-    } = useQuery(POSTS_BY_CHANNEL, {
-        variables: {
-            channel: channel,
-            skip: skip,
-            first: first
-        }
-    });
-
-    // New post subscription
 
     const {
         loading: newPostLoading,
@@ -113,6 +84,8 @@ function App() {
             setNewPosts([newPost, ...newPosts]);
         }
     });
+
+    // New user
 
     useEffect(() => {
         if (!user.id) {
@@ -148,6 +121,11 @@ function App() {
         }
     }, []);
 
+    // Ref to the posts list end
+
+    const firstPost = useRef(null);
+    const lastPost = useRef(null);
+
     return (
         <div className="container mx-auto max-w-xl">
             <CreatePost
@@ -158,13 +136,12 @@ function App() {
                 buttonEnabled={buttonEnabled}
                 setButtonEnabled={setButtonEnabled}
             />
-            <PostsListAutoFetch
-                loading={postsLoading}
-                error={postsError}
-                data={postsData}
-                newPosts={newPosts}
-                channel={channel}
-            />
+
+            <div style={{ float: "left", clear: "both" }} ref={firstPost}></div>
+
+            <PostsListAutoFetch newPosts={newPosts} channel={channel} />
+
+            <div style={{ float: "left", clear: "both" }} ref={lastPost}></div>
         </div>
     );
 }
