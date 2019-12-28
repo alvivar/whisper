@@ -3,7 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregatePost {
+/* GraphQL */ `type AggregateBlog {
+  count: Int!
+}
+
+type AggregatePost {
   count: Int!
 }
 
@@ -15,11 +19,181 @@ type BatchPayload {
   count: Long!
 }
 
+type Blog {
+  id: ID!
+  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  name: String!
+  description: String!
+  created: DateTime!
+}
+
+type BlogConnection {
+  pageInfo: PageInfo!
+  edges: [BlogEdge]!
+  aggregate: AggregateBlog!
+}
+
+input BlogCreateInput {
+  id: ID
+  posts: PostCreateManyWithoutBlogInput
+  name: String!
+  description: String!
+}
+
+input BlogCreateOneWithoutPostsInput {
+  create: BlogCreateWithoutPostsInput
+  connect: BlogWhereUniqueInput
+}
+
+input BlogCreateWithoutPostsInput {
+  id: ID
+  name: String!
+  description: String!
+}
+
+type BlogEdge {
+  node: Blog!
+  cursor: String!
+}
+
+enum BlogOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  description_ASC
+  description_DESC
+  created_ASC
+  created_DESC
+}
+
+type BlogPreviousValues {
+  id: ID!
+  name: String!
+  description: String!
+  created: DateTime!
+}
+
+type BlogSubscriptionPayload {
+  mutation: MutationType!
+  node: Blog
+  updatedFields: [String!]
+  previousValues: BlogPreviousValues
+}
+
+input BlogSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: BlogWhereInput
+  AND: [BlogSubscriptionWhereInput!]
+  OR: [BlogSubscriptionWhereInput!]
+  NOT: [BlogSubscriptionWhereInput!]
+}
+
+input BlogUpdateInput {
+  posts: PostUpdateManyWithoutBlogInput
+  name: String
+  description: String
+}
+
+input BlogUpdateManyMutationInput {
+  name: String
+  description: String
+}
+
+input BlogUpdateOneRequiredWithoutPostsInput {
+  create: BlogCreateWithoutPostsInput
+  update: BlogUpdateWithoutPostsDataInput
+  upsert: BlogUpsertWithoutPostsInput
+  connect: BlogWhereUniqueInput
+}
+
+input BlogUpdateWithoutPostsDataInput {
+  name: String
+  description: String
+}
+
+input BlogUpsertWithoutPostsInput {
+  update: BlogUpdateWithoutPostsDataInput!
+  create: BlogCreateWithoutPostsInput!
+}
+
+input BlogWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  posts_every: PostWhereInput
+  posts_some: PostWhereInput
+  posts_none: PostWhereInput
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  created: DateTime
+  created_not: DateTime
+  created_in: [DateTime!]
+  created_not_in: [DateTime!]
+  created_lt: DateTime
+  created_lte: DateTime
+  created_gt: DateTime
+  created_gte: DateTime
+  AND: [BlogWhereInput!]
+  OR: [BlogWhereInput!]
+  NOT: [BlogWhereInput!]
+}
+
+input BlogWhereUniqueInput {
+  id: ID
+}
+
 scalar DateTime
 
 scalar Long
 
 type Mutation {
+  createBlog(data: BlogCreateInput!): Blog!
+  updateBlog(data: BlogUpdateInput!, where: BlogWhereUniqueInput!): Blog
+  updateManyBlogs(data: BlogUpdateManyMutationInput!, where: BlogWhereInput): BatchPayload!
+  upsertBlog(where: BlogWhereUniqueInput!, create: BlogCreateInput!, update: BlogUpdateInput!): Blog!
+  deleteBlog(where: BlogWhereUniqueInput!): Blog
+  deleteManyBlogs(where: BlogWhereInput): BatchPayload!
   createPost(data: PostCreateInput!): Post!
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
   updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
@@ -55,12 +229,11 @@ type Post {
   id: ID!
   author: User
   likedBy(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  blog: Blog!
+  published: Boolean!
   channel: String
   content: String!
   score: Int
-  published: Boolean!
-  expired: Boolean!
-  expiration: DateTime!
   created: DateTime!
 }
 
@@ -74,16 +247,20 @@ input PostCreateInput {
   id: ID
   author: UserCreateOneWithoutWrittenPostsInput
   likedBy: UserCreateManyWithoutLikedPostsInput
+  blog: BlogCreateOneWithoutPostsInput!
+  published: Boolean
   channel: String
   content: String!
   score: Int
-  published: Boolean
-  expired: Boolean
-  expiration: DateTime!
 }
 
 input PostCreateManyWithoutAuthorInput {
   create: [PostCreateWithoutAuthorInput!]
+  connect: [PostWhereUniqueInput!]
+}
+
+input PostCreateManyWithoutBlogInput {
+  create: [PostCreateWithoutBlogInput!]
   connect: [PostWhereUniqueInput!]
 }
 
@@ -95,23 +272,31 @@ input PostCreateManyWithoutLikedByInput {
 input PostCreateWithoutAuthorInput {
   id: ID
   likedBy: UserCreateManyWithoutLikedPostsInput
+  blog: BlogCreateOneWithoutPostsInput!
+  published: Boolean
   channel: String
   content: String!
   score: Int
+}
+
+input PostCreateWithoutBlogInput {
+  id: ID
+  author: UserCreateOneWithoutWrittenPostsInput
+  likedBy: UserCreateManyWithoutLikedPostsInput
   published: Boolean
-  expired: Boolean
-  expiration: DateTime!
+  channel: String
+  content: String!
+  score: Int
 }
 
 input PostCreateWithoutLikedByInput {
   id: ID
   author: UserCreateOneWithoutWrittenPostsInput
+  blog: BlogCreateOneWithoutPostsInput!
+  published: Boolean
   channel: String
   content: String!
   score: Int
-  published: Boolean
-  expired: Boolean
-  expiration: DateTime!
 }
 
 type PostEdge {
@@ -122,30 +307,24 @@ type PostEdge {
 enum PostOrderByInput {
   id_ASC
   id_DESC
+  published_ASC
+  published_DESC
   channel_ASC
   channel_DESC
   content_ASC
   content_DESC
   score_ASC
   score_DESC
-  published_ASC
-  published_DESC
-  expired_ASC
-  expired_DESC
-  expiration_ASC
-  expiration_DESC
   created_ASC
   created_DESC
 }
 
 type PostPreviousValues {
   id: ID!
+  published: Boolean!
   channel: String
   content: String!
   score: Int
-  published: Boolean!
-  expired: Boolean!
-  expiration: DateTime!
   created: DateTime!
 }
 
@@ -164,6 +343,8 @@ input PostScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  published: Boolean
+  published_not: Boolean
   channel: String
   channel_not: String
   channel_in: [String!]
@@ -200,18 +381,6 @@ input PostScalarWhereInput {
   score_lte: Int
   score_gt: Int
   score_gte: Int
-  published: Boolean
-  published_not: Boolean
-  expired: Boolean
-  expired_not: Boolean
-  expiration: DateTime
-  expiration_not: DateTime
-  expiration_in: [DateTime!]
-  expiration_not_in: [DateTime!]
-  expiration_lt: DateTime
-  expiration_lte: DateTime
-  expiration_gt: DateTime
-  expiration_gte: DateTime
   created: DateTime
   created_not: DateTime
   created_in: [DateTime!]
@@ -246,30 +415,25 @@ input PostSubscriptionWhereInput {
 input PostUpdateInput {
   author: UserUpdateOneWithoutWrittenPostsInput
   likedBy: UserUpdateManyWithoutLikedPostsInput
+  blog: BlogUpdateOneRequiredWithoutPostsInput
+  published: Boolean
   channel: String
   content: String
   score: Int
-  published: Boolean
-  expired: Boolean
-  expiration: DateTime
 }
 
 input PostUpdateManyDataInput {
+  published: Boolean
   channel: String
   content: String
   score: Int
-  published: Boolean
-  expired: Boolean
-  expiration: DateTime
 }
 
 input PostUpdateManyMutationInput {
+  published: Boolean
   channel: String
   content: String
   score: Int
-  published: Boolean
-  expired: Boolean
-  expiration: DateTime
 }
 
 input PostUpdateManyWithoutAuthorInput {
@@ -280,6 +444,18 @@ input PostUpdateManyWithoutAuthorInput {
   disconnect: [PostWhereUniqueInput!]
   update: [PostUpdateWithWhereUniqueWithoutAuthorInput!]
   upsert: [PostUpsertWithWhereUniqueWithoutAuthorInput!]
+  deleteMany: [PostScalarWhereInput!]
+  updateMany: [PostUpdateManyWithWhereNestedInput!]
+}
+
+input PostUpdateManyWithoutBlogInput {
+  create: [PostCreateWithoutBlogInput!]
+  delete: [PostWhereUniqueInput!]
+  connect: [PostWhereUniqueInput!]
+  set: [PostWhereUniqueInput!]
+  disconnect: [PostWhereUniqueInput!]
+  update: [PostUpdateWithWhereUniqueWithoutBlogInput!]
+  upsert: [PostUpsertWithWhereUniqueWithoutBlogInput!]
   deleteMany: [PostScalarWhereInput!]
   updateMany: [PostUpdateManyWithWhereNestedInput!]
 }
@@ -303,27 +479,39 @@ input PostUpdateManyWithWhereNestedInput {
 
 input PostUpdateWithoutAuthorDataInput {
   likedBy: UserUpdateManyWithoutLikedPostsInput
+  blog: BlogUpdateOneRequiredWithoutPostsInput
+  published: Boolean
   channel: String
   content: String
   score: Int
+}
+
+input PostUpdateWithoutBlogDataInput {
+  author: UserUpdateOneWithoutWrittenPostsInput
+  likedBy: UserUpdateManyWithoutLikedPostsInput
   published: Boolean
-  expired: Boolean
-  expiration: DateTime
+  channel: String
+  content: String
+  score: Int
 }
 
 input PostUpdateWithoutLikedByDataInput {
   author: UserUpdateOneWithoutWrittenPostsInput
+  blog: BlogUpdateOneRequiredWithoutPostsInput
+  published: Boolean
   channel: String
   content: String
   score: Int
-  published: Boolean
-  expired: Boolean
-  expiration: DateTime
 }
 
 input PostUpdateWithWhereUniqueWithoutAuthorInput {
   where: PostWhereUniqueInput!
   data: PostUpdateWithoutAuthorDataInput!
+}
+
+input PostUpdateWithWhereUniqueWithoutBlogInput {
+  where: PostWhereUniqueInput!
+  data: PostUpdateWithoutBlogDataInput!
 }
 
 input PostUpdateWithWhereUniqueWithoutLikedByInput {
@@ -335,6 +523,12 @@ input PostUpsertWithWhereUniqueWithoutAuthorInput {
   where: PostWhereUniqueInput!
   update: PostUpdateWithoutAuthorDataInput!
   create: PostCreateWithoutAuthorInput!
+}
+
+input PostUpsertWithWhereUniqueWithoutBlogInput {
+  where: PostWhereUniqueInput!
+  update: PostUpdateWithoutBlogDataInput!
+  create: PostCreateWithoutBlogInput!
 }
 
 input PostUpsertWithWhereUniqueWithoutLikedByInput {
@@ -362,6 +556,9 @@ input PostWhereInput {
   likedBy_every: UserWhereInput
   likedBy_some: UserWhereInput
   likedBy_none: UserWhereInput
+  blog: BlogWhereInput
+  published: Boolean
+  published_not: Boolean
   channel: String
   channel_not: String
   channel_in: [String!]
@@ -398,18 +595,6 @@ input PostWhereInput {
   score_lte: Int
   score_gt: Int
   score_gte: Int
-  published: Boolean
-  published_not: Boolean
-  expired: Boolean
-  expired_not: Boolean
-  expiration: DateTime
-  expiration_not: DateTime
-  expiration_in: [DateTime!]
-  expiration_not_in: [DateTime!]
-  expiration_lt: DateTime
-  expiration_lte: DateTime
-  expiration_gt: DateTime
-  expiration_gte: DateTime
   created: DateTime
   created_not: DateTime
   created_in: [DateTime!]
@@ -428,6 +613,9 @@ input PostWhereUniqueInput {
 }
 
 type Query {
+  blog(where: BlogWhereUniqueInput!): Blog
+  blogs(where: BlogWhereInput, orderBy: BlogOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Blog]!
+  blogsConnection(where: BlogWhereInput, orderBy: BlogOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BlogConnection!
   post(where: PostWhereUniqueInput!): Post
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
@@ -438,6 +626,7 @@ type Query {
 }
 
 type Subscription {
+  blog(where: BlogSubscriptionWhereInput): BlogSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }

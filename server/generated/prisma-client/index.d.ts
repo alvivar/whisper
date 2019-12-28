@@ -16,6 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  blog: (where?: BlogWhereInput) => Promise<boolean>;
   post: (where?: PostWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -39,6 +40,25 @@ export interface Prisma {
    * Queries
    */
 
+  blog: (where: BlogWhereUniqueInput) => BlogNullablePromise;
+  blogs: (args?: {
+    where?: BlogWhereInput;
+    orderBy?: BlogOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Blog>;
+  blogsConnection: (args?: {
+    where?: BlogWhereInput;
+    orderBy?: BlogOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => BlogConnectionPromise;
   post: (where: PostWhereUniqueInput) => PostNullablePromise;
   posts: (args?: {
     where?: PostWhereInput;
@@ -83,6 +103,22 @@ export interface Prisma {
    * Mutations
    */
 
+  createBlog: (data: BlogCreateInput) => BlogPromise;
+  updateBlog: (args: {
+    data: BlogUpdateInput;
+    where: BlogWhereUniqueInput;
+  }) => BlogPromise;
+  updateManyBlogs: (args: {
+    data: BlogUpdateManyMutationInput;
+    where?: BlogWhereInput;
+  }) => BatchPayloadPromise;
+  upsertBlog: (args: {
+    where: BlogWhereUniqueInput;
+    create: BlogCreateInput;
+    update: BlogUpdateInput;
+  }) => BlogPromise;
+  deleteBlog: (where: BlogWhereUniqueInput) => BlogPromise;
+  deleteManyBlogs: (where?: BlogWhereInput) => BatchPayloadPromise;
   createPost: (data: PostCreateInput) => PostPromise;
   updatePost: (args: {
     data: PostUpdateInput;
@@ -124,6 +160,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  blog: (
+    where?: BlogSubscriptionWhereInput
+  ) => BlogSubscriptionPayloadSubscription;
   post: (
     where?: PostSubscriptionWhereInput
   ) => PostSubscriptionPayloadSubscription;
@@ -143,18 +182,14 @@ export interface ClientConstructor<T> {
 export type PostOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "published_ASC"
+  | "published_DESC"
   | "channel_ASC"
   | "channel_DESC"
   | "content_ASC"
   | "content_DESC"
   | "score_ASC"
   | "score_DESC"
-  | "published_ASC"
-  | "published_DESC"
-  | "expired_ASC"
-  | "expired_DESC"
-  | "expiration_ASC"
-  | "expiration_DESC"
   | "created_ASC"
   | "created_DESC";
 
@@ -168,9 +203,19 @@ export type UserOrderByInput =
   | "created_ASC"
   | "created_DESC";
 
+export type BlogOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "description_ASC"
+  | "description_DESC"
+  | "created_ASC"
+  | "created_DESC";
+
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type PostWhereUniqueInput = AtLeastOne<{
+export type BlogWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
@@ -193,6 +238,9 @@ export interface PostWhereInput {
   likedBy_every?: Maybe<UserWhereInput>;
   likedBy_some?: Maybe<UserWhereInput>;
   likedBy_none?: Maybe<UserWhereInput>;
+  blog?: Maybe<BlogWhereInput>;
+  published?: Maybe<Boolean>;
+  published_not?: Maybe<Boolean>;
   channel?: Maybe<String>;
   channel_not?: Maybe<String>;
   channel_in?: Maybe<String[] | String>;
@@ -229,18 +277,6 @@ export interface PostWhereInput {
   score_lte?: Maybe<Int>;
   score_gt?: Maybe<Int>;
   score_gte?: Maybe<Int>;
-  published?: Maybe<Boolean>;
-  published_not?: Maybe<Boolean>;
-  expired?: Maybe<Boolean>;
-  expired_not?: Maybe<Boolean>;
-  expiration?: Maybe<DateTimeInput>;
-  expiration_not?: Maybe<DateTimeInput>;
-  expiration_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  expiration_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  expiration_lt?: Maybe<DateTimeInput>;
-  expiration_lte?: Maybe<DateTimeInput>;
-  expiration_gt?: Maybe<DateTimeInput>;
-  expiration_gte?: Maybe<DateTimeInput>;
   created?: Maybe<DateTimeInput>;
   created_not?: Maybe<DateTimeInput>;
   created_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -316,22 +352,95 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
+export interface BlogWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  posts_every?: Maybe<PostWhereInput>;
+  posts_some?: Maybe<PostWhereInput>;
+  posts_none?: Maybe<PostWhereInput>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  created?: Maybe<DateTimeInput>;
+  created_not?: Maybe<DateTimeInput>;
+  created_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  created_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  created_lt?: Maybe<DateTimeInput>;
+  created_lte?: Maybe<DateTimeInput>;
+  created_gt?: Maybe<DateTimeInput>;
+  created_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<BlogWhereInput[] | BlogWhereInput>;
+  OR?: Maybe<BlogWhereInput[] | BlogWhereInput>;
+  NOT?: Maybe<BlogWhereInput[] | BlogWhereInput>;
+}
+
+export type PostWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   name?: Maybe<String>;
   sessionHash?: Maybe<String>;
 }>;
 
-export interface PostCreateInput {
+export interface BlogCreateInput {
+  id?: Maybe<ID_Input>;
+  posts?: Maybe<PostCreateManyWithoutBlogInput>;
+  name: String;
+  description: String;
+}
+
+export interface PostCreateManyWithoutBlogInput {
+  create?: Maybe<PostCreateWithoutBlogInput[] | PostCreateWithoutBlogInput>;
+  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+}
+
+export interface PostCreateWithoutBlogInput {
   id?: Maybe<ID_Input>;
   author?: Maybe<UserCreateOneWithoutWrittenPostsInput>;
   likedBy?: Maybe<UserCreateManyWithoutLikedPostsInput>;
+  published?: Maybe<Boolean>;
   channel?: Maybe<String>;
   content: String;
   score?: Maybe<Int>;
-  published?: Maybe<Boolean>;
-  expired?: Maybe<Boolean>;
-  expiration: DateTimeInput;
 }
 
 export interface UserCreateOneWithoutWrittenPostsInput {
@@ -356,12 +465,22 @@ export interface PostCreateManyWithoutLikedByInput {
 export interface PostCreateWithoutLikedByInput {
   id?: Maybe<ID_Input>;
   author?: Maybe<UserCreateOneWithoutWrittenPostsInput>;
+  blog: BlogCreateOneWithoutPostsInput;
+  published?: Maybe<Boolean>;
   channel?: Maybe<String>;
   content: String;
   score?: Maybe<Int>;
-  published?: Maybe<Boolean>;
-  expired?: Maybe<Boolean>;
-  expiration: DateTimeInput;
+}
+
+export interface BlogCreateOneWithoutPostsInput {
+  create?: Maybe<BlogCreateWithoutPostsInput>;
+  connect?: Maybe<BlogWhereUniqueInput>;
+}
+
+export interface BlogCreateWithoutPostsInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  description: String;
 }
 
 export interface UserCreateManyWithoutLikedPostsInput {
@@ -386,23 +505,51 @@ export interface PostCreateManyWithoutAuthorInput {
 export interface PostCreateWithoutAuthorInput {
   id?: Maybe<ID_Input>;
   likedBy?: Maybe<UserCreateManyWithoutLikedPostsInput>;
+  blog: BlogCreateOneWithoutPostsInput;
+  published?: Maybe<Boolean>;
   channel?: Maybe<String>;
   content: String;
   score?: Maybe<Int>;
-  published?: Maybe<Boolean>;
-  expired?: Maybe<Boolean>;
-  expiration: DateTimeInput;
 }
 
-export interface PostUpdateInput {
+export interface BlogUpdateInput {
+  posts?: Maybe<PostUpdateManyWithoutBlogInput>;
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+}
+
+export interface PostUpdateManyWithoutBlogInput {
+  create?: Maybe<PostCreateWithoutBlogInput[] | PostCreateWithoutBlogInput>;
+  delete?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  set?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  disconnect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  update?: Maybe<
+    | PostUpdateWithWhereUniqueWithoutBlogInput[]
+    | PostUpdateWithWhereUniqueWithoutBlogInput
+  >;
+  upsert?: Maybe<
+    | PostUpsertWithWhereUniqueWithoutBlogInput[]
+    | PostUpsertWithWhereUniqueWithoutBlogInput
+  >;
+  deleteMany?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
+  updateMany?: Maybe<
+    PostUpdateManyWithWhereNestedInput[] | PostUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface PostUpdateWithWhereUniqueWithoutBlogInput {
+  where: PostWhereUniqueInput;
+  data: PostUpdateWithoutBlogDataInput;
+}
+
+export interface PostUpdateWithoutBlogDataInput {
   author?: Maybe<UserUpdateOneWithoutWrittenPostsInput>;
   likedBy?: Maybe<UserUpdateManyWithoutLikedPostsInput>;
+  published?: Maybe<Boolean>;
   channel?: Maybe<String>;
   content?: Maybe<String>;
   score?: Maybe<Int>;
-  published?: Maybe<Boolean>;
-  expired?: Maybe<Boolean>;
-  expiration?: Maybe<DateTimeInput>;
 }
 
 export interface UserUpdateOneWithoutWrittenPostsInput {
@@ -449,12 +596,28 @@ export interface PostUpdateWithWhereUniqueWithoutLikedByInput {
 
 export interface PostUpdateWithoutLikedByDataInput {
   author?: Maybe<UserUpdateOneWithoutWrittenPostsInput>;
+  blog?: Maybe<BlogUpdateOneRequiredWithoutPostsInput>;
+  published?: Maybe<Boolean>;
   channel?: Maybe<String>;
   content?: Maybe<String>;
   score?: Maybe<Int>;
-  published?: Maybe<Boolean>;
-  expired?: Maybe<Boolean>;
-  expiration?: Maybe<DateTimeInput>;
+}
+
+export interface BlogUpdateOneRequiredWithoutPostsInput {
+  create?: Maybe<BlogCreateWithoutPostsInput>;
+  update?: Maybe<BlogUpdateWithoutPostsDataInput>;
+  upsert?: Maybe<BlogUpsertWithoutPostsInput>;
+  connect?: Maybe<BlogWhereUniqueInput>;
+}
+
+export interface BlogUpdateWithoutPostsDataInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+}
+
+export interface BlogUpsertWithoutPostsInput {
+  update: BlogUpdateWithoutPostsDataInput;
+  create: BlogCreateWithoutPostsInput;
 }
 
 export interface PostUpsertWithWhereUniqueWithoutLikedByInput {
@@ -478,6 +641,8 @@ export interface PostScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  published?: Maybe<Boolean>;
+  published_not?: Maybe<Boolean>;
   channel?: Maybe<String>;
   channel_not?: Maybe<String>;
   channel_in?: Maybe<String[] | String>;
@@ -514,18 +679,6 @@ export interface PostScalarWhereInput {
   score_lte?: Maybe<Int>;
   score_gt?: Maybe<Int>;
   score_gte?: Maybe<Int>;
-  published?: Maybe<Boolean>;
-  published_not?: Maybe<Boolean>;
-  expired?: Maybe<Boolean>;
-  expired_not?: Maybe<Boolean>;
-  expiration?: Maybe<DateTimeInput>;
-  expiration_not?: Maybe<DateTimeInput>;
-  expiration_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  expiration_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  expiration_lt?: Maybe<DateTimeInput>;
-  expiration_lte?: Maybe<DateTimeInput>;
-  expiration_gt?: Maybe<DateTimeInput>;
-  expiration_gte?: Maybe<DateTimeInput>;
   created?: Maybe<DateTimeInput>;
   created_not?: Maybe<DateTimeInput>;
   created_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -545,12 +698,10 @@ export interface PostUpdateManyWithWhereNestedInput {
 }
 
 export interface PostUpdateManyDataInput {
+  published?: Maybe<Boolean>;
   channel?: Maybe<String>;
   content?: Maybe<String>;
   score?: Maybe<Int>;
-  published?: Maybe<Boolean>;
-  expired?: Maybe<Boolean>;
-  expiration?: Maybe<DateTimeInput>;
 }
 
 export interface UserUpsertWithoutWrittenPostsInput {
@@ -618,12 +769,11 @@ export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
 
 export interface PostUpdateWithoutAuthorDataInput {
   likedBy?: Maybe<UserUpdateManyWithoutLikedPostsInput>;
+  blog?: Maybe<BlogUpdateOneRequiredWithoutPostsInput>;
+  published?: Maybe<Boolean>;
   channel?: Maybe<String>;
   content?: Maybe<String>;
   score?: Maybe<Int>;
-  published?: Maybe<Boolean>;
-  expired?: Maybe<Boolean>;
-  expiration?: Maybe<DateTimeInput>;
 }
 
 export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
@@ -704,13 +854,43 @@ export interface UserUpdateManyDataInput {
   sessionHash?: Maybe<String>;
 }
 
-export interface PostUpdateManyMutationInput {
+export interface PostUpsertWithWhereUniqueWithoutBlogInput {
+  where: PostWhereUniqueInput;
+  update: PostUpdateWithoutBlogDataInput;
+  create: PostCreateWithoutBlogInput;
+}
+
+export interface BlogUpdateManyMutationInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+}
+
+export interface PostCreateInput {
+  id?: Maybe<ID_Input>;
+  author?: Maybe<UserCreateOneWithoutWrittenPostsInput>;
+  likedBy?: Maybe<UserCreateManyWithoutLikedPostsInput>;
+  blog: BlogCreateOneWithoutPostsInput;
+  published?: Maybe<Boolean>;
+  channel?: Maybe<String>;
+  content: String;
+  score?: Maybe<Int>;
+}
+
+export interface PostUpdateInput {
+  author?: Maybe<UserUpdateOneWithoutWrittenPostsInput>;
+  likedBy?: Maybe<UserUpdateManyWithoutLikedPostsInput>;
+  blog?: Maybe<BlogUpdateOneRequiredWithoutPostsInput>;
+  published?: Maybe<Boolean>;
   channel?: Maybe<String>;
   content?: Maybe<String>;
   score?: Maybe<Int>;
+}
+
+export interface PostUpdateManyMutationInput {
   published?: Maybe<Boolean>;
-  expired?: Maybe<Boolean>;
-  expiration?: Maybe<DateTimeInput>;
+  channel?: Maybe<String>;
+  content?: Maybe<String>;
+  score?: Maybe<Int>;
 }
 
 export interface UserCreateInput {
@@ -731,6 +911,17 @@ export interface UserUpdateInput {
 export interface UserUpdateManyMutationInput {
   name?: Maybe<String>;
   sessionHash?: Maybe<String>;
+}
+
+export interface BlogSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<BlogWhereInput>;
+  AND?: Maybe<BlogSubscriptionWhereInput[] | BlogSubscriptionWhereInput>;
+  OR?: Maybe<BlogSubscriptionWhereInput[] | BlogSubscriptionWhereInput>;
+  NOT?: Maybe<BlogSubscriptionWhereInput[] | BlogSubscriptionWhereInput>;
 }
 
 export interface PostSubscriptionWhereInput {
@@ -759,14 +950,71 @@ export interface NodeNode {
   id: ID_Output;
 }
 
+export interface Blog {
+  id: ID_Output;
+  name: String;
+  description: String;
+  created: DateTimeOutput;
+}
+
+export interface BlogPromise extends Promise<Blog>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  posts: <T = FragmentableArray<Post>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  name: () => Promise<String>;
+  description: () => Promise<String>;
+  created: () => Promise<DateTimeOutput>;
+}
+
+export interface BlogSubscription
+  extends Promise<AsyncIterator<Blog>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  posts: <T = Promise<AsyncIterator<PostSubscription>>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  name: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  created: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface BlogNullablePromise
+  extends Promise<Blog | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  posts: <T = FragmentableArray<Post>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  name: () => Promise<String>;
+  description: () => Promise<String>;
+  created: () => Promise<DateTimeOutput>;
+}
+
 export interface Post {
   id: ID_Output;
+  published: Boolean;
   channel?: String;
   content: String;
   score?: Int;
-  published: Boolean;
-  expired: Boolean;
-  expiration: DateTimeOutput;
   created: DateTimeOutput;
 }
 
@@ -782,12 +1030,11 @@ export interface PostPromise extends Promise<Post>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  blog: <T = BlogPromise>() => T;
+  published: () => Promise<Boolean>;
   channel: () => Promise<String>;
   content: () => Promise<String>;
   score: () => Promise<Int>;
-  published: () => Promise<Boolean>;
-  expired: () => Promise<Boolean>;
-  expiration: () => Promise<DateTimeOutput>;
   created: () => Promise<DateTimeOutput>;
 }
 
@@ -805,12 +1052,11 @@ export interface PostSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  blog: <T = BlogSubscription>() => T;
+  published: () => Promise<AsyncIterator<Boolean>>;
   channel: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
   score: () => Promise<AsyncIterator<Int>>;
-  published: () => Promise<AsyncIterator<Boolean>>;
-  expired: () => Promise<AsyncIterator<Boolean>>;
-  expiration: () => Promise<AsyncIterator<DateTimeOutput>>;
   created: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
@@ -828,12 +1074,11 @@ export interface PostNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
+  blog: <T = BlogPromise>() => T;
+  published: () => Promise<Boolean>;
   channel: () => Promise<String>;
   content: () => Promise<String>;
   score: () => Promise<Int>;
-  published: () => Promise<Boolean>;
-  expired: () => Promise<Boolean>;
-  expiration: () => Promise<DateTimeOutput>;
   created: () => Promise<DateTimeOutput>;
 }
 
@@ -923,25 +1168,25 @@ export interface UserNullablePromise
   created: () => Promise<DateTimeOutput>;
 }
 
-export interface PostConnection {
+export interface BlogConnection {
   pageInfo: PageInfo;
-  edges: PostEdge[];
+  edges: BlogEdge[];
 }
 
-export interface PostConnectionPromise
-  extends Promise<PostConnection>,
+export interface BlogConnectionPromise
+  extends Promise<BlogConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PostEdge>>() => T;
-  aggregate: <T = AggregatePostPromise>() => T;
+  edges: <T = FragmentableArray<BlogEdge>>() => T;
+  aggregate: <T = AggregateBlogPromise>() => T;
 }
 
-export interface PostConnectionSubscription
-  extends Promise<AsyncIterator<PostConnection>>,
+export interface BlogConnectionSubscription
+  extends Promise<AsyncIterator<BlogConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePostSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<BlogEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateBlogSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -965,6 +1210,60 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface BlogEdge {
+  node: Blog;
+  cursor: String;
+}
+
+export interface BlogEdgePromise extends Promise<BlogEdge>, Fragmentable {
+  node: <T = BlogPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface BlogEdgeSubscription
+  extends Promise<AsyncIterator<BlogEdge>>,
+    Fragmentable {
+  node: <T = BlogSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateBlog {
+  count: Int;
+}
+
+export interface AggregateBlogPromise
+  extends Promise<AggregateBlog>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateBlogSubscription
+  extends Promise<AsyncIterator<AggregateBlog>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PostConnection {
+  pageInfo: PageInfo;
+  edges: PostEdge[];
+}
+
+export interface PostConnectionPromise
+  extends Promise<PostConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PostEdge>>() => T;
+  aggregate: <T = AggregatePostPromise>() => T;
+}
+
+export interface PostConnectionSubscription
+  extends Promise<AsyncIterator<PostConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePostSubscription>() => T;
 }
 
 export interface PostEdge {
@@ -1070,6 +1369,56 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
+export interface BlogSubscriptionPayload {
+  mutation: MutationType;
+  node: Blog;
+  updatedFields: String[];
+  previousValues: BlogPreviousValues;
+}
+
+export interface BlogSubscriptionPayloadPromise
+  extends Promise<BlogSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = BlogPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = BlogPreviousValuesPromise>() => T;
+}
+
+export interface BlogSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<BlogSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = BlogSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = BlogPreviousValuesSubscription>() => T;
+}
+
+export interface BlogPreviousValues {
+  id: ID_Output;
+  name: String;
+  description: String;
+  created: DateTimeOutput;
+}
+
+export interface BlogPreviousValuesPromise
+  extends Promise<BlogPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  description: () => Promise<String>;
+  created: () => Promise<DateTimeOutput>;
+}
+
+export interface BlogPreviousValuesSubscription
+  extends Promise<AsyncIterator<BlogPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  created: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
 export interface PostSubscriptionPayload {
   mutation: MutationType;
   node: Post;
@@ -1097,12 +1446,10 @@ export interface PostSubscriptionPayloadSubscription
 
 export interface PostPreviousValues {
   id: ID_Output;
+  published: Boolean;
   channel?: String;
   content: String;
   score?: Int;
-  published: Boolean;
-  expired: Boolean;
-  expiration: DateTimeOutput;
   created: DateTimeOutput;
 }
 
@@ -1110,12 +1457,10 @@ export interface PostPreviousValuesPromise
   extends Promise<PostPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  published: () => Promise<Boolean>;
   channel: () => Promise<String>;
   content: () => Promise<String>;
   score: () => Promise<Int>;
-  published: () => Promise<Boolean>;
-  expired: () => Promise<Boolean>;
-  expiration: () => Promise<DateTimeOutput>;
   created: () => Promise<DateTimeOutput>;
 }
 
@@ -1123,12 +1468,10 @@ export interface PostPreviousValuesSubscription
   extends Promise<AsyncIterator<PostPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  published: () => Promise<AsyncIterator<Boolean>>;
   channel: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
   score: () => Promise<AsyncIterator<Int>>;
-  published: () => Promise<AsyncIterator<Boolean>>;
-  expired: () => Promise<AsyncIterator<Boolean>>;
-  expiration: () => Promise<AsyncIterator<DateTimeOutput>>;
   created: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
@@ -1204,14 +1547,14 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
-
-/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
 
 export type Long = string;
 
@@ -1226,6 +1569,10 @@ export const models: Model[] = [
   },
   {
     name: "Post",
+    embedded: false
+  },
+  {
+    name: "Blog",
     embedded: false
   }
 ];

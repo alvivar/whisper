@@ -11,11 +11,17 @@ type Post {
     id: ID! @id
     author: User @relation(name: "WrittenPosts")
     likedBy: [User!]! @relation(name: "LikedPosts")
-    channel: String
+    blog: Blog!
+    published: Boolean! @default(value: false)
+    tags: [String!]!
     content: String!
     score: Int @default(value: 0)
-    published: Boolean! @default(value: false)
-    expired: Boolean! @default(value: false)
-    expiration: DateTime!
+    created: DateTime! @createdAt
+}
+
+type Blog {
+    id: ID! @id
+    posts: [Post!]!
+    name: String!
     created: DateTime! @createdAt
 }
