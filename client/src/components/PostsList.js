@@ -3,8 +3,8 @@ import { useQuery } from 'react-apollo-hooks'
 import gql from 'graphql-tag'
 
 const POSTS_BY_CHANNEL = gql`
-  query postsByChannel($channel: String!, $skip: Int!, $first: Int!) {
-    postsByChannel(channel: $channel, skip: $skip, first: $first) {
+  query blogPosts($name: String!, $skip: Int!, $first: Int!) {
+    blogPosts(name: $name, skip: $skip, first: $first) {
       content
       author {
         name
@@ -119,14 +119,11 @@ const PostsList = ({ newPosts, channel }) => {
 
   // Data appended as needed
 
-  const newPostsByChannel = newPosts.filter(i =>
+  const newBlogPosts = newPosts.filter(i =>
     i.author.name.includes(`@${channel}`)
   )
 
-  const postsToRender = [
-    ...newPostsByChannel,
-    ...(data ? data.postsByChannel : [])
-  ]
+  const postsToRender = [...newBlogPosts, ...(data ? data.blogPosts : [])]
 
   // Color variation on a new author
 

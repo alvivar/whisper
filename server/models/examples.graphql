@@ -1,30 +1,57 @@
 mutation {
-  createUser(name: "test", sessionHash: "whatave") {
+  createUser(name: "adros", sessionHash: "20191228035556") {
     id
+    writtenPosts {
+      id
+      content
+    }
+    likedPosts {
+      id
+      content
+    }
     name
+    sessionHash
+    created
   }
 }
 
 mutation {
-  createDraft(content: "Classic content", userId: "cjw7b3mmd004407271ba3o6p1") {
+  createBlog(name: "blog") {
     id
+    posts {
+      id
+      content
+    }
+    name
+    created
   }
 }
 
 mutation {
-  createDraft(
-    content: "Something useful"
-    userId: "cjw7b3mmd004407271ba3o6p1"
+  createPost(
+    content: "post"
+    userId: "ck4pfml8m009n0777p6au855p"
+    blogId: "ck4pfmpq1009t0777dh8amgnd"
   ) {
     id
-  }
-}
-
-mutation {
-  dislike(
-    postId: "cjw63p1p600ac0771obugp6jy"
-    userId: "cjw7b3mmd004407271ba3o6p1"
-  ) {
-    id
+    author {
+      id
+      name
+    }
+    likedBy {
+      id
+      name
+    }
+    blog {
+      id
+      name
+      posts {
+        id
+        content
+      }
+    }
+    published
+    content
+    created
   }
 }

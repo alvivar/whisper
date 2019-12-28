@@ -184,12 +184,8 @@ export type PostOrderByInput =
   | "id_DESC"
   | "published_ASC"
   | "published_DESC"
-  | "channel_ASC"
-  | "channel_DESC"
   | "content_ASC"
   | "content_DESC"
-  | "score_ASC"
-  | "score_DESC"
   | "created_ASC"
   | "created_DESC";
 
@@ -208,8 +204,6 @@ export type BlogOrderByInput =
   | "id_DESC"
   | "name_ASC"
   | "name_DESC"
-  | "description_ASC"
-  | "description_DESC"
   | "created_ASC"
   | "created_DESC";
 
@@ -241,20 +235,6 @@ export interface PostWhereInput {
   blog?: Maybe<BlogWhereInput>;
   published?: Maybe<Boolean>;
   published_not?: Maybe<Boolean>;
-  channel?: Maybe<String>;
-  channel_not?: Maybe<String>;
-  channel_in?: Maybe<String[] | String>;
-  channel_not_in?: Maybe<String[] | String>;
-  channel_lt?: Maybe<String>;
-  channel_lte?: Maybe<String>;
-  channel_gt?: Maybe<String>;
-  channel_gte?: Maybe<String>;
-  channel_contains?: Maybe<String>;
-  channel_not_contains?: Maybe<String>;
-  channel_starts_with?: Maybe<String>;
-  channel_not_starts_with?: Maybe<String>;
-  channel_ends_with?: Maybe<String>;
-  channel_not_ends_with?: Maybe<String>;
   content?: Maybe<String>;
   content_not?: Maybe<String>;
   content_in?: Maybe<String[] | String>;
@@ -269,14 +249,6 @@ export interface PostWhereInput {
   content_not_starts_with?: Maybe<String>;
   content_ends_with?: Maybe<String>;
   content_not_ends_with?: Maybe<String>;
-  score?: Maybe<Int>;
-  score_not?: Maybe<Int>;
-  score_in?: Maybe<Int[] | Int>;
-  score_not_in?: Maybe<Int[] | Int>;
-  score_lt?: Maybe<Int>;
-  score_lte?: Maybe<Int>;
-  score_gt?: Maybe<Int>;
-  score_gte?: Maybe<Int>;
   created?: Maybe<DateTimeInput>;
   created_not?: Maybe<DateTimeInput>;
   created_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -384,20 +356,6 @@ export interface BlogWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
   created?: Maybe<DateTimeInput>;
   created_not?: Maybe<DateTimeInput>;
   created_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -425,7 +383,6 @@ export interface BlogCreateInput {
   id?: Maybe<ID_Input>;
   posts?: Maybe<PostCreateManyWithoutBlogInput>;
   name: String;
-  description: String;
 }
 
 export interface PostCreateManyWithoutBlogInput {
@@ -435,12 +392,10 @@ export interface PostCreateManyWithoutBlogInput {
 
 export interface PostCreateWithoutBlogInput {
   id?: Maybe<ID_Input>;
-  author?: Maybe<UserCreateOneWithoutWrittenPostsInput>;
+  author: UserCreateOneWithoutWrittenPostsInput;
   likedBy?: Maybe<UserCreateManyWithoutLikedPostsInput>;
-  published?: Maybe<Boolean>;
-  channel?: Maybe<String>;
+  published: Boolean;
   content: String;
-  score?: Maybe<Int>;
 }
 
 export interface UserCreateOneWithoutWrittenPostsInput {
@@ -464,12 +419,10 @@ export interface PostCreateManyWithoutLikedByInput {
 
 export interface PostCreateWithoutLikedByInput {
   id?: Maybe<ID_Input>;
-  author?: Maybe<UserCreateOneWithoutWrittenPostsInput>;
+  author: UserCreateOneWithoutWrittenPostsInput;
   blog: BlogCreateOneWithoutPostsInput;
-  published?: Maybe<Boolean>;
-  channel?: Maybe<String>;
+  published: Boolean;
   content: String;
-  score?: Maybe<Int>;
 }
 
 export interface BlogCreateOneWithoutPostsInput {
@@ -480,7 +433,6 @@ export interface BlogCreateOneWithoutPostsInput {
 export interface BlogCreateWithoutPostsInput {
   id?: Maybe<ID_Input>;
   name: String;
-  description: String;
 }
 
 export interface UserCreateManyWithoutLikedPostsInput {
@@ -506,16 +458,13 @@ export interface PostCreateWithoutAuthorInput {
   id?: Maybe<ID_Input>;
   likedBy?: Maybe<UserCreateManyWithoutLikedPostsInput>;
   blog: BlogCreateOneWithoutPostsInput;
-  published?: Maybe<Boolean>;
-  channel?: Maybe<String>;
+  published: Boolean;
   content: String;
-  score?: Maybe<Int>;
 }
 
 export interface BlogUpdateInput {
   posts?: Maybe<PostUpdateManyWithoutBlogInput>;
   name?: Maybe<String>;
-  description?: Maybe<String>;
 }
 
 export interface PostUpdateManyWithoutBlogInput {
@@ -544,20 +493,16 @@ export interface PostUpdateWithWhereUniqueWithoutBlogInput {
 }
 
 export interface PostUpdateWithoutBlogDataInput {
-  author?: Maybe<UserUpdateOneWithoutWrittenPostsInput>;
+  author?: Maybe<UserUpdateOneRequiredWithoutWrittenPostsInput>;
   likedBy?: Maybe<UserUpdateManyWithoutLikedPostsInput>;
   published?: Maybe<Boolean>;
-  channel?: Maybe<String>;
   content?: Maybe<String>;
-  score?: Maybe<Int>;
 }
 
-export interface UserUpdateOneWithoutWrittenPostsInput {
+export interface UserUpdateOneRequiredWithoutWrittenPostsInput {
   create?: Maybe<UserCreateWithoutWrittenPostsInput>;
   update?: Maybe<UserUpdateWithoutWrittenPostsDataInput>;
   upsert?: Maybe<UserUpsertWithoutWrittenPostsInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
@@ -595,12 +540,10 @@ export interface PostUpdateWithWhereUniqueWithoutLikedByInput {
 }
 
 export interface PostUpdateWithoutLikedByDataInput {
-  author?: Maybe<UserUpdateOneWithoutWrittenPostsInput>;
+  author?: Maybe<UserUpdateOneRequiredWithoutWrittenPostsInput>;
   blog?: Maybe<BlogUpdateOneRequiredWithoutPostsInput>;
   published?: Maybe<Boolean>;
-  channel?: Maybe<String>;
   content?: Maybe<String>;
-  score?: Maybe<Int>;
 }
 
 export interface BlogUpdateOneRequiredWithoutPostsInput {
@@ -612,7 +555,6 @@ export interface BlogUpdateOneRequiredWithoutPostsInput {
 
 export interface BlogUpdateWithoutPostsDataInput {
   name?: Maybe<String>;
-  description?: Maybe<String>;
 }
 
 export interface BlogUpsertWithoutPostsInput {
@@ -643,20 +585,6 @@ export interface PostScalarWhereInput {
   id_not_ends_with?: Maybe<ID_Input>;
   published?: Maybe<Boolean>;
   published_not?: Maybe<Boolean>;
-  channel?: Maybe<String>;
-  channel_not?: Maybe<String>;
-  channel_in?: Maybe<String[] | String>;
-  channel_not_in?: Maybe<String[] | String>;
-  channel_lt?: Maybe<String>;
-  channel_lte?: Maybe<String>;
-  channel_gt?: Maybe<String>;
-  channel_gte?: Maybe<String>;
-  channel_contains?: Maybe<String>;
-  channel_not_contains?: Maybe<String>;
-  channel_starts_with?: Maybe<String>;
-  channel_not_starts_with?: Maybe<String>;
-  channel_ends_with?: Maybe<String>;
-  channel_not_ends_with?: Maybe<String>;
   content?: Maybe<String>;
   content_not?: Maybe<String>;
   content_in?: Maybe<String[] | String>;
@@ -671,14 +599,6 @@ export interface PostScalarWhereInput {
   content_not_starts_with?: Maybe<String>;
   content_ends_with?: Maybe<String>;
   content_not_ends_with?: Maybe<String>;
-  score?: Maybe<Int>;
-  score_not?: Maybe<Int>;
-  score_in?: Maybe<Int[] | Int>;
-  score_not_in?: Maybe<Int[] | Int>;
-  score_lt?: Maybe<Int>;
-  score_lte?: Maybe<Int>;
-  score_gt?: Maybe<Int>;
-  score_gte?: Maybe<Int>;
   created?: Maybe<DateTimeInput>;
   created_not?: Maybe<DateTimeInput>;
   created_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -699,9 +619,7 @@ export interface PostUpdateManyWithWhereNestedInput {
 
 export interface PostUpdateManyDataInput {
   published?: Maybe<Boolean>;
-  channel?: Maybe<String>;
   content?: Maybe<String>;
-  score?: Maybe<Int>;
 }
 
 export interface UserUpsertWithoutWrittenPostsInput {
@@ -771,9 +689,7 @@ export interface PostUpdateWithoutAuthorDataInput {
   likedBy?: Maybe<UserUpdateManyWithoutLikedPostsInput>;
   blog?: Maybe<BlogUpdateOneRequiredWithoutPostsInput>;
   published?: Maybe<Boolean>;
-  channel?: Maybe<String>;
   content?: Maybe<String>;
-  score?: Maybe<Int>;
 }
 
 export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
@@ -862,35 +778,28 @@ export interface PostUpsertWithWhereUniqueWithoutBlogInput {
 
 export interface BlogUpdateManyMutationInput {
   name?: Maybe<String>;
-  description?: Maybe<String>;
 }
 
 export interface PostCreateInput {
   id?: Maybe<ID_Input>;
-  author?: Maybe<UserCreateOneWithoutWrittenPostsInput>;
+  author: UserCreateOneWithoutWrittenPostsInput;
   likedBy?: Maybe<UserCreateManyWithoutLikedPostsInput>;
   blog: BlogCreateOneWithoutPostsInput;
-  published?: Maybe<Boolean>;
-  channel?: Maybe<String>;
+  published: Boolean;
   content: String;
-  score?: Maybe<Int>;
 }
 
 export interface PostUpdateInput {
-  author?: Maybe<UserUpdateOneWithoutWrittenPostsInput>;
+  author?: Maybe<UserUpdateOneRequiredWithoutWrittenPostsInput>;
   likedBy?: Maybe<UserUpdateManyWithoutLikedPostsInput>;
   blog?: Maybe<BlogUpdateOneRequiredWithoutPostsInput>;
   published?: Maybe<Boolean>;
-  channel?: Maybe<String>;
   content?: Maybe<String>;
-  score?: Maybe<Int>;
 }
 
 export interface PostUpdateManyMutationInput {
   published?: Maybe<Boolean>;
-  channel?: Maybe<String>;
   content?: Maybe<String>;
-  score?: Maybe<Int>;
 }
 
 export interface UserCreateInput {
@@ -953,7 +862,6 @@ export interface NodeNode {
 export interface Blog {
   id: ID_Output;
   name: String;
-  description: String;
   created: DateTimeOutput;
 }
 
@@ -969,7 +877,6 @@ export interface BlogPromise extends Promise<Blog>, Fragmentable {
     last?: Int;
   }) => T;
   name: () => Promise<String>;
-  description: () => Promise<String>;
   created: () => Promise<DateTimeOutput>;
 }
 
@@ -987,7 +894,6 @@ export interface BlogSubscription
     last?: Int;
   }) => T;
   name: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
   created: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
@@ -1005,16 +911,13 @@ export interface BlogNullablePromise
     last?: Int;
   }) => T;
   name: () => Promise<String>;
-  description: () => Promise<String>;
   created: () => Promise<DateTimeOutput>;
 }
 
 export interface Post {
   id: ID_Output;
   published: Boolean;
-  channel?: String;
   content: String;
-  score?: Int;
   created: DateTimeOutput;
 }
 
@@ -1032,9 +935,7 @@ export interface PostPromise extends Promise<Post>, Fragmentable {
   }) => T;
   blog: <T = BlogPromise>() => T;
   published: () => Promise<Boolean>;
-  channel: () => Promise<String>;
   content: () => Promise<String>;
-  score: () => Promise<Int>;
   created: () => Promise<DateTimeOutput>;
 }
 
@@ -1054,9 +955,7 @@ export interface PostSubscription
   }) => T;
   blog: <T = BlogSubscription>() => T;
   published: () => Promise<AsyncIterator<Boolean>>;
-  channel: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
-  score: () => Promise<AsyncIterator<Int>>;
   created: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
@@ -1076,9 +975,7 @@ export interface PostNullablePromise
   }) => T;
   blog: <T = BlogPromise>() => T;
   published: () => Promise<Boolean>;
-  channel: () => Promise<String>;
   content: () => Promise<String>;
-  score: () => Promise<Int>;
   created: () => Promise<DateTimeOutput>;
 }
 
@@ -1397,7 +1294,6 @@ export interface BlogSubscriptionPayloadSubscription
 export interface BlogPreviousValues {
   id: ID_Output;
   name: String;
-  description: String;
   created: DateTimeOutput;
 }
 
@@ -1406,7 +1302,6 @@ export interface BlogPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
-  description: () => Promise<String>;
   created: () => Promise<DateTimeOutput>;
 }
 
@@ -1415,7 +1310,6 @@ export interface BlogPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
   created: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
@@ -1447,9 +1341,7 @@ export interface PostSubscriptionPayloadSubscription
 export interface PostPreviousValues {
   id: ID_Output;
   published: Boolean;
-  channel?: String;
   content: String;
-  score?: Int;
   created: DateTimeOutput;
 }
 
@@ -1458,9 +1350,7 @@ export interface PostPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   published: () => Promise<Boolean>;
-  channel: () => Promise<String>;
   content: () => Promise<String>;
-  score: () => Promise<Int>;
   created: () => Promise<DateTimeOutput>;
 }
 
@@ -1469,9 +1359,7 @@ export interface PostPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   published: () => Promise<AsyncIterator<Boolean>>;
-  channel: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
-  score: () => Promise<AsyncIterator<Int>>;
   created: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
@@ -1568,11 +1456,11 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "Post",
+    name: "Blog",
     embedded: false
   },
   {
-    name: "Blog",
+    name: "Post",
     embedded: false
   }
 ];

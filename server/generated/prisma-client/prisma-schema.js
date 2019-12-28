@@ -23,7 +23,6 @@ type Blog {
   id: ID!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   name: String!
-  description: String!
   created: DateTime!
 }
 
@@ -37,7 +36,6 @@ input BlogCreateInput {
   id: ID
   posts: PostCreateManyWithoutBlogInput
   name: String!
-  description: String!
 }
 
 input BlogCreateOneWithoutPostsInput {
@@ -48,7 +46,6 @@ input BlogCreateOneWithoutPostsInput {
 input BlogCreateWithoutPostsInput {
   id: ID
   name: String!
-  description: String!
 }
 
 type BlogEdge {
@@ -61,8 +58,6 @@ enum BlogOrderByInput {
   id_DESC
   name_ASC
   name_DESC
-  description_ASC
-  description_DESC
   created_ASC
   created_DESC
 }
@@ -70,7 +65,6 @@ enum BlogOrderByInput {
 type BlogPreviousValues {
   id: ID!
   name: String!
-  description: String!
   created: DateTime!
 }
 
@@ -95,12 +89,10 @@ input BlogSubscriptionWhereInput {
 input BlogUpdateInput {
   posts: PostUpdateManyWithoutBlogInput
   name: String
-  description: String
 }
 
 input BlogUpdateManyMutationInput {
   name: String
-  description: String
 }
 
 input BlogUpdateOneRequiredWithoutPostsInput {
@@ -112,7 +104,6 @@ input BlogUpdateOneRequiredWithoutPostsInput {
 
 input BlogUpdateWithoutPostsDataInput {
   name: String
-  description: String
 }
 
 input BlogUpsertWithoutPostsInput {
@@ -152,20 +143,6 @@ input BlogWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  description: String
-  description_not: String
-  description_in: [String!]
-  description_not_in: [String!]
-  description_lt: String
-  description_lte: String
-  description_gt: String
-  description_gte: String
-  description_contains: String
-  description_not_contains: String
-  description_starts_with: String
-  description_not_starts_with: String
-  description_ends_with: String
-  description_not_ends_with: String
   created: DateTime
   created_not: DateTime
   created_in: [DateTime!]
@@ -227,13 +204,11 @@ type PageInfo {
 
 type Post {
   id: ID!
-  author: User
+  author: User!
   likedBy(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   blog: Blog!
   published: Boolean!
-  channel: String
   content: String!
-  score: Int
   created: DateTime!
 }
 
@@ -245,13 +220,11 @@ type PostConnection {
 
 input PostCreateInput {
   id: ID
-  author: UserCreateOneWithoutWrittenPostsInput
+  author: UserCreateOneWithoutWrittenPostsInput!
   likedBy: UserCreateManyWithoutLikedPostsInput
   blog: BlogCreateOneWithoutPostsInput!
-  published: Boolean
-  channel: String
+  published: Boolean!
   content: String!
-  score: Int
 }
 
 input PostCreateManyWithoutAuthorInput {
@@ -273,30 +246,24 @@ input PostCreateWithoutAuthorInput {
   id: ID
   likedBy: UserCreateManyWithoutLikedPostsInput
   blog: BlogCreateOneWithoutPostsInput!
-  published: Boolean
-  channel: String
+  published: Boolean!
   content: String!
-  score: Int
 }
 
 input PostCreateWithoutBlogInput {
   id: ID
-  author: UserCreateOneWithoutWrittenPostsInput
+  author: UserCreateOneWithoutWrittenPostsInput!
   likedBy: UserCreateManyWithoutLikedPostsInput
-  published: Boolean
-  channel: String
+  published: Boolean!
   content: String!
-  score: Int
 }
 
 input PostCreateWithoutLikedByInput {
   id: ID
-  author: UserCreateOneWithoutWrittenPostsInput
+  author: UserCreateOneWithoutWrittenPostsInput!
   blog: BlogCreateOneWithoutPostsInput!
-  published: Boolean
-  channel: String
+  published: Boolean!
   content: String!
-  score: Int
 }
 
 type PostEdge {
@@ -309,12 +276,8 @@ enum PostOrderByInput {
   id_DESC
   published_ASC
   published_DESC
-  channel_ASC
-  channel_DESC
   content_ASC
   content_DESC
-  score_ASC
-  score_DESC
   created_ASC
   created_DESC
 }
@@ -322,9 +285,7 @@ enum PostOrderByInput {
 type PostPreviousValues {
   id: ID!
   published: Boolean!
-  channel: String
   content: String!
-  score: Int
   created: DateTime!
 }
 
@@ -345,20 +306,6 @@ input PostScalarWhereInput {
   id_not_ends_with: ID
   published: Boolean
   published_not: Boolean
-  channel: String
-  channel_not: String
-  channel_in: [String!]
-  channel_not_in: [String!]
-  channel_lt: String
-  channel_lte: String
-  channel_gt: String
-  channel_gte: String
-  channel_contains: String
-  channel_not_contains: String
-  channel_starts_with: String
-  channel_not_starts_with: String
-  channel_ends_with: String
-  channel_not_ends_with: String
   content: String
   content_not: String
   content_in: [String!]
@@ -373,14 +320,6 @@ input PostScalarWhereInput {
   content_not_starts_with: String
   content_ends_with: String
   content_not_ends_with: String
-  score: Int
-  score_not: Int
-  score_in: [Int!]
-  score_not_in: [Int!]
-  score_lt: Int
-  score_lte: Int
-  score_gt: Int
-  score_gte: Int
   created: DateTime
   created_not: DateTime
   created_in: [DateTime!]
@@ -413,27 +352,21 @@ input PostSubscriptionWhereInput {
 }
 
 input PostUpdateInput {
-  author: UserUpdateOneWithoutWrittenPostsInput
+  author: UserUpdateOneRequiredWithoutWrittenPostsInput
   likedBy: UserUpdateManyWithoutLikedPostsInput
   blog: BlogUpdateOneRequiredWithoutPostsInput
   published: Boolean
-  channel: String
   content: String
-  score: Int
 }
 
 input PostUpdateManyDataInput {
   published: Boolean
-  channel: String
   content: String
-  score: Int
 }
 
 input PostUpdateManyMutationInput {
   published: Boolean
-  channel: String
   content: String
-  score: Int
 }
 
 input PostUpdateManyWithoutAuthorInput {
@@ -481,27 +414,21 @@ input PostUpdateWithoutAuthorDataInput {
   likedBy: UserUpdateManyWithoutLikedPostsInput
   blog: BlogUpdateOneRequiredWithoutPostsInput
   published: Boolean
-  channel: String
   content: String
-  score: Int
 }
 
 input PostUpdateWithoutBlogDataInput {
-  author: UserUpdateOneWithoutWrittenPostsInput
+  author: UserUpdateOneRequiredWithoutWrittenPostsInput
   likedBy: UserUpdateManyWithoutLikedPostsInput
   published: Boolean
-  channel: String
   content: String
-  score: Int
 }
 
 input PostUpdateWithoutLikedByDataInput {
-  author: UserUpdateOneWithoutWrittenPostsInput
+  author: UserUpdateOneRequiredWithoutWrittenPostsInput
   blog: BlogUpdateOneRequiredWithoutPostsInput
   published: Boolean
-  channel: String
   content: String
-  score: Int
 }
 
 input PostUpdateWithWhereUniqueWithoutAuthorInput {
@@ -559,20 +486,6 @@ input PostWhereInput {
   blog: BlogWhereInput
   published: Boolean
   published_not: Boolean
-  channel: String
-  channel_not: String
-  channel_in: [String!]
-  channel_not_in: [String!]
-  channel_lt: String
-  channel_lte: String
-  channel_gt: String
-  channel_gte: String
-  channel_contains: String
-  channel_not_contains: String
-  channel_starts_with: String
-  channel_not_starts_with: String
-  channel_ends_with: String
-  channel_not_ends_with: String
   content: String
   content_not: String
   content_in: [String!]
@@ -587,14 +500,6 @@ input PostWhereInput {
   content_not_starts_with: String
   content_ends_with: String
   content_not_ends_with: String
-  score: Int
-  score_not: Int
-  score_in: [Int!]
-  score_not_in: [Int!]
-  score_lt: Int
-  score_lte: Int
-  score_gt: Int
-  score_gte: Int
   created: DateTime
   created_not: DateTime
   created_in: [DateTime!]
@@ -809,12 +714,10 @@ input UserUpdateManyWithWhereNestedInput {
   data: UserUpdateManyDataInput!
 }
 
-input UserUpdateOneWithoutWrittenPostsInput {
+input UserUpdateOneRequiredWithoutWrittenPostsInput {
   create: UserCreateWithoutWrittenPostsInput
   update: UserUpdateWithoutWrittenPostsDataInput
   upsert: UserUpsertWithoutWrittenPostsInput
-  delete: Boolean
-  disconnect: Boolean
   connect: UserWhereUniqueInput
 }
 

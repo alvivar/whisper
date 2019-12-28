@@ -9,11 +9,11 @@ var models = [
     embedded: false
   },
   {
-    name: "Post",
+    name: "Blog",
     embedded: false
   },
   {
-    name: "Blog",
+    name: "Post",
     embedded: false
   }
 ];

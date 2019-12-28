@@ -7,21 +7,20 @@ type User {
     created: DateTime! @createdAt
 }
 
-type Post {
-    id: ID! @id
-    author: User @relation(name: "WrittenPosts")
-    likedBy: [User!]! @relation(name: "LikedPosts")
-    blog: Blog!
-    published: Boolean! @default(value: false)
-    tags: [String!]!
-    content: String!
-    score: Int @default(value: 0)
-    created: DateTime! @createdAt
-}
-
 type Blog {
     id: ID! @id
     posts: [Post!]!
     name: String!
     created: DateTime! @createdAt
 }
+
+type Post {
+    id: ID! @id
+    author: User! @relation(name: "WrittenPosts")
+    likedBy: [User!]! @relation(name: "LikedPosts")
+    blog: Blog!
+    published: Boolean!
+    content: String!
+    created: DateTime! @createdAt
+}
+

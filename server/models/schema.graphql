@@ -1,45 +1,52 @@
 scalar DateTime
 
 type Query {
-    user(sessionHash: String!): User
-    allowedPosts: [Post!]!
-    publishedPosts: [Post!]!
-    post(postId: ID!): Post
-    postsByUser(userId: ID!): [Post!]!
-    postsByChannel(channel: String!, skip: Int!, first: Int!): [Post!]!
+  user(sessionHash: String!): User
+  allowedPosts: [Post!]!
+  publishedPosts: [Post!]!
+  post(postId: ID!): Post
+  postsByUser(userId: ID!): [Post!]!
+  blogPosts(channel: String!, skip: Int!, first: Int!): [Post!]!
 }
 
 type Mutation {
-    createUser(name: String!, sessionHash: String!): User
-    setUserName(userId: ID!, name: String!): User
-    createDraft(content: String!, channel: String!, userId: ID!): Post
-    publish(postId: ID!): Post
-    like(postId: ID!, userId: ID!): Post
-    dislike(postId: ID!, userId: ID!): Post
+  createUser(name: String!, sessionHash: String!): User
+  createBlog(name: String!): Blog!
+  createPost(content: String!, userId: ID!, blogId: String!): Post
+
+  setUserName(userId: ID!, name: String!): User
+  publish(postId: ID!): Post
+  like(postId: ID!, userId: ID!): Post
+  dislike(postId: ID!, userId: ID!): Post
 }
 
 type Subscription {
-    newPost(channel: String!): Post
+  newPost(channel: String!): Post
 }
 
 type User {
-    id: ID!
-    writtenPosts: [Post!]!
-    likedPosts: [Post!]!
-    name: String!
-    sessionHash: String!
-    created: DateTime!
+  id: ID!
+  writtenPosts: [Post!]!
+  likedPosts: [Post!]!
+  name: String!
+  sessionHash: String!
+  created: DateTime!
 }
 
 type Post {
-    id: ID!
-    author: User
-    likedBy: [User!]!
-    channel: String
-    content: String!
-    score: Int
-    published: Boolean!
-    expired: Boolean!
-    expiration: DateTime!
-    created: DateTime!
+  id: ID!
+  author: User
+  likedBy: [User!]!
+  blog: Blog!
+  published: Boolean!
+  content: String!
+  score: Int
+  created: DateTime!
+}
+
+type Blog {
+  id: ID!
+  posts: [Post!]!
+  name: String!
+  created: DateTime!
 }

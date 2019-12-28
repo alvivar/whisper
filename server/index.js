@@ -12,11 +12,12 @@ const PubSubOptions = {
 }
 
 const { RedisPubSub } = require('graphql-redis-subscriptions')
-const PUBSUB_NEWPOST = 'NEWPOST'
 const pubsub = new RedisPubSub({
   publisher: new Redis(PubSubOptions),
   subscriber: new Redis(PubSubOptions)
 })
+
+const PUBSUB_NEWPOST = 'NEWPOST'
 
 // ^ @todo @environment
 console.log(process.env.PRISMA_MANAGEMENT_API_SECRET)
@@ -28,7 +29,7 @@ const resolvers = {
     },
     allowedPosts (root, args, context) {
       return context.prisma.posts({
-        where: { expired: false },
+        where: { expired: true },
         orderBy: 'created_DESC'
       })
     },
@@ -43,12 +44,11 @@ const resolvers = {
     postsByUser (root, args, context) {
       return context.prisma.user({ id: args.userId }).post()
     },
-    postsByChannel (root, { channel, skip, first }, context) {
-      return context.prisma.posts({
-        where: { channel: channel },
+    blogPosts (root, args, context) {
+      return context.prisma.blog({ name: args.name }).posts({
         orderBy: 'created_DESC',
-        skip: skip,
-        first: first
+        skip: args.skip,
+        first: args.first
       })
     }
   },
@@ -59,6 +59,31 @@ const resolvers = {
         sessionHash: args.sessionHash
       })
     },
+    async createBlog (root, { name }, context) {
+      return context.prisma.createBlog({
+        name: name
+      })
+    },
+    async createPost (root, { content, userId, blogId }, context) {
+      const post = await context.prisma.createPost({
+        author: {
+          connect: { id: userId }
+        },
+        blog: {
+          connect: {
+            id: blogId
+          }
+        },
+        published: true,
+        content: content
+      })
+
+      pubsub.publish(`${PUBSUB_NEWPOST}.${blogId}`, {
+        newPost: post
+      })
+
+      return post
+    },
     setUserName (root, args, context) {
       return context.prisma.updateUser({
         where: { id: args.userId },
@@ -66,24 +91,6 @@ const resolvers = {
           name: args.name
         }
       })
-    },
-    async createDraft (root, args, context) {
-      const post = await context.prisma.createPost({
-        channel: args.channel,
-        content: args.content,
-        author: {
-          connect: { id: args.userId }
-        },
-        expiration: moment()
-          .add('1', 'hour')
-          .format()
-      })
-
-      pubsub.publish(`${PUBSUB_NEWPOST}.${args.channel}`, {
-        newPost: post
-      })
-
-      return post
     },
     publish (root, args, context) {
       return context.prisma.updatePost({
@@ -99,10 +106,7 @@ const resolvers = {
         data: {
           likedBy: {
             connect: { id: args.userId }
-          },
-          expiration: moment()
-            .add('1', 'hour')
-            .format()
+          }
         }
       })
     },
@@ -112,10 +116,7 @@ const resolvers = {
         data: {
           likedBy: {
             disconnect: { id: args.userId }
-          },
-          expiration: moment()
-            .subtract('10', 'minutes')
-            .format()
+          }
         }
       })
     }
@@ -143,6 +144,15 @@ const resolvers = {
         .likedPosts()
     }
   },
+  Blog: {
+    posts (root, args, context) {
+      return context.prisma
+        .blog({
+          id: root.id
+        })
+        .posts()
+    }
+  },
   Post: {
     author (root, args, context) {
       return context.prisma
@@ -157,6 +167,13 @@ const resolvers = {
           id: root.id
         })
         .likedBy()
+    },
+    blog (root, args, context) {
+      return context.prisma
+        .post({
+          id: root.id
+        })
+        .blog()
     }
   }
 }
