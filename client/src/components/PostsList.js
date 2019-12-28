@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { useQuery, useMutation, useSubscription } from 'react-apollo-hooks'
+import React, { useState, useEffect } from 'react'
+import { useQuery } from 'react-apollo-hooks'
 import gql from 'graphql-tag'
 
 const POSTS_BY_CHANNEL = gql`
@@ -191,7 +191,7 @@ const PostsList = ({ newPosts, channel }) => {
 
       {postsWithBg.length >= first ? (
         <button
-          onClick={e => {
+          onClick={() => {
             let scrollTop =
               document.documentElement.scrollTop || document.body.scrollTop
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useQuery, useMutation, useSubscription } from 'react-apollo-hooks'
 import gql from 'graphql-tag'
 
-import PostsListContinueButton from './components/PostsListContinueButton'
+import PostsList from './components/PostsList'
 import CreatePost from './components/CreatePost'
 
 const USER_QUERY = gql`
@@ -46,17 +46,6 @@ function App () {
   const [newPosts, setNewPosts] = useState([])
 
   const [buttonEnabled, setButtonEnabled] = useState(true)
-
-  // const {
-  //     loading: userLoading,
-  //     error: userError,
-  //     data: userData,
-  //     refetch: postsRefetch
-  // } = useQuery(USER_QUERY, {
-  //     variables: {
-  //         sessionHash: ""
-  //     }
-  // });
 
   const createUserMutation = useMutation(CREATE_USER_MUTATION)
 
@@ -138,7 +127,7 @@ function App () {
       />
 
       <div style={{ float: 'left', clear: 'both' }} ref={firstPost}></div>
-      <PostsListContinueButton newPosts={newPosts} channel={channel} />
+      <PostsList newPosts={newPosts} channel={channel} />
       <div style={{ float: 'left', clear: 'both' }} ref={lastPost}></div>
     </div>
   )
