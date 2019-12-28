@@ -31,7 +31,7 @@ services:
   redis:
     container_name: whisper_redis
     image: redis
-    command: redis-server --requirepass RAN20191227185143PASS
+    command: redis-server --requirepass REDIS_SECRET_20191227190143
     restart: always
     ports:
       - '6379:6379'

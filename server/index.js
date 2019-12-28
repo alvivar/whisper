@@ -9,7 +9,7 @@ const pubsubOptions = {
     // host: "192.168.99.100", // @docker toolbox fix
     host: "127.0.0.1",
     port: "6379",
-    password: "RAN20191227185143PASS",
+    password: "REDIS_SECRET_20191227190143",
     retryStrategy: times => Math.min(times * 50, 2000)
 };
 
