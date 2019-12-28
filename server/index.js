@@ -2,10 +2,8 @@ const { prisma } = require("./generated/prisma-client");
 const { GraphQLServer } = require("graphql-yoga");
 const moment = require("moment");
 
-const { RedisPubSub } = require("graphql-redis-subscriptions");
 const Redis = require("ioredis");
 const PubSubOptions = {
-
     // host: "192.168.99.100", // @docker toolbox fix
     host: "127.0.0.1",
     port: "6379",
@@ -13,15 +11,16 @@ const PubSubOptions = {
     retryStrategy: times => Math.min(times * 50, 2000)
 };
 
-// ^ @todo @environment
-console.log(process.env.PRISMA_MANAGEMENT_API_SECRET);
 
+const { RedisPubSub } = require("graphql-redis-subscriptions");
 const PUBSUB_NEWPOST = "NEWPOST";
 const pubsub = new RedisPubSub({
     publisher: new Redis(PubSubOptions),
     subscriber: new Redis(PubSubOptions)
 });
 
+// ^ @todo @environment
+console.log(process.env.PRISMA_MANAGEMENT_API_SECRET);
 
 const resolvers = {
     Query: {
