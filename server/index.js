@@ -11,7 +11,6 @@ const PubSubOptions = {
     retryStrategy: times => Math.min(times * 50, 2000)
 };
 
-
 const { RedisPubSub } = require("graphql-redis-subscriptions");
 const PUBSUB_NEWPOST = "NEWPOST";
 const pubsub = new RedisPubSub({
