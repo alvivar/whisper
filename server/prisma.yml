@@ -1,8 +1,8 @@
 # @todo @environment
-endpoint: http://192.168.99.100:4466 # @docker toolbox fix
-# endpoint: http://127.0.0.1:4466
+# endpoint: http://192.168.99.100:4466 # @docker toolbox fix
+endpoint: http://127.0.0.1:4466
 datamodel: ./models/datamodel.prisma
 secret: pass1234
 generate:
-    - generator: javascript-client
-      output: ./generated/prisma-client/
+  - generator: javascript-client
+    output: ./generated/prisma-client/
