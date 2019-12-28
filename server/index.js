@@ -6,10 +6,10 @@ const { RedisPubSub } = require("graphql-redis-subscriptions");
 const Redis = require("ioredis");
 const pubsubOptions = {
     // @todo @environment
-    host: "192.168.99.100", // @docker toolbox fix
-    // host: "127.0.0.1",
+    // host: "192.168.99.100", // @docker toolbox fix
+    host: "127.0.0.1",
     port: "6379",
-    password: "redispass1234",
+    password: "RAN20191227185143PASS",
     retryStrategy: times => Math.min(times * 50, 2000)
 };
 
