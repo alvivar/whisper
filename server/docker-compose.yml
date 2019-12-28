@@ -8,9 +8,9 @@ services:
       - '4466:4466'
     environment:
       PRISMA_CONFIG: |
-        # On console, for the prisma cli:
-        # export PRISMA_MANAGEMENT_API_SECRET="@prisma.pass.management.20190922154720"
-        managementApiSecret: @prisma.pass.management.20190922154720
+        # On console, for the Prisma cli:
+        # export PRISMA_MANAGEMENT_API_SECRET="API_SECRET_20191227185837"
+        managementApiSecret: API_SECRET_20191227185837
         port: 4466
         databases:
           default:
