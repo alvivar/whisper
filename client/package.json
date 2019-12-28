@@ -16,7 +16,7 @@
         "react-apollo-hooks": "^0.4.5",
         "react-cookie": "^4.0.0",
         "react-dom": "^16.8.6",
-        "react-scripts": "3.0.1",
+        "react-scripts": "^3.3.0",
         "subscriptions-transport-ws": "^0.9.16"
     },
     "scripts": {
@@ -42,6 +42,6 @@
         ]
     },
     "devDependencies": {
-        "tailwindcss": "^1.0.2"
+        "tailwindcss": "^1.1.4"
     }
 }
