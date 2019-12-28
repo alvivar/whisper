@@ -84,19 +84,19 @@ const resolvers = {
 
       return post
     },
-    setUserName (root, args, context) {
+    setUserName (root, { userId, name }, context) {
       return context.prisma.updateUser({
-        where: { id: args.userId },
+        where: { id: userId },
         data: {
-          name: args.name
+          name: name
         }
       })
     },
-    publish (root, args, context) {
+    disablePost (root, { postId }, context) {
       return context.prisma.updatePost({
-        where: { id: args.postId },
+        where: { id: postId },
         data: {
-          published: true
+          published: false
         }
       })
     },

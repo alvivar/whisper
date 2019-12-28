@@ -13,9 +13,9 @@ type Mutation {
   createUser(name: String!, sessionHash: String!): User
   createBlog(name: String!): Blog!
   createPost(content: String!, userId: ID!, blogId: String!): Post
-
   setUserName(userId: ID!, name: String!): User
-  publish(postId: ID!): Post
+  disablePost(postId: ID!): Post
+
   like(postId: ID!, userId: ID!): Post
   dislike(postId: ID!, userId: ID!): Post
 }
@@ -33,20 +33,19 @@ type User {
   created: DateTime!
 }
 
-type Post {
-  id: ID!
-  author: User
-  likedBy: [User!]!
-  blog: Blog!
-  published: Boolean!
-  content: String!
-  score: Int
-  created: DateTime!
-}
-
 type Blog {
   id: ID!
   posts: [Post!]!
   name: String!
+  created: DateTime!
+}
+
+type Post {
+  id: ID!
+  author: User!
+  likedBy: [User!]!
+  blog: Blog!
+  published: Boolean!
+  content: String!
   created: DateTime!
 }
