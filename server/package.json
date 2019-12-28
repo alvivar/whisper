@@ -17,10 +17,10 @@
     },
     "homepage": "https://github.com/alvivar/whisper#readme",
     "dependencies": {
-        "graphql-redis-subscriptions": "^2.1.0",
-        "graphql-yoga": "^1.17.4",
-        "ioredis": "^4.11.2",
+        "graphql-redis-subscriptions": "^2.1.2",
+        "graphql-yoga": "^1.18.3",
+        "ioredis": "^4.14.1",
         "moment": "^2.24.0",
-        "prisma-client-lib": "^1.33.0"
+        "prisma-client-lib": "^1.34.10"
     }
 }
