@@ -19,37 +19,44 @@ const pubsub = new RedisPubSub({
 
 const PUBSUB_NEWPOST = 'NEWPOST'
 
-// ^ @todo @environment
+// @todo @environment ^
 console.log(process.env.PRISMA_MANAGEMENT_API_SECRET)
 
 const resolvers = {
   Query: {
-    user (root, args, context) {
-      return context.prisma.user({ sessionHash: args.sessionHash })
-    },
-    allowedPosts (root, args, context) {
-      return context.prisma.posts({
-        where: { expired: true },
-        orderBy: 'created_DESC'
+    user (root, { sessionHash }, context) {
+      return context.prisma.user({
+        sessionHash: sessionHash
       })
     },
     publishedPosts (root, args, context) {
       return context.prisma.posts({
-        where: { published: true }
+        where: { published: true },
+        orderBy: 'created_DESC'
       })
     },
-    post (root, args, context) {
-      return context.prisma.post({ id: args.postId })
-    },
-    postsByUser (root, args, context) {
-      return context.prisma.user({ id: args.userId }).post()
-    },
-    blogPosts (root, args, context) {
-      return context.prisma.blog({ name: args.name }).posts({
-        orderBy: 'created_DESC',
-        skip: args.skip,
-        first: args.first
+    post (root, { postId }, context) {
+      return context.prisma.post({
+        id: postId
       })
+    },
+    postsByUser (root, { userId }, context) {
+      return context.prisma
+        .user({
+          id: userId
+        })
+        .writtenPosts()
+    },
+    blogPosts (root, { name, skip, first }, context) {
+      return context.prisma
+        .blog({
+          name: name
+        })
+        .posts({
+          orderBy: 'created_DESC',
+          skip: skip,
+          first: first
+        })
     }
   },
   Mutation: {
@@ -92,11 +99,11 @@ const resolvers = {
         }
       })
     },
-    disablePost (root, { postId }, context) {
+    setPostStatus (root, { postId, status }, context) {
       return context.prisma.updatePost({
         where: { id: postId },
         data: {
-          published: false
+          published: status
         }
       })
     },
@@ -181,7 +188,9 @@ const resolvers = {
 const server = new GraphQLServer({
   typeDefs: './models/schema.graphql',
   resolvers,
-  context: { prisma }
+  context: {
+    prisma
+  }
 })
 
 server.start(() => console.log('Server is running on http://127.0.0.1:4000'))

@@ -10,7 +10,7 @@ type User {
 type Blog {
     id: ID! @id
     posts: [Post!]!
-    name: String!
+    name: String! @unique
     created: DateTime! @createdAt
 }
 

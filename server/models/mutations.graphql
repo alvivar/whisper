@@ -1,0 +1,143 @@
+mutation {
+  createUser(name: "adros", sessionHash: "20191228035556") {
+    id
+    writtenPosts {
+      id
+      content
+    }
+    likedPosts {
+      id
+      content
+    }
+    name
+    sessionHash
+    created
+  }
+}
+
+mutation {
+  createBlog(name: "blog") {
+    id
+    posts {
+      id
+      content
+    }
+    name
+    created
+  }
+}
+
+mutation {
+  createPost(
+    content: "post"
+    userId: "ck4pfml8m009n0777p6au855p"
+    blogId: "ck4pfmpq1009t0777dh8amgnd"
+  ) {
+    id
+    author {
+      id
+      name
+    }
+    likedBy {
+      id
+      name
+    }
+    blog {
+      id
+      name
+      posts {
+        id
+        content
+      }
+    }
+    published
+    content
+    created
+  }
+}
+
+mutation {
+  setUserName(userId: "ck4qb5bbr001u07644nurto81", name: "The ADROS") {
+    id
+    writtenPosts {
+      id
+      content
+    }
+    likedPosts {
+      id
+      content
+    }
+    name
+    sessionHash
+    created
+  }
+}
+
+mutation {
+  setPostStatus(postId: "ck4qb606s00280764trzcvo3e", status: false) {
+    id
+    author {
+      id
+      name
+    }
+    likedBy {
+      id
+      name
+    }
+    blog {
+      id
+      name
+    }
+    published
+    content
+    created
+  }
+}
+
+mutation {
+  like(
+    postId: "ck4qb606s00280764trzcvo3e"
+    userId: "ck4qb5bbr001u07644nurto81"
+  ) {
+    id
+    author {
+      id
+      name
+    }
+    likedBy {
+      id
+      name
+    }
+    blog {
+      id
+      name
+    }
+    published
+    content
+    created
+  }
+}
+
+mutation {
+  dislike(
+    postId: "ck4qb606s00280764trzcvo3e"
+    userId: "ck4qb5bbr001u07644nurto81"
+  ) {
+    id
+    author {
+      id
+      name
+    }
+    likedBy {
+      id
+      name
+    }
+    blog {
+      id
+      name
+    }
+    published
+    content
+    created
+  }
+}

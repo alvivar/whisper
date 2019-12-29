@@ -1,0 +1,79 @@
+query {
+  user(sessionHash: "20191228035556") {
+    id
+    writtenPosts {
+      id
+      content
+    }
+    likedPosts {
+      id
+      content
+    }
+    name
+    sessionHash
+    created
+  }
+}
+
+query {
+  publishedPosts {
+    id
+    author {
+      id
+      name
+    }
+    likedBy {
+      id
+      name
+    }
+    blog {
+      id
+      name
+    }
+    published
+    content
+    created
+  }
+}
+
+query {
+  post(postId: "ck4qb606s00280764trzcvo3e") {
+    id
+    author {
+      id
+      name
+    }
+    likedBy {
+      id
+      name
+    }
+    blog {
+      id
+      name
+    }
+    published
+    content
+    created
+  }
+}
+
+query {
+  postsByUser(userId: "ck4qb5bbr001u07644nurto81") {
+    id
+    author {
+      id
+      name
+    }
+    likedBy {
+      id
+      name
+    }
+    blog {
+      id
+      name
+    }
+    published
+    content
+    created
+  }
+}

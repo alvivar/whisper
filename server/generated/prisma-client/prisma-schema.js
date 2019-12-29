@@ -158,6 +158,7 @@ input BlogWhereInput {
 
 input BlogWhereUniqueInput {
   id: ID
+  name: String
 }
 
 scalar DateTime
