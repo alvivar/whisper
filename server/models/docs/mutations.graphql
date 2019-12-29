@@ -29,9 +29,9 @@ mutation {
 
 mutation {
   createPost(
-    content: "post"
-    userId: "ck4pfml8m009n0777p6au855p"
-    blogId: "ck4pfmpq1009t0777dh8amgnd"
+    content: "post content"
+    userId: "ck4qb5bbr001u07644nurto81"
+    blogName: "blog"
   ) {
     id
     author {

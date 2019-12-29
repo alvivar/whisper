@@ -71,24 +71,26 @@ const resolvers = {
         name: name
       })
     },
-    async createPost (root, { content, userId, blogId }, context) {
+    async createPost (root, { content, userId, blogName }, context) {
+      const blog = await context.prisma.blog({ name: blogName })
+      if (!blog) {
+        throw new Error('Error: Blog does not exists.')
+      }
+
       const post = await context.prisma.createPost({
         author: {
           connect: { id: userId }
         },
         blog: {
           connect: {
-            id: blogId
+            id: blog.id
           }
         },
         published: true,
         content: content
       })
 
-      const blog = await context.prisma.blog({ id: blogId })
-      console.log(blog)
-
-      pubsub.publish(`${NEWBLOGPOST}.${blog.name}`, {
+      pubsub.publish(`${NEWBLOGPOST}.${blogName}`, {
         newPost: post
       })
 

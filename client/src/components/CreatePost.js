@@ -6,8 +6,8 @@ import useKeyPress from '../hooks/useKeyPress'
 import useDebounce from '../hooks/useDebounce'
 
 const CREATEPOST = gql`
-  mutation createPost($content: String!, $userId: String!, $blogId: ID!) {
-    createPost(content: $content, userId: $userId, blogId: $blogId) {
+  mutation createPost($content: String!, $userId: String!, $blogName: ID!) {
+    createPost(content: $content, userId: $userId, blogName: $blogName) {
       id
     }
   }
@@ -30,8 +30,8 @@ const CreatePost = ({
   buttonEnabled,
   setButtonEnabled
 }) => {
-  const createPostMutation = useMutation(CREATEPOST)
-  const setUserNameMutation = useMutation(SETUSERNAME)
+  const [createPostMutation] = useMutation(CREATEPOST)
+  const [setUserNameMutation] = useMutation(SETUSERNAME)
 
   const [name, setName] = useState(user.name)
   const debouncedName = useDebounce(name, 1000)
@@ -56,7 +56,7 @@ const CreatePost = ({
   const ctrlKeyDown = useKeyPress('Control')
   const enterKeyDown = useKeyPress('Enter')
 
-  const createPost = async (userId, blogId, content) => {
+  const createPost = async (content, userId, blogName) => {
     if (!content.trim()) {
       textArea.focus()
       setTextAreaBg(textAreaBgError)
@@ -64,14 +64,19 @@ const CreatePost = ({
       return false
     }
 
+    console.log(`content: ${content}`)
+    console.log(`userId: ${userId}`)
+    console.log(`blogName: ${blogName}`)
+    console.log('TRYING!')
     setButtonEnabled(false)
     await createPostMutation({
       variables: {
+        content: content.trim(),
         userId: userId,
-        blogId: blogId.trim(),
-        content: content.trim()
+        blogName: blogName.trim()
       }
     })
+    console.log('NEVER!')
 
     setContent('')
     console.log('Post created')
@@ -152,7 +157,7 @@ const CreatePost = ({
     console.log('Detecting Ctrl + Enter')
     if (ctrlKeyDown && enterKeyDown) {
       console.log('Ctrl + Enter pressed')
-      createPost(user.id, blogName, content)
+      createPost(content, user.id, blogName)
     }
   }, [ctrlKeyDown, enterKeyDown])
 
@@ -175,7 +180,7 @@ const CreatePost = ({
       <div className='w-full'>
         <button
           onClick={e => {
-            if (user.id) createPost(user.id, blogName, content)
+            if (user.id) createPost(content, user.id, blogName)
           }}
           className={
             buttonEnabled

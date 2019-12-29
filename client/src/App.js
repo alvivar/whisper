@@ -50,18 +50,18 @@ function App () {
     // data: newPostData
   } = useSubscription(NEWBLOGPOST, {
     variables: {
-      channel: blogName
+      blogName: blogName
     },
     onSubscriptionData: ({ client, subscriptionData }) => {
       console.log('PubSub NEWPOST received')
       console.log(client)
       console.log(subscriptionData)
 
-      const newPost = subscriptionData.data.newPost
-      document.title = `Whisper | ${newPost.author.name} whispers ${newPost.content}`
+      const newBlogPost = subscriptionData.data.newBlogPost
+      document.title = `Whisper | ${newBlogPost.author.name} whispers ${newBlogPost.content}`
 
       setButtonEnabled(true)
-      setNewPosts([newPost, ...newPosts])
+      setNewPosts([newBlogPost, ...newPosts])
     }
   })
 

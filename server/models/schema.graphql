@@ -11,7 +11,7 @@ type Query {
 type Mutation {
   createUser(name: String!, sessionHash: String!): User
   createBlog(name: String!): Blog!
-  createPost(content: String!, userId: ID!, blogId: String!): Post
+  createPost(content: String!, userId: ID!, blogName: String!): Post
   setUserName(userId: ID!, name: String!): User
   setPostStatus(postId: ID!, status: Boolean): Post
   likePost(postId: ID!, userId: ID!): Post
