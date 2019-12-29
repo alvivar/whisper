@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useQuery, useMutation, useSubscription } from 'react-apollo-hooks'
+import { useMutation, useSubscription } from 'react-apollo-hooks'
 import gql from 'graphql-tag'
 
 import PostsList from './components/PostsList'
 import CreatePost from './components/CreatePost'
 
-const CREATE_USER_MUTATION = gql`
+const CREATEUSER = gql`
   mutation createUser($name: String!, $sessionHash: String!) {
     createUser(name: $name, sessionHash: $sessionHash) {
       id
@@ -15,9 +15,9 @@ const CREATE_USER_MUTATION = gql`
   }
 `
 
-const NEWPOST = gql`
+const NEWBLOGPOST = gql`
   subscription newBlogPost($blogName: String!) {
-    newPost(blogName: $blogName) {
+    newBlogPost(blogName: $blogName) {
       content
       author {
         name
@@ -38,7 +38,7 @@ function App () {
 
   const [buttonEnabled, setButtonEnabled] = useState(true)
 
-  const createUserMutation = useMutation(CREATE_USER_MUTATION)
+  const createUserMutation = useMutation(CREATEUSER)
 
   // New post subscription
 
@@ -48,7 +48,7 @@ function App () {
     // loading: newPostLoading,
     // error: newPostError,
     // data: newPostData
-  } = useSubscription(NEWPOST, {
+  } = useSubscription(NEWBLOGPOST, {
     variables: {
       channel: blogName
     },
@@ -111,14 +111,14 @@ function App () {
       <CreatePost
         user={user}
         setUser={setUser}
-        channel={blogName}
-        setChannel={setBlogName}
+        blogName={blogName}
+        setBlogName={setBlogName}
         buttonEnabled={buttonEnabled}
         setButtonEnabled={setButtonEnabled}
       />
 
       <div style={{ float: 'left', clear: 'both' }} ref={firstPost}></div>
-      <PostsList newPosts={newPosts} channel={blogName} />
+      {/* <PostsList newPosts={newPosts} channel={blogName} /> */}
       <div style={{ float: 'left', clear: 'both' }} ref={lastPost}></div>
     </div>
   )
