@@ -5,15 +5,15 @@ import { useMutation } from 'react-apollo-hooks'
 import useKeyPress from '../hooks/useKeyPress'
 import useDebounce from '../hooks/useDebounce'
 
-const POST_MUTATION = gql`
-  mutation createDraft($content: String!, $channel: String!, $userId: ID!) {
-    createDraft(content: $content, channel: $channel, userId: $userId) {
+const CREATEPOST = gql`
+  mutation createPost($content: String!, $userId: String!, $blogId: ID!) {
+    createPost(content: $content, userId: $userId, blogId: $blogId) {
       id
     }
   }
 `
 
-const SET_USER_NAME_MUTATION = gql`
+const SETUSERNAME = gql`
   mutation setUserName($userId: ID!, $name: String!) {
     setUserName(userId: $userId, name: $name) {
       id
@@ -25,13 +25,13 @@ const SET_USER_NAME_MUTATION = gql`
 const CreatePost = ({
   user,
   setUser,
-  channel,
-  setChannel,
+  blogName,
+  setBlogName,
   buttonEnabled,
   setButtonEnabled
 }) => {
-  const createPostMutation = useMutation(POST_MUTATION)
-  const setUserNameMutation = useMutation(SET_USER_NAME_MUTATION)
+  const createPostMutation = useMutation(CREATEPOST)
+  const setUserNameMutation = useMutation(SETUSERNAME)
 
   const [name, setName] = useState(user.name)
   const debouncedName = useDebounce(name, 1000)
@@ -50,13 +50,13 @@ const CreatePost = ({
   const [contentLetters, setContentLetters] = useState(0)
   const [content, setContent] = useState('')
 
-  const [channelToDebounce, setChannelToDebounce] = useState(channel)
-  const deboundedChannel = useDebounce(channelToDebounce, 1000)
+  const [blogNameToDebounce, setBlogNameToDebounce] = useState(blogName)
+  const deboundedBlogName = useDebounce(blogNameToDebounce, 1000)
 
   const ctrlKeyDown = useKeyPress('Control')
   const enterKeyDown = useKeyPress('Enter')
 
-  const createPost = async (userId, channel, content) => {
+  const createPost = async (userId, blogId, content) => {
     if (!content.trim()) {
       textArea.focus()
       setTextAreaBg(textAreaBgError)
@@ -68,7 +68,7 @@ const CreatePost = ({
     await createPostMutation({
       variables: {
         userId: userId,
-        channel: channel.trim(),
+        blogId: blogId.trim(),
         content: content.trim()
       }
     })
@@ -132,27 +132,27 @@ const CreatePost = ({
     if (name.includes('@')) {
       let channel = name.split('@')[1].trim() || '@'
       channel = channel ? channel : '@'
-      setChannelToDebounce(channel)
+      setBlogNameToDebounce(channel)
     } else {
-      setChannelToDebounce(name.trim())
+      setBlogNameToDebounce(name.trim())
     }
   }, [name])
 
   // Channel debounced
   useEffect(() => {
     console.log('Channel modified')
-    if (deboundedChannel && deboundedChannel !== channel) {
-      setChannel(deboundedChannel)
-      console.log(`Saving new channel: ${deboundedChannel}`)
+    if (deboundedBlogName && deboundedBlogName !== blogName) {
+      setBlogName(deboundedBlogName)
+      console.log(`Saving new channel: ${deboundedBlogName}`)
     }
-  }, [deboundedChannel])
+  }, [deboundedBlogName])
 
   // Ctrl+Enter to post
   useEffect(() => {
     console.log('Detecting Ctrl + Enter')
     if (ctrlKeyDown && enterKeyDown) {
       console.log('Ctrl + Enter pressed')
-      createPost(user.id, channel, content)
+      createPost(user.id, blogName, content)
     }
   }, [ctrlKeyDown, enterKeyDown])
 
@@ -175,7 +175,7 @@ const CreatePost = ({
       <div className='w-full'>
         <button
           onClick={e => {
-            if (user.id) createPost(user.id, channel, content)
+            if (user.id) createPost(user.id, blogName, content)
           }}
           className={
             buttonEnabled
