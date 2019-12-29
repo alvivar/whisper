@@ -14,12 +14,12 @@ type Mutation {
   createPost(content: String!, userId: ID!, blogId: String!): Post
   setUserName(userId: ID!, name: String!): User
   setPostStatus(postId: ID!, status: Boolean): Post
-  like(postId: ID!, userId: ID!): Post
-  dislike(postId: ID!, userId: ID!): Post
+  likePost(postId: ID!, userId: ID!): Post
+  dislikePost(postId: ID!, userId: ID!): Post
 }
 
 type Subscription {
-  newPost(channel: String!): Post
+  newBlogPost(blogName: String!): Post
 }
 
 type User {

@@ -17,7 +17,7 @@ const pubsub = new RedisPubSub({
   subscriber: new Redis(PubSubOptions)
 })
 
-const PUBSUB_NEWPOST = 'NEWPOST'
+const NEWBLOGPOST = 'NEWPOST'
 
 // @todo @environment ^
 console.log(process.env.PRISMA_MANAGEMENT_API_SECRET)
@@ -85,7 +85,10 @@ const resolvers = {
         content: content
       })
 
-      pubsub.publish(`${PUBSUB_NEWPOST}.${blogId}`, {
+      const blog = await context.prisma.blog({ id: blogId })
+      console.log(blog)
+
+      pubsub.publish(`${NEWBLOGPOST}.${blog.name}`, {
         newPost: post
       })
 
@@ -107,7 +110,7 @@ const resolvers = {
         }
       })
     },
-    like (root, args, context) {
+    likePost (root, args, context) {
       return context.prisma.updatePost({
         where: { id: args.postId },
         data: {
@@ -117,7 +120,7 @@ const resolvers = {
         }
       })
     },
-    dislike (root, args, context) {
+    dislikePost (root, args, context) {
       return context.prisma.updatePost({
         where: { id: args.postId },
         data: {
@@ -129,9 +132,9 @@ const resolvers = {
     }
   },
   Subscription: {
-    newPost: {
+    newBlogPost: {
       subscribe: async (root, args, context) => {
-        return pubsub.asyncIterator(`${PUBSUB_NEWPOST}.${args.channel}`)
+        return pubsub.asyncIterator(`${NEWBLOGPOST}.${blogName}`)
       }
     }
   },

@@ -95,7 +95,7 @@ mutation {
 }
 
 mutation {
-  like(
+  likePost(
     postId: "ck4qb606s00280764trzcvo3e"
     userId: "ck4qb5bbr001u07644nurto81"
   ) {
@@ -119,7 +119,7 @@ mutation {
 }
 
 mutation {
-  dislike(
+  dislikePost(
     postId: "ck4qb606s00280764trzcvo3e"
     userId: "ck4qb5bbr001u07644nurto81"
   ) {

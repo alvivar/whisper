@@ -5,15 +5,6 @@ import gql from 'graphql-tag'
 import PostsList from './components/PostsList'
 import CreatePost from './components/CreatePost'
 
-const USER_QUERY = gql`
-  query user($sessionHash: String!) {
-    user(sessionHash: $sessionHash) {
-      id
-      name
-    }
-  }
-`
-
 const CREATE_USER_MUTATION = gql`
   mutation createUser($name: String!, $sessionHash: String!) {
     createUser(name: $name, sessionHash: $sessionHash) {
@@ -25,8 +16,8 @@ const CREATE_USER_MUTATION = gql`
 `
 
 const NEWPOST = gql`
-  subscription newPost($channel: String!) {
-    newPost(channel: $channel) {
+  subscription newBlogPost($blogName: String!) {
+    newPost(blogName: $blogName) {
       content
       author {
         name
@@ -51,7 +42,7 @@ function App () {
 
   // New post subscription
 
-  const [channel, setChannel] = useState('universe')
+  const [blogName, setBlogName] = useState('universe')
 
   const {
     // loading: newPostLoading,
@@ -59,7 +50,7 @@ function App () {
     // data: newPostData
   } = useSubscription(NEWPOST, {
     variables: {
-      channel
+      channel: blogName
     },
     onSubscriptionData: ({ client, subscriptionData }) => {
       console.log('PubSub NEWPOST received')
@@ -120,14 +111,14 @@ function App () {
       <CreatePost
         user={user}
         setUser={setUser}
-        channel={channel}
-        setChannel={setChannel}
+        channel={blogName}
+        setChannel={setBlogName}
         buttonEnabled={buttonEnabled}
         setButtonEnabled={setButtonEnabled}
       />
 
       <div style={{ float: 'left', clear: 'both' }} ref={firstPost}></div>
-      <PostsList newPosts={newPosts} channel={channel} />
+      <PostsList newPosts={newPosts} channel={blogName} />
       <div style={{ float: 'left', clear: 'both' }} ref={lastPost}></div>
     </div>
   )

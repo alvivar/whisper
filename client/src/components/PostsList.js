@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useQuery } from 'react-apollo-hooks'
 import gql from 'graphql-tag'
 
-const POSTS_BY_CHANNEL = gql`
+const BLOGPOSTS = gql`
   query blogPosts($name: String!, $skip: Int!, $first: Int!) {
     blogPosts(name: $name, skip: $skip, first: $first) {
       content
@@ -75,7 +75,7 @@ const PostsList = ({ newPosts, channel }) => {
   const postsBatch = 3
   const [first, setFirst] = useState(postsBatch)
 
-  const { loading, error, data, refetch } = useQuery(POSTS_BY_CHANNEL, {
+  const { loading, error, data, refetch } = useQuery(BLOGPOSTS, {
     variables: {
       channel: channel,
       skip: 0,
