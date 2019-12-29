@@ -77,3 +77,24 @@ query {
     created
   }
 }
+
+query {
+  blogPosts(name: "adros's blog", skip: 0, first: 10) {
+    id
+    author {
+      id
+      name
+    }
+    likedBy {
+      id
+      name
+    }
+    blog {
+      id
+      name
+    }
+    published
+    content
+    created
+  }
+}

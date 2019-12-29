@@ -2,10 +2,10 @@ scalar DateTime
 
 type Query {
   user(sessionHash: String!): User
-  publishedPosts: [Post!]!
   post(postId: ID!): Post
+  publishedPosts: [Post!]!
   postsByUser(userId: ID!): [Post!]!
-  blogPosts(channel: String!, skip: Int!, first: Int!): [Post!]!
+  blogPosts(name: String!, skip: Int!, first: Int!): [Post!]!
 }
 
 type Mutation {
