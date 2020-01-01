@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { useState } from 'react'
+import logo from './logo.svg'
+import './App.css'
+import './styles/index.css'
+import './styles/tailwind.css'
+import useDebounce from './hooks/useDebounce'
 
-function App() {
+const InputLabel = ({ userName }) => {
+  // Input Background
+  const inputBgOk = 'bg-blue-100 focus:bg-blue-200'
+  const inputBgEditing = 'bg-green-100 focus:bg-green-200'
+  const inputBgError = 'bg-red-300 focus:bg-red-400'
+  const [inputBg, setInputBg] = useState(inputBgOk)
+
+  // Internal name
+  const [name, setName] = useState(userName)
+  const debouncedName = useDebounce(name, 1000)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input
+        className={`float-right w-full p-1 my-2 text-gray-600 focus:text-gray-800 ${inputBg} border-transparent outline-none rounded-lg`}
+        onChange={e => {
+          setName(e.target.value)
+          setInputBg(inputBgEditing)
+        }}
+        value={name}
+      />
     </div>
-  );
+  )
 }
 
-export default App;
+function App () {
+  return <InputLabel userName='dragon sword'></InputLabel>
+}
+
+export default App
