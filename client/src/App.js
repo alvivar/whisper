@@ -8,22 +8,22 @@ import './styles/tailwind.css'
 import useDebounce from './hooks/useDebounce'
 
 const BlogName = ({ name }) => {
-  return <InputField defaultValue={name}></InputField>
+  return <InputField Value={name}></InputField>
 }
 
-const InputField = ({ defaultValue, defaultSetValue }) => {
+const InputField = ({ Value, SetValue }) => {
   const inputBgOk = 'bg-blue-100 focus:bg-blue-200'
   const inputBgEditing = 'bg-green-100 focus:bg-green-200'
   const inputBgError = 'bg-red-300 focus:bg-red-400'
   const [inputBg, setInputBg] = useState(inputBgOk)
 
-  const [value, setValue] = useState(defaultValue)
+  const [value, setValue] = useState(Value)
   const debouncedValue = useDebounce(value, 1000)
 
   useEffect(() => {
     console.log('InputField modified')
-    if (debouncedValue && debouncedValue !== defaultValue) {
-      if (defaultSetValue) defaultSetValue(debouncedValue)
+    if (debouncedValue && debouncedValue !== Value) {
+      SetValue(debouncedValue)
       console.log(`InputField saved: ${debouncedValue}`)
     }
   }, [debouncedValue])
@@ -42,15 +42,42 @@ const InputField = ({ defaultValue, defaultSetValue }) => {
   )
 }
 
+const TextArea = ({ Value, SetValue }) => {
+  const textAreaBgOk = 'bg-blue-100 focus:bg-blue-200'
+  const textAreaBgError = 'bg-red-300 focus:bg-red-400'
+  const [textAreaBg, setTextAreaBg] = useState(textAreaBgOk)
+
+  const [textArea, setTextArea] = useState()
+
+  const [value, setValue] = useState(Value)
+  const debouncedValue = useDebounce(value, 1000)
+
+  useEffect(() => {
+    console.log('InputField modified')
+    if (debouncedValue && debouncedValue !== Value) {
+      SetValue(debouncedValue)
+      console.log(`InputField saved: ${debouncedValue}`)
+    }
+  }, [debouncedValue])
+
+  return (
+    <textarea
+      ref={node => setTextArea(node)}
+      className={`w-full h-32 py-4 px-4 text-gray-800 ${textAreaBg} border border-transparent outline-none rounded-lg`}
+      onChange={e => setValue(e.target.value)}
+      value={value}
+    />
+  )
+}
+
 function App () {
   const [blogName, setBlogName] = useState('Blog Name')
+  const [postContent, setPostContent] = useState('Post content')
 
   return (
     <div>
-      <InputField
-        defaultValue={blogName}
-        defaultSetValue={setBlogName}
-      ></InputField>
+      <InputField Value={blogName} SetValue={setBlogName}></InputField>
+      <TextArea Value={postContent} SetValue={setPostContent}></TextArea>
     </div>
   )
 }
