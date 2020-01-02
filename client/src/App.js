@@ -69,6 +69,43 @@ const TextArea = ({ defaultValue, OnValueChange }) => {
   )
 }
 
+const PostButton = ({ enabled, OnClick }) => {
+  return (
+    <button
+      onClick={e => {
+        if (OnClick) OnClick()
+      }}
+      className={
+        enabled
+          ? 'float-right h-16 my-2 py-2 px-4 text-sm text-gray-500 hover:text-white bg-blue-100 hover:bg-blue-400 outline-none border-transparent rounded-lg'
+          : 'float-right h-16 my-2 py-2 px-4 text-sm text-gray-500 bg-gray-100 outline-none border-transparent rounded-lg'
+      }
+      disabled={enabled ? '' : true}
+    >
+      <span className='text-xl'>{enabled ? ' whisper ' : ' hm... '}</span>
+      <span className='text-xs'>{enabled ? ' ctrl + enter ' : ''}</span>
+    </button>
+  )
+}
+
+const WordCount = ({ words, letters }) => {
+  return (
+    <div className='float-right h-16 mr-2 my-2 py-2 px-4 text-sm text-gray-400 bg-gray-100 outline-none border-transparent rounded-lg'>
+      {`${words} words`}
+      <br />
+      {`${letters} letters`}
+    </div>
+  )
+}
+
+const Post = ({}) => {
+  return <div></div>
+}
+
+const PostList = ({}) => {
+  return <div>PostList</div>
+}
+
 function App () {
   const [blogName, setBlogName] = useState('Blog Name')
   const [postContent, setPostContent] = useState('Post content')
@@ -83,6 +120,11 @@ function App () {
         defaultValue={postContent}
         OnValueChange={setPostContent}
       ></TextArea>
+      <PostButton
+        enabled={true}
+        OnClick={() => console.log('Clicked!')}
+      ></PostButton>
+      <WordCount words={100} letters={100}></WordCount>
     </div>
   )
 }
