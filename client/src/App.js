@@ -99,7 +99,7 @@ const WordCount = ({ words, letters }) => {
 }
 
 const Post = ({}) => {
-  return <div></div>
+  return <div>Post</div>
 }
 
 const PostList = ({}) => {
