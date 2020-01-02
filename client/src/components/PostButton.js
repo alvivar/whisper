@@ -8,8 +8,8 @@ const PostButton = ({ enabled, OnClick }) => {
       }}
       className={
         enabled
-          ? 'float-right h-16 my-2 py-2 px-4 text-sm text-gray-500 hover:text-white bg-blue-100 hover:bg-blue-400 outline-none border-transparent rounded-lg'
-          : 'float-right h-16 my-2 py-2 px-4 text-sm text-gray-500 bg-gray-100 outline-none border-transparent rounded-lg'
+          ? 'float-right h-16 my-2 py-2 px-4 text-sm text-gray-500 hover:text-white bg-blue-200 hover:bg-blue-400 outline-none border-transparent rounded-lg'
+          : 'float-right h-16 my-2 py-2 px-4 text-sm text-gray-500 bg-gray-200 outline-none border-transparent rounded-lg'
       }
       disabled={enabled ? '' : true}
     >
