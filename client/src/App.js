@@ -14,8 +14,8 @@ import PostList from './components/PostList'
 function App () {
   // Data
 
-  const [blogName, setBlogName] = useState('user@universe')
-  const [postContent, setPostContent] = useState('Post content')
+  const [blogName, setBlogName] = useState('')
+  const [postContent, setPostContent] = useState('')
 
   // Words & letters
 
