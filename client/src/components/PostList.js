@@ -1,5 +1,4 @@
 import React from 'react'
-
 import Post from './Post'
 
 const PostList = ({}) => {
@@ -18,12 +17,18 @@ const PostList = ({}) => {
 
   return (
     <div className='float-left'>
-      <Post bg={bgFlow[0]}></Post>
-      <Post></Post>
-      <Post></Post>
-      <Post></Post>
-      <Post></Post>
-      <Post></Post>
+      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
+      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
+      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
+      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
+      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
+      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
+      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
+      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
+      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
+      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
+      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
+      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
     </div>
   )
 }
