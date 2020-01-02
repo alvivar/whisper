@@ -12,8 +12,12 @@ import WordCount from './components/WordCount'
 import PostList from './components/PostList'
 
 function App () {
+  // Data
+
   const [blogName, setBlogName] = useState('user@universe')
   const [postContent, setPostContent] = useState('Post content')
+
+  // Words & letters
 
   const [wordCount, setWordCount] = useState(0)
   const [letterCount, setLetterCount] = useState(0)
@@ -22,6 +26,8 @@ function App () {
     setWordCount((postContent.trim().match(/\S+/g) || []).length)
     setLetterCount(postContent.trim().length)
   }, [postContent])
+
+  // App
 
   return (
     <div className='container mx-auto max-w-xl'>
