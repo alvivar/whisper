@@ -59,7 +59,7 @@ const TextArea = ({ defaultValue, OnValueChange }) => {
 
   return (
     <textarea
-      className={`w-full h-32 py-4 px-4 my-2 text-gray-800 ${bg} border-transparent outline-none rounded-lg`}
+      className={`w-full h-64 py-4 px-4 text-gray-800 ${bg} border-transparent outline-none rounded-lg`}
       onChange={e => {
         setValue(e.target.value)
         setBg(bgEditing)
@@ -75,8 +75,14 @@ function App () {
 
   return (
     <div className='container mx-auto max-w-xl'>
-      <InputField Value={blogName} OnValueChange={setBlogName}></InputField>
-      <TextArea Value={postContent} OnValueChange={setPostContent}></TextArea>
+      <InputField
+        defaultValue={blogName}
+        OnValueChange={setBlogName}
+      ></InputField>
+      <TextArea
+        defaultValue={postContent}
+        OnValueChange={setPostContent}
+      ></TextArea>
     </div>
   )
 }
