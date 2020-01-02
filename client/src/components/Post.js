@@ -40,7 +40,7 @@ const Post = ({
   bg = '',
   name = 'name',
   created = Date.now(),
-  content = "This is not exactly real, as we like it. It's a lot more complicated than that."
+  content = "It's a lot more complicated than that. This is not exactly real, as we like it. It's a lot more complicated than that."
 }) => {
   return (
     <div
