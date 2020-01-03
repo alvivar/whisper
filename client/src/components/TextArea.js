@@ -17,7 +17,6 @@ const TextArea = ({ defaultValue, OnValueChange }) => {
   }, [debouncedValue])
 
   return (
-    // <div className="max-w-2xl"></div>
     <textarea
       className={`float-left w-full h-32 py-4 px-4 text-gray-800 ${bg} outline-none rounded-lg`}
       onChange={e => {
