@@ -14,8 +14,8 @@ import PostList from './components/PostList'
 function App () {
   // Data
 
-  const [blogName, setBlogName] = useState('')
-  const [postContent, setPostContent] = useState('')
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
 
   // Words & letters
 
@@ -23,26 +23,17 @@ function App () {
   const [letterCount, setLetterCount] = useState(0)
 
   useEffect(() => {
-    setWordCount((postContent.trim().match(/\S+/g) || []).length)
-    setLetterCount(postContent.trim().length)
-  }, [postContent])
+    setWordCount((content.trim().match(/\S+/g) || []).length)
+    setLetterCount(content.trim().length)
+  }, [content])
 
   // App
 
   return (
     <div className='container mx-auto max-w-3xl'>
-      <InputField
-        defaultValue={blogName}
-        OnValueChange={setBlogName}
-      ></InputField>
-      <TextArea
-        defaultValue={postContent}
-        OnValueChange={setPostContent}
-      ></TextArea>
-      <PostButton
-        enabled={true}
-        OnClick={() => console.log('Clicked!')}
-      ></PostButton>
+      <InputField defaultValue={title} OnValueChange={setTitle}></InputField>
+      <TextArea defaultValue={content} OnValueChange={setContent}></TextArea>
+      <PostButton enabled={true}></PostButton>
       <WordCount words={wordCount} letters={letterCount}></WordCount>
       <PostList></PostList>
     </div>
