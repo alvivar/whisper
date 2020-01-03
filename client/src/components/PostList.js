@@ -16,7 +16,7 @@ const PostList = ({}) => {
   ]
 
   return (
-    <div className='float-left'>
+    <div className='container float-left'>
       <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
       <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
       <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>

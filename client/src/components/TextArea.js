@@ -5,9 +5,9 @@ const TextArea = ({ defaultValue, OnValueChange }) => {
   const [value, setValue] = useState(defaultValue)
   const debouncedValue = useDebounce(value, 1000)
 
-  const bgOk = 'bg-blue-200 focus:bg-blue-300'
-  const bgEditing = 'bg-green-100 focus:bg-green-200'
-  const bgError = 'bg-red-300 focus:bg-red-400'
+  const bgOk = 'bg-blue-200 focus:bg-blue-300 border-transparent'
+  const bgEditing = 'bg-blue-200 focus:bg-blue-300 border border-gray-600'
+  const bgError = 'bg-red-300 focus:bg-red-400 border-transparent'
   const [bg, setBg] = useState(bgOk)
 
   useEffect(() => {
@@ -17,8 +17,9 @@ const TextArea = ({ defaultValue, OnValueChange }) => {
   }, [debouncedValue])
 
   return (
+    // <div className="max-w-2xl"></div>
     <textarea
-      className={`float-left w-full h-32 py-4 px-4 text-gray-800 ${bg} border-transparent outline-none rounded-lg`}
+      className={`float-left w-full h-32 py-4 px-4 text-gray-800 ${bg} outline-none rounded-lg`}
       onChange={e => {
         setValue(e.target.value)
         setBg(bgEditing)

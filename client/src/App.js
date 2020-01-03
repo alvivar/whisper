@@ -30,7 +30,7 @@ function App () {
   // App
 
   return (
-    <div className='container mx-auto max-w-xl'>
+    <div className='container mx-auto max-w-3xl'>
       <InputField
         defaultValue={blogName}
         OnValueChange={setBlogName}
