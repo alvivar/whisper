@@ -5,9 +5,9 @@ const TextArea = ({ defaultValue, OnValueChange }) => {
   const [value, setValue] = useState(defaultValue)
   const debouncedValue = useDebounce(value, 1000)
 
-  const bgOk = 'bg-blue-200 focus:bg-blue-300 border-transparent'
-  const bgEditing = 'bg-blue-200 focus:bg-blue-300 border border-gray-600'
-  const bgError = 'bg-red-300 focus:bg-red-400 border-transparent'
+  const bgOk = 'bg-blue-200 focus:bg-blue-300 border border-gray-200'
+  const bgEditing = 'bg-blue-200 focus:bg-blue-300 border border-blue-400'
+  const bgError = 'bg-red-300 focus:bg-red-400 border border-gray-200'
   const [bg, setBg] = useState(bgOk)
 
   useEffect(() => {

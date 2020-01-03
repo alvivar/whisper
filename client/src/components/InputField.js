@@ -18,7 +18,7 @@ const InputField = ({ defaultValue, OnValueChange }) => {
 
   return (
     <input
-      className={`float-left w-full py-2 px-4 my-2 text-gray-600 focus:text-gray-800 ${bg} border-transparent outline-none rounded-lg`}
+      className={`float-left w-full py-2 px-4 mb-2 text-gray-600 focus:text-gray-800 ${bg} border-transparent outline-none rounded-lg`}
       onChange={e => {
         setValue(e.target.value)
         setBg(bgEditing)

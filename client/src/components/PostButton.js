@@ -14,7 +14,7 @@ const PostButton = ({ enabled, OnClick }) => {
       disabled={enabled ? '' : true}
     >
       <span className='text-xl'>{enabled ? ' whisper ' : ' hm... '}</span>
-      <span className='text-xs'>{enabled ? ' ctrl + enter ' : ''}</span>
+      <span className='text-xs'>{enabled ? ' ctrl+enter ' : ''}</span>
     </button>
   )
 }

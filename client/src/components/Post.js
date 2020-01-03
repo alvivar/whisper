@@ -35,13 +35,7 @@ const timeDifference = (current, previous) => {
   return `${result < 0 ? 0 : result} ${tag}`
 }
 
-const Post = ({
-  key = 0,
-  bg = '',
-  name = 'name',
-  created = Date.now(),
-  content = "It's a lot more complicated than that. This is not exactly real, as we like it. It's a lot more complicated than that."
-}) => {
+const Post = ({ key, title, created, content, bg }) => {
   return (
     <div
       key={key}
@@ -49,19 +43,14 @@ const Post = ({
       className={`w-full p-4 mb-2 ${bg} rounded-lg`}
     >
       <div className='text-xm text-gray-600'>
-        <span>{name} </span>
+        <span>{title} </span>
         <span className='text-xs italic'>
           {timeDifference(new Date().getTime(), new Date(created).getTime())}
         </span>
       </div>
-      <div className='text-xl'>
+      <div className='text-lg'>
         {content.split('\n').map((post, key) => {
-          return (
-            <span key={key}>
-              {post}
-              <br />
-            </span>
-          )
+          return <span key={key}>{post}</span>
         })}
       </div>
     </div>

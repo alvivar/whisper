@@ -1,7 +1,7 @@
 import React from 'react'
 import Post from './Post'
 
-const PostList = ({}) => {
+const PostList = ({ posts }) => {
   const bgFlow = [
     'bg-blue-200 hover:bg-blue-300',
     'bg-teal-200 hover:bg-teal-300',
@@ -15,20 +15,18 @@ const PostList = ({}) => {
     'bg-gray-200 hover:bg-gray-300'
   ]
 
+  let bgIndex = 0
   return (
     <div className='container float-left'>
-      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
-      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
-      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
-      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
-      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
-      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
-      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
-      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
-      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
-      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
-      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
-      <Post bg={bgFlow[Math.floor(Math.random() * bgFlow.length)]}></Post>
+      {posts.map((item, key) => (
+        <Post
+          key={key}
+          title={item.title}
+          content={item.content + ''}
+          created={Date.now()}
+          bg={bgFlow[bgIndex++ % bgFlow.length]}
+        ></Post>
+      ))}
     </div>
   )
 }
