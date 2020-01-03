@@ -10,97 +10,63 @@ import TextArea from './components/TextArea'
 import PostButton from './components/PostButton'
 import WordCount from './components/WordCount'
 import PostList from './components/PostList'
+import BlogList from './components/BlogList'
 
 var randomWords = require('random-words')
 const data = {
   blogs: [
     {
-      name: randomWords(2),
+      name: randomWords({ exactly: 4, join: ' ' }),
       posts: [
         {
-          title: randomWords(4),
-          content: randomWords(50)
+          title: randomWords({ exactly: 4, join: ' ' }),
+          content: randomWords({ exactly: 50, join: ' ' })
         },
         {
-          title: randomWords(4),
-          content: randomWords(50)
+          title: randomWords({ exactly: 4, join: ' ' }),
+          content: randomWords({ exactly: 50, join: ' ' })
         },
         {
-          title: randomWords(4),
-          content: randomWords(50)
+          title: randomWords({ exactly: 4, join: ' ' }),
+          content: randomWords({ exactly: 50, join: ' ' })
         }
       ]
     },
     {
-      name: randomWords(2),
+      name: randomWords({ exactly: 4, join: ' ' }),
       posts: [
         {
-          title: randomWords(4),
-          content: randomWords(50)
+          title: randomWords({ exactly: 4, join: ' ' }),
+          content: randomWords({ exactly: 50, join: ' ' })
         },
         {
-          title: randomWords(4),
-          content: randomWords(50)
+          title: randomWords({ exactly: 4, join: ' ' }),
+          content: randomWords({ exactly: 50, join: ' ' })
         },
         {
-          title: randomWords(4),
-          content: randomWords(50)
+          title: randomWords({ exactly: 4, join: ' ' }),
+          content: randomWords({ exactly: 50, join: ' ' })
         }
       ]
     },
     {
-      name: randomWords(2),
+      name: randomWords({ exactly: 4, join: ' ' }),
       posts: [
         {
-          title: randomWords(4),
-          content: randomWords(50)
+          title: randomWords({ exactly: 4, join: ' ' }),
+          content: randomWords({ exactly: 50, join: ' ' })
         },
         {
-          title: randomWords(4),
-          content: randomWords(50)
+          title: randomWords({ exactly: 4, join: ' ' }),
+          content: randomWords({ exactly: 50, join: ' ' })
         },
         {
-          title: randomWords(4),
-          content: randomWords(50)
+          title: randomWords({ exactly: 4, join: ' ' }),
+          content: randomWords({ exactly: 50, join: ' ' })
         }
       ]
     }
   ]
-}
-
-const Url = ({ key, content }) => {
-  return (
-    <button
-      key={key}
-      id={`post${key}`}
-      className={`float-left mb-2 py-2 px-4 text-left text-gray-600 hover:text-white bg-blue-200 hover:bg-blue-400 outline-none border-transparent rounded-lg`}
-    >
-      <div className='text-sm'>
-        {content.split('\n').map((post, key) => {
-          return <span key={key}>{post}</span>
-        })}
-      </div>
-    </button>
-  )
-}
-
-const UrlList = ({}) => {
-  return (
-    <div className='container float-left'>
-      <Url key={0} content={randomWords({ exactly: 4, join: ' ' })}></Url>
-      <Url key={0} content={randomWords({ exactly: 4, join: ' ' })}></Url>
-      <Url key={0} content={randomWords({ exactly: 4, join: ' ' })}></Url>
-      <Url key={0} content={randomWords({ exactly: 4, join: ' ' })}></Url>
-      <Url key={0} content={randomWords({ exactly: 4, join: ' ' })}></Url>
-      <Url key={0} content={randomWords({ exactly: 4, join: ' ' })}></Url>
-      <Url key={0} content={randomWords({ exactly: 4, join: ' ' })}></Url>
-      <Url key={0} content={randomWords({ exactly: 4, join: ' ' })}></Url>
-      <Url key={0} content={randomWords({ exactly: 4, join: ' ' })}></Url>
-      <Url key={0} content={randomWords({ exactly: 4, join: ' ' })}></Url>
-      <Url key={0} content={randomWords({ exactly: 4, join: ' ' })}></Url>
-      <Url key={0} content={randomWords({ exactly: 4, join: ' ' })}></Url>
-    </div>
-  )
 }
 
 function App () {
@@ -135,33 +101,10 @@ function App () {
           ></TextArea>
           <PostButton enabled={true}></PostButton>
           <WordCount words={wordCount} letters={letterCount}></WordCount>
-          <PostList
-            posts={[
-              {
-                title: randomWords({ exactly: 4, join: ' ' }),
-                content: randomWords({ exactly: 50, join: ' ' })
-              },
-              {
-                title: randomWords({ exactly: 4, join: ' ' }),
-                content: randomWords({ exactly: 50, join: ' ' })
-              },
-              {
-                title: randomWords({ exactly: 4, join: ' ' }),
-                content: randomWords({ exactly: 50, join: ' ' })
-              },
-              {
-                title: randomWords({ exactly: 4, join: ' ' }),
-                content: randomWords({ exactly: 50, join: ' ' })
-              },
-              {
-                title: randomWords({ exactly: 4, join: ' ' }),
-                content: randomWords({ exactly: 50, join: ' ' })
-              }
-            ]}
-          ></PostList>
+          <PostList posts={data.blogs[0].posts}></PostList>
         </div>
         <div className='w-1/4 mt-2 pl-2'>
-          <UrlList></UrlList>
+          <BlogList blogs={data.blogs}></BlogList>
         </div>
       </div>
     </div>
