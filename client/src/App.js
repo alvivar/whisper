@@ -11,6 +11,30 @@ import PostButton from './components/PostButton'
 import WordCount from './components/WordCount'
 import PostList from './components/PostList'
 
+var randomWords = require('random-words')
+const data = {
+  blogs: [
+    {
+      name: randomWords(3),
+      posts: [
+        {
+          title: randomWords(4),
+          content: randomWords(20)
+        }
+      ]
+    },
+    {
+      name: randomWords(3),
+      posts: [
+        {
+          title: randomWords(4),
+          content: randomWords(20)
+        }
+      ]
+    }
+  ]
+}
+
 function App () {
   // Data
 
@@ -30,12 +54,35 @@ function App () {
   // App
 
   return (
-    <div className='container mx-auto max-w-3xl'>
-      <InputField defaultValue={title} OnValueChange={setTitle}></InputField>
-      <TextArea defaultValue={content} OnValueChange={setContent}></TextArea>
-      <PostButton enabled={true}></PostButton>
-      <WordCount words={wordCount} letters={letterCount}></WordCount>
-      <PostList></PostList>
+    <div className='container mx-auto'>
+      <div className='flex'>
+        <div className='w-1/2 pl-2'>
+          <InputField
+            defaultValue={title}
+            OnValueChange={setTitle}
+          ></InputField>
+          <TextArea
+            defaultValue={content}
+            OnValueChange={setContent}
+          ></TextArea>
+          <PostButton enabled={true}></PostButton>
+          <WordCount words={wordCount} letters={letterCount}></WordCount>
+          <PostList></PostList>
+        </div>
+        <div className='w-1/4 pl-2'>
+          <InputField
+            defaultValue={title}
+            OnValueChange={setTitle}
+          ></InputField>
+          <TextArea
+            defaultValue={content}
+            OnValueChange={setContent}
+          ></TextArea>
+          <PostButton enabled={true}></PostButton>
+          <WordCount words={wordCount} letters={letterCount}></WordCount>
+          <PostList></PostList>
+        </div>
+      </div>
     </div>
   )
 }
