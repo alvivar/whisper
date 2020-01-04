@@ -35,13 +35,9 @@ const timeDifference = (current, previous) => {
   return `${result < 0 ? 0 : result} ${tag}`
 }
 
-const Post = ({ key, title, created, content, bg }) => {
+const Post = ({ title, created, content, bg }) => {
   return (
-    <div
-      key={key}
-      id={`post${key}`}
-      className={`w-full p-4 mb-2 ${bg} rounded-lg`}
-    >
+    <div className={`w-full p-4 mb-2 ${bg} rounded-lg`}>
       <div className='text-xm text-gray-600'>
         <span>{title} </span>
         <span className='text-xs italic'>

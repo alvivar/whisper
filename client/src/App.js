@@ -75,6 +75,10 @@ function App () {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
+  const allBlogs = data.blogs || []
+  const currentBlog = allBlogs.find(x => x.name === title) || []
+  const currentPosts = currentBlog.posts || []
+
   // Words & letters
 
   const [wordCount, setWordCount] = useState(0)
@@ -84,8 +88,6 @@ function App () {
     setWordCount((content.trim().match(/\S+/g) || []).length)
     setLetterCount(content.trim().length)
   }, [content])
-
-  // App
 
   return (
     <div className='container mx-auto max-w-4xl'>
@@ -101,10 +103,10 @@ function App () {
           ></TextArea>
           <PostButton enabled={true}></PostButton>
           <WordCount words={wordCount} letters={letterCount}></WordCount>
-          <PostList posts={data.blogs[0].posts}></PostList>
+          <PostList posts={currentPosts}></PostList>
         </div>
         <div className='w-1/4 mt-2 pl-2'>
-          <BlogList blogs={data.blogs}></BlogList>
+          <BlogList blogs={allBlogs}></BlogList>
         </div>
       </div>
     </div>
