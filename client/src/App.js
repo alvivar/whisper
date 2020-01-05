@@ -106,7 +106,7 @@ function App () {
           <PostList posts={currentPosts}></PostList>
         </div>
         <div className='w-1/4 mt-2 pl-2'>
-          <BlogList blogs={allBlogs}></BlogList>
+          <BlogList blogs={allBlogs} OnBlogClick={setTitle}></BlogList>
         </div>
       </div>
     </div>
