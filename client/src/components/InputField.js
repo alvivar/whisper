@@ -10,6 +10,10 @@ const InputField = ({ defaultValue, OnValueChange }) => {
   const bgError = 'bg-red-300 focus:bg-red-400'
   const [bg, setBg] = useState(bgOk)
 
+  console.log(`defaultValue ${defaultValue}`)
+  console.log(`value ${value}`)
+  console.log(`debouncedValue ${debouncedValue}`)
+
   useEffect(() => {
     OnValueChange(debouncedValue)
     setBg(bgOk)
