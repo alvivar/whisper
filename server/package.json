@@ -10,7 +10,7 @@
         "type": "git",
         "url": "git+https://github.com/alvivar/whisper.git"
     },
-    "author": "",
+    "author": "andresalvivar@gmail.com",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/alvivar/whisper/issues"
