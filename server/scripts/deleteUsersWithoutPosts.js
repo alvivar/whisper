@@ -1,9 +1,9 @@
-const { prisma } = require("../generated/prisma-client");
+const { prisma } = require('../generated/prisma-client');
 
 // Remove users without written posts.
 
 async function main() {
-    const users = await prisma.users().$fragment(`
+	const users = await prisma.users().$fragment(`
         fragment UsersWithoutPosts on User {
             id
             writtenPosts {
@@ -11,19 +11,17 @@ async function main() {
             }
         }`);
 
-    const usersWithoutPosts = users.reduce((accu, elem) => {
-        if (!elem.writtenPosts.length) accu.push(elem.id);
-        return accu;
-    }, []);
+	const usersWithoutPosts = users.reduce((accu, elem) => {
+		if (!elem.writtenPosts.length) accu.push(elem.id);
+		return accu;
+	}, []);
 
-    await prisma.deleteManyUsers({
-        id_in: usersWithoutPosts
-    });
+	await prisma.deleteManyUsers({
+		id_in: usersWithoutPosts
+	});
 
-    console.log(usersWithoutPosts);
-    console.log(`Users without written posts deleted!`);
+	console.log(usersWithoutPosts);
+	console.log(`Users without written posts deleted!`);
 }
 
-main()
-    .then(() => process.exit(0))
-    .catch(e => console.error(e));
+main().then(() => process.exit(0)).catch((e) => console.error(e));
