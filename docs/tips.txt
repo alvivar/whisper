@@ -20,3 +20,8 @@
 
     Talwind is really cool
     https://itnext.io/how-to-use-tailwind-css-with-react-16e9d478b8b1
+
+
+        Remember the environment script to deploy Prisma.
+
+        Beware of Docker Toolkit and prisma.yml.
